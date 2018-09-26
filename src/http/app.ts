@@ -4,6 +4,7 @@ import ms = require("ms");
 import "reflect-metadata";
 import { useKoaServer } from "routing-controllers";
 import Environment from "./config";
+import TaskController from "./controllers/task";
 
 const createHttpServer = async () => {
     const koa = new Koa();
@@ -15,6 +16,7 @@ const createHttpServer = async () => {
     useKoaServer(koa, {
         routePrefix: "/api",
         controllers: [
+            TaskController,
         ],
         classTransformer: false,
     });

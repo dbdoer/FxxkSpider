@@ -94,7 +94,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("/* WEBPACK VAR INJECTION */(function(__dirname) {\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst Koa = __webpack_require__(/*! koa */ \"koa\");\nconst serve = __webpack_require__(/*! koa-static */ \"koa-static\");\nconst ms = __webpack_require__(/*! ms */ \"ms\");\n__webpack_require__(/*! reflect-metadata */ \"reflect-metadata\");\nconst routing_controllers_1 = __webpack_require__(/*! routing-controllers */ \"routing-controllers\");\nconst config_1 = __webpack_require__(/*! ./config */ \"./src/http/config/index.ts\");\nconst createHttpServer = async () => {\n    const koa = new Koa();\n    koa.use(serve(__dirname + \"/../page/dist\", {\n        maxAge: config_1.default.NAME === \"production\" ? ms(\"20d\") : 0,\n    }));\n    routing_controllers_1.useKoaServer(koa, {\n        routePrefix: \"/api\",\n        controllers: [],\n        classTransformer: false,\n    });\n    return koa;\n};\nexports.default = createHttpServer;\n\n/* WEBPACK VAR INJECTION */}.call(this, \"src/http\"))\n\n//# sourceURL=webpack:///./src/http/app.ts?");
+eval("/* WEBPACK VAR INJECTION */(function(__dirname) {\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst Koa = __webpack_require__(/*! koa */ \"koa\");\nconst serve = __webpack_require__(/*! koa-static */ \"koa-static\");\nconst ms = __webpack_require__(/*! ms */ \"ms\");\n__webpack_require__(/*! reflect-metadata */ \"reflect-metadata\");\nconst routing_controllers_1 = __webpack_require__(/*! routing-controllers */ \"routing-controllers\");\nconst config_1 = __webpack_require__(/*! ./config */ \"./src/http/config/index.ts\");\nconst task_1 = __webpack_require__(/*! ./controllers/task */ \"./src/http/controllers/task.ts\");\nconst createHttpServer = async () => {\n    const koa = new Koa();\n    koa.use(serve(__dirname + \"/../page/dist\", {\n        maxAge: config_1.default.NAME === \"production\" ? ms(\"20d\") : 0,\n    }));\n    routing_controllers_1.useKoaServer(koa, {\n        routePrefix: \"/api\",\n        controllers: [\n            task_1.default,\n        ],\n        classTransformer: false,\n    });\n    return koa;\n};\nexports.default = createHttpServer;\n\n/* WEBPACK VAR INJECTION */}.call(this, \"src/http\"))\n\n//# sourceURL=webpack:///./src/http/app.ts?");
 
 /***/ }),
 
@@ -106,7 +106,7 @@ eval("/* WEBPACK VAR INJECTION */(function(__dirname) {\nObject.defineProperty(e
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nexports.default = {\n    NAME: \"development\",\n    PORT: 9998,\n};\n\n\n//# sourceURL=webpack:///./src/http/config/config.dev.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nexports.default = {\n    NAME: \"development\",\n    PORT: 9998,\n    DBHOST: \"localhost\",\n    DBPORT: 27017,\n    DBNAME: \"fxxkSpider\",\n};\n\n\n//# sourceURL=webpack:///./src/http/config/config.dev.ts?");
 
 /***/ }),
 
@@ -118,7 +118,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nexport
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nexports.default = {\n    NAME: \"production\",\n    PORT: 9999,\n};\n\n\n//# sourceURL=webpack:///./src/http/config/config.prod.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nexports.default = {\n    NAME: \"production\",\n    PORT: 9999,\n    DBHOST: \"localhost\",\n    DBPORT: 27017,\n    DBNAME: \"fxxkSpider\",\n};\n\n\n//# sourceURL=webpack:///./src/http/config/config.prod.ts?");
 
 /***/ }),
 
@@ -131,6 +131,18 @@ eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nexport
 
 "use strict";
 eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst config_dev_1 = __webpack_require__(/*! ./config.dev */ \"./src/http/config/config.dev.ts\");\nconst config_prod_1 = __webpack_require__(/*! ./config.prod */ \"./src/http/config/config.prod.ts\");\nconst config =  true ? config_dev_1.default : undefined;\nexports.default = config;\n\n\n//# sourceURL=webpack:///./src/http/config/index.ts?");
+
+/***/ }),
+
+/***/ "./src/http/controllers/task.ts":
+/*!**************************************!*\
+  !*** ./src/http/controllers/task.ts ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nvar __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {\n    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;\n    if (typeof Reflect === \"object\" && typeof Reflect.decorate === \"function\") r = Reflect.decorate(decorators, target, key, desc);\n    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;\n    return c > 3 && r && Object.defineProperty(target, key, r), r;\n};\nvar __metadata = (this && this.__metadata) || function (k, v) {\n    if (typeof Reflect === \"object\" && typeof Reflect.metadata === \"function\") return Reflect.metadata(k, v);\n};\nvar __param = (this && this.__param) || function (paramIndex, decorator) {\n    return function (target, key) { decorator(target, key, paramIndex); }\n};\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst routing_controllers_1 = __webpack_require__(/*! routing-controllers */ \"routing-controllers\");\nlet TaskController = class TaskController {\n    createTask(gameName, startPage, endPage, ms) {\n    }\n};\n__decorate([\n    routing_controllers_1.Post(\"/task\"),\n    __param(0, routing_controllers_1.BodyParam(\"gameName\", { required: true })),\n    __param(1, routing_controllers_1.BodyParam(\"startPage\", { required: true })),\n    __param(2, routing_controllers_1.BodyParam(\"endPage\", { required: true })),\n    __param(3, routing_controllers_1.BodyParam(\"ms\", { required: true })),\n    __metadata(\"design:type\", Function),\n    __metadata(\"design:paramtypes\", [String, Number, Number, Number]),\n    __metadata(\"design:returntype\", void 0)\n], TaskController.prototype, \"createTask\", null);\nTaskController = __decorate([\n    routing_controllers_1.JsonController()\n], TaskController);\nexports.default = TaskController;\n\n\n//# sourceURL=webpack:///./src/http/controllers/task.ts?");
 
 /***/ }),
 
