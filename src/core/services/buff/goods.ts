@@ -15,6 +15,7 @@ export const parseGoodsList = (goodsList: IBuffGoodsItem[]): IGoods[] => goodsLi
     icon_url: g.goods_info.icon_url,
     steam_price: g.goods_info.steam_price,
     steam_price_cny: g.goods_info.steam_price_cny,
+    diff_price: Number(g.goods_info.steam_price_cny) - Number(g.sell_min_price),
 
     buff_goods_url: `https://buff.163.com/market/goods?goods_id=${g.id}`,
 }));

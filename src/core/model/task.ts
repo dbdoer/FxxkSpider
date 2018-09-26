@@ -8,6 +8,12 @@ enum StatusType {
     success = 1,
 }
 
+const Status = {
+    pending: -1,
+    fail: 0,
+    success: 1,
+};
+
 interface ITask extends mongoose.Document {
     status: StatusType;
     resultUrl: string;
@@ -43,4 +49,5 @@ export {
     ITask,
     Task,
     StatusType,
+    Status,
 };

@@ -1,7 +1,7 @@
 import * as moment from "moment";
 import { getGoodsList, parseGoodsList } from "../services";
 import { sleep } from "../helpers";
-import { Task, StatusType } from "../model";
+import { Task, Status } from "../model";
 
 export const getGoodsListFromPage = async (gameName= "csgo", startPage: number = 1, endPage: number, ms: number) => {
     let res = [];
@@ -20,10 +20,10 @@ export const getGoodsListFromPage = async (gameName= "csgo", startPage: number =
                 await sleep(ms);
             }
             const rawResult = JSON.stringify(parseGoodsList(res));
-            await task.update({ status: StatusType.success, rawResult });
+            await task.update({ status: Status.success, rawResult });
         })();
     } catch (err) {
-        await task.update({ status: StatusType.fail });
+        await task.update({ status: Status.fail });
     }
 
     return {
