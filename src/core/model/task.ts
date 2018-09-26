@@ -11,6 +11,10 @@ enum StatusType {
 interface ITask extends mongoose.Document {
     status: StatusType;
     resultUrl: string;
+    desc: string;
+    rawResult: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 const taskSchema = new Schema({
@@ -23,11 +27,20 @@ const taskSchema = new Schema({
         type: String,
         required: false,
     },
-});
+    rawResult: {
+        type: String,
+        required: false,
+    },
+    desc: {
+        type: String,
+        required: true,
+    },
+}, { timestamps: true });
 
 const Task = mongoose.model<ITask>("Task", taskSchema);
 
 export {
     ITask,
     Task,
+    StatusType,
 };

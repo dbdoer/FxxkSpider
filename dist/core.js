@@ -86,6 +86,126 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/core/apis/index.ts":
+/*!********************************!*\
+  !*** ./src/core/apis/index.ts ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nfunction __export(m) {\n    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];\n}\nObject.defineProperty(exports, \"__esModule\", { value: true });\n__export(__webpack_require__(/*! ./task */ \"./src/core/apis/task.ts\"));\n\n\n//# sourceURL=webpack:///./src/core/apis/index.ts?");
+
+/***/ }),
+
+/***/ "./src/core/apis/task.ts":
+/*!*******************************!*\
+  !*** ./src/core/apis/task.ts ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst moment = __webpack_require__(/*! moment */ \"moment\");\nconst services_1 = __webpack_require__(/*! ../services */ \"./src/core/services/index.ts\");\nconst helpers_1 = __webpack_require__(/*! ../helpers */ \"./src/core/helpers/index.ts\");\nconst model_1 = __webpack_require__(/*! ../model */ \"./src/core/model/index.ts\");\nexports.getGoodsListFromPage = async (gameName = \"csgo\", startPage = 1, endPage, ms) => {\n    let res = [];\n    const desc = `于${moment().format(\"YYYY-MM-DD, h:mm:ss a\")}创建的爬取${gameName}，从第${startPage}页到第${endPage}页的时间间隔为${ms / 1000}s的任务单`;\n    const task = await model_1.Task.create({\n        desc,\n    });\n    try {\n        (async () => {\n            for (let nowPage = startPage; nowPage <= endPage; nowPage++) {\n                const goodsList = await services_1.getGoodsList(gameName, nowPage);\n                res = [...res, ...goodsList.data.items];\n                nowPage = nowPage + 1;\n                await helpers_1.sleep(ms);\n            }\n            const rawResult = JSON.stringify(services_1.parseGoodsList(res));\n            await task.update({ status: model_1.StatusType.success, rawResult });\n        })();\n    }\n    catch (err) {\n        await task.update({ status: model_1.StatusType.fail });\n    }\n    return {\n        error: 0,\n        msg: \"成功\",\n        data: task,\n    };\n};\nexports.getTask = async (taskId) => {\n    return await model_1.Task.findOne({ _id: taskId });\n};\n\n\n//# sourceURL=webpack:///./src/core/apis/task.ts?");
+
+/***/ }),
+
+/***/ "./src/core/helpers/index.ts":
+/*!***********************************!*\
+  !*** ./src/core/helpers/index.ts ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nfunction __export(m) {\n    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];\n}\nObject.defineProperty(exports, \"__esModule\", { value: true });\n__export(__webpack_require__(/*! ./sleep */ \"./src/core/helpers/sleep.ts\"));\n\n\n//# sourceURL=webpack:///./src/core/helpers/index.ts?");
+
+/***/ }),
+
+/***/ "./src/core/helpers/sleep.ts":
+/*!***********************************!*\
+  !*** ./src/core/helpers/sleep.ts ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nexports.sleep = (ms) => new Promise((resolve) => {\n    setTimeout(() => resolve(), ms);\n});\n\n\n//# sourceURL=webpack:///./src/core/helpers/sleep.ts?");
+
+/***/ }),
+
+/***/ "./src/core/model/conn.ts":
+/*!********************************!*\
+  !*** ./src/core/model/conn.ts ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst mongoose = __webpack_require__(/*! mongoose */ \"mongoose\");\nconst config_1 = __webpack_require__(/*! ../../http/config */ \"./src/http/config/index.ts\");\nswitch (config_1.default.NAME) {\n    case \"development\":\n        mongoose.connect(`mongodb://${config_1.default.DBHOST}:${config_1.default.DBPORT}/${config_1.default.DBNAME}`, { useNewUrlParser: true })\n            .then()\n            .catch((err) => console.log(err));\n        break;\n}\nmongoose.connection\n    .once(\"error\", (err) => console.error(`mongodb connect error:\\n${err}`))\n    .once(\"open\", () => {\n    console.log(\"mongodb connect success\");\n});\nexports.default = mongoose;\n\n\n//# sourceURL=webpack:///./src/core/model/conn.ts?");
+
+/***/ }),
+
+/***/ "./src/core/model/index.ts":
+/*!*********************************!*\
+  !*** ./src/core/model/index.ts ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nfunction __export(m) {\n    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];\n}\nObject.defineProperty(exports, \"__esModule\", { value: true });\n__export(__webpack_require__(/*! ./task */ \"./src/core/model/task.ts\"));\n\n\n//# sourceURL=webpack:///./src/core/model/index.ts?");
+
+/***/ }),
+
+/***/ "./src/core/model/task.ts":
+/*!********************************!*\
+  !*** ./src/core/model/task.ts ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst conn_1 = __webpack_require__(/*! ./conn */ \"./src/core/model/conn.ts\");\nconst { Schema } = conn_1.default;\nvar StatusType;\n(function (StatusType) {\n    StatusType[StatusType[\"pending\"] = -1] = \"pending\";\n    StatusType[StatusType[\"fail\"] = 0] = \"fail\";\n    StatusType[StatusType[\"success\"] = 1] = \"success\";\n})(StatusType || (StatusType = {}));\nexports.StatusType = StatusType;\nconst taskSchema = new Schema({\n    status: {\n        type: Number,\n        required: true,\n        default: StatusType.pending,\n    },\n    resultUrl: {\n        type: String,\n        required: false,\n    },\n    rawResult: {\n        type: String,\n        required: false,\n    },\n    desc: {\n        type: String,\n        required: true,\n    },\n}, { timestamps: true });\nconst Task = conn_1.default.model(\"Task\", taskSchema);\nexports.Task = Task;\n\n\n//# sourceURL=webpack:///./src/core/model/task.ts?");
+
+/***/ }),
+
+/***/ "./src/core/services/buff/goods.ts":
+/*!*****************************************!*\
+  !*** ./src/core/services/buff/goods.ts ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst axios_1 = __webpack_require__(/*! axios */ \"axios\");\nexports.getGoodsList = async (gameName, pageNum) => {\n    const res = await axios_1.default.get(`https://buff.163.com/api/market/goods?game=${gameName}&page_num=${pageNum}`);\n    return res.data;\n};\nexports.parseGoodsList = (goodsList) => goodsList.map((g) => ({\n    id: g.id,\n    name: g.name,\n    sell_min_price: g.sell_min_price,\n    sell_num: g.sell_num,\n    steam_market_url: g.steam_market_url,\n    icon_url: g.goods_info.icon_url,\n    steam_price: g.goods_info.steam_price,\n    steam_price_cny: g.goods_info.steam_price_cny,\n    buff_goods_url: `https://buff.163.com/market/goods?goods_id=${g.id}`,\n}));\n\n\n//# sourceURL=webpack:///./src/core/services/buff/goods.ts?");
+
+/***/ }),
+
+/***/ "./src/core/services/buff/index.ts":
+/*!*****************************************!*\
+  !*** ./src/core/services/buff/index.ts ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nfunction __export(m) {\n    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];\n}\nObject.defineProperty(exports, \"__esModule\", { value: true });\n__export(__webpack_require__(/*! ./goods */ \"./src/core/services/buff/goods.ts\"));\n\n\n//# sourceURL=webpack:///./src/core/services/buff/index.ts?");
+
+/***/ }),
+
+/***/ "./src/core/services/index.ts":
+/*!************************************!*\
+  !*** ./src/core/services/index.ts ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nfunction __export(m) {\n    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];\n}\nObject.defineProperty(exports, \"__esModule\", { value: true });\n__export(__webpack_require__(/*! ./buff */ \"./src/core/services/buff/index.ts\"));\n\n\n//# sourceURL=webpack:///./src/core/services/index.ts?");
+
+/***/ }),
+
 /***/ "./src/http/app.ts":
 /*!*************************!*\
   !*** ./src/http/app.ts ***!
@@ -142,7 +262,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {\n    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;\n    if (typeof Reflect === \"object\" && typeof Reflect.decorate === \"function\") r = Reflect.decorate(decorators, target, key, desc);\n    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;\n    return c > 3 && r && Object.defineProperty(target, key, r), r;\n};\nvar __metadata = (this && this.__metadata) || function (k, v) {\n    if (typeof Reflect === \"object\" && typeof Reflect.metadata === \"function\") return Reflect.metadata(k, v);\n};\nvar __param = (this && this.__param) || function (paramIndex, decorator) {\n    return function (target, key) { decorator(target, key, paramIndex); }\n};\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst routing_controllers_1 = __webpack_require__(/*! routing-controllers */ \"routing-controllers\");\nlet TaskController = class TaskController {\n    createTask(gameName, startPage, endPage, ms) {\n    }\n};\n__decorate([\n    routing_controllers_1.Post(\"/task\"),\n    __param(0, routing_controllers_1.BodyParam(\"gameName\", { required: true })),\n    __param(1, routing_controllers_1.BodyParam(\"startPage\", { required: true })),\n    __param(2, routing_controllers_1.BodyParam(\"endPage\", { required: true })),\n    __param(3, routing_controllers_1.BodyParam(\"ms\", { required: true })),\n    __metadata(\"design:type\", Function),\n    __metadata(\"design:paramtypes\", [String, Number, Number, Number]),\n    __metadata(\"design:returntype\", void 0)\n], TaskController.prototype, \"createTask\", null);\nTaskController = __decorate([\n    routing_controllers_1.JsonController()\n], TaskController);\nexports.default = TaskController;\n\n\n//# sourceURL=webpack:///./src/http/controllers/task.ts?");
+eval("\nvar __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {\n    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;\n    if (typeof Reflect === \"object\" && typeof Reflect.decorate === \"function\") r = Reflect.decorate(decorators, target, key, desc);\n    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;\n    return c > 3 && r && Object.defineProperty(target, key, r), r;\n};\nvar __metadata = (this && this.__metadata) || function (k, v) {\n    if (typeof Reflect === \"object\" && typeof Reflect.metadata === \"function\") return Reflect.metadata(k, v);\n};\nvar __param = (this && this.__param) || function (paramIndex, decorator) {\n    return function (target, key) { decorator(target, key, paramIndex); }\n};\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst routing_controllers_1 = __webpack_require__(/*! routing-controllers */ \"routing-controllers\");\nconst apis_1 = __webpack_require__(/*! ../../core/apis */ \"./src/core/apis/index.ts\");\nlet TaskController = class TaskController {\n    async createTask(gameName, startPage, endPage, ms) {\n        return await apis_1.getGoodsListFromPage(gameName, startPage, endPage, ms);\n    }\n    async getTask(id) {\n        return await apis_1.getTask(id);\n    }\n};\n__decorate([\n    routing_controllers_1.Post(\"/task\"),\n    __param(0, routing_controllers_1.BodyParam(\"gameName\", { required: true })),\n    __param(1, routing_controllers_1.BodyParam(\"startPage\", { required: true })),\n    __param(2, routing_controllers_1.BodyParam(\"endPage\", { required: true })),\n    __param(3, routing_controllers_1.BodyParam(\"ms\", { required: true })),\n    __metadata(\"design:type\", Function),\n    __metadata(\"design:paramtypes\", [String, Number, Number, Number]),\n    __metadata(\"design:returntype\", Promise)\n], TaskController.prototype, \"createTask\", null);\n__decorate([\n    routing_controllers_1.Get(\"/task/:id\"),\n    __param(0, routing_controllers_1.Param(\"id\")),\n    __metadata(\"design:type\", Function),\n    __metadata(\"design:paramtypes\", [String]),\n    __metadata(\"design:returntype\", Promise)\n], TaskController.prototype, \"getTask\", null);\nTaskController = __decorate([\n    routing_controllers_1.JsonController()\n], TaskController);\nexports.default = TaskController;\n\n\n//# sourceURL=webpack:///./src/http/controllers/task.ts?");
 
 /***/ }),
 
@@ -170,6 +290,17 @@ eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst 
 
 /***/ }),
 
+/***/ "axios":
+/*!************************!*\
+  !*** external "axios" ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"axios\");\n\n//# sourceURL=webpack:///external_%22axios%22?");
+
+/***/ }),
+
 /***/ "koa":
 /*!**********************!*\
   !*** external "koa" ***!
@@ -189,6 +320,28 @@ eval("module.exports = require(\"koa\");\n\n//# sourceURL=webpack:///external_%2
 /***/ (function(module, exports) {
 
 eval("module.exports = require(\"koa-static\");\n\n//# sourceURL=webpack:///external_%22koa-static%22?");
+
+/***/ }),
+
+/***/ "moment":
+/*!*************************!*\
+  !*** external "moment" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"moment\");\n\n//# sourceURL=webpack:///external_%22moment%22?");
+
+/***/ }),
+
+/***/ "mongoose":
+/*!***************************!*\
+  !*** external "mongoose" ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"mongoose\");\n\n//# sourceURL=webpack:///external_%22mongoose%22?");
 
 /***/ }),
 

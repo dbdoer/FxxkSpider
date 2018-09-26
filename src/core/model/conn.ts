@@ -4,7 +4,7 @@ import config from "../../http/config";
 
 switch (config.NAME) {
     case "development":
-        mongoose.connect(`mongodb://${config.DBHOST}:${config.DBPORT}/${config.DBNAME}`)
+        mongoose.connect(`mongodb://${config.DBHOST}:${config.DBPORT}/${config.DBNAME}`, { useNewUrlParser: true })
             .then()
             .catch((err) => console.log(err));
         break;
