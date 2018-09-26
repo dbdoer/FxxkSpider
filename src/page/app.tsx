@@ -4,7 +4,7 @@ import Axios from "axios";
 import { ITask } from "../core/model";
 
 @autobind
-class App extends React.Component<any, { gameName: string, startPage: number, endPage: number, ms: number, task: ITask, showResult: any }> {
+class App extends React.Component<any, { gameName: string, startPage: number, endPage: number, ms: number, task: ITask, showResult: any, selectType: string }> {
     public sto: any;
     constructor(arg) {
         super(arg);
@@ -15,6 +15,7 @@ class App extends React.Component<any, { gameName: string, startPage: number, en
             ms: undefined,
             task: null,
             showResult: [],
+            selectType: "1",
         };
     }
 
@@ -67,25 +68,31 @@ class App extends React.Component<any, { gameName: string, startPage: number, en
     }
 
     public handleSelectChange(ev) {
-        const type = ev.target.value;
-        const { task } = this.state;
-        const rawResult = task.rawResult;
-        if (type === Number(2)) {
-            const d = JSON.parse(rawResult).sort((a, b) => b.diff_price - a.diff_price);
-            this.setState({
-                showResult: [...d],
-            });
-        } else {
-            const d = JSON.parse(rawResult);
-            this.setState({
-                showResult: [...d],
-            });
+        try {
+            const type = ev.target.value;
+            const { task } = this.state;
+            const rawResult = task.rawResult;
+            if (type === "2") {
+                const d = JSON.parse(rawResult).sort((a, b) => b.diff_price - a.diff_price);
+                this.setState({
+                    showResult: [...d],
+                    selectType: "2",
+                });
+            } else {
+                const d = JSON.parse(rawResult);
+                this.setState({
+                    showResult: [...d],
+                    selectType: "1",
+                });
+            }
+        } catch (err) {
+            alert("未取得任务单数据");
         }
 
     }
 
     public render() {
-        const { showResult } = this.state;
+        const { showResult, selectType } = this.state;
         return (
             <section style={{ textAlign: "center" }}>
                 <h1>创建任务单</h1>
@@ -106,7 +113,7 @@ class App extends React.Component<any, { gameName: string, startPage: number, en
                     <br /><br />
                     <p>
                         排序规则：
-                        <select onChange={this.handleSelectChange}>
+                        <select onChange={this.handleSelectChange} value={selectType}>
                             <option value={1}>默认（buff规则）</option>
                             <option value={2}>价差降序</option>
                         </select>
