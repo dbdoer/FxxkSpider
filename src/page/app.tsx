@@ -73,7 +73,7 @@ class App extends React.Component<any, { gameName: string, startPage: number, en
             const { task } = this.state;
             const rawResult = task.rawResult;
             if (type === "2") {
-                const d = JSON.parse(rawResult).sort((a, b) => b.diff_price - a.diff_price);
+                const d = JSON.parse(rawResult).sort((a, b) => Math.floor(b.diff_price) - Math.floor(a.diff_price));
                 this.setState({
                     showResult: [...d],
                     selectType: "2",
@@ -107,7 +107,7 @@ class App extends React.Component<any, { gameName: string, startPage: number, en
                     <input type="number" onChange={this.handleValueChange} name="endPage"></input>
                     <br /><br />
                     <label>延时：</label>
-                    <input type="number" onChange={this.handleValueChange} name="ms"></input>
+                    <input type="text" onChange={this.handleValueChange} name="ms"></input>
                     <br /><br />
                     <button type="onSubmit">开始    ！</button>
                     <br /><br />
