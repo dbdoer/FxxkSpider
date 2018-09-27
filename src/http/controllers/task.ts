@@ -1,5 +1,5 @@
 import { JsonController, Post, BodyParam, Get, Param } from "routing-controllers";
-import { getGoodsListFromPage, getTask } from "../../core/apis";
+import { getGoodsListFromPage, getTask, taskResultExport } from "../../core/apis";
 
 @JsonController()
 class TaskController {
@@ -16,6 +16,11 @@ class TaskController {
     @Get("/task/:id")
     private async getTask(@Param("id") id: string) {
         return await getTask(id);
+    }
+
+    @Get("/task/:id/export")
+    private async exportTaskResult(@Param("id") id: string) {
+        return await taskResultExport(id);
     }
 }
 
