@@ -39,6 +39,11 @@ export const getTask = async (taskId: string) => {
     return await Task.findOne({ _id: taskId });
 };
 
+export const getTaskList = async () => {
+    return await Task.find({}, "-rawResult")
+        .sort("-createdAt");
+};
+
 export const taskResultExport = async (taskId: string) => {
     const task = await Task.findOne({ _id: taskId });
     const file = new xlsx.File();
