@@ -7,7 +7,7 @@
   "scripts": {
     "watch:http": "cross-env NODE_ENV=development webpack --config config/webpack.config.dev.js --watch --buildType node",
     "start:http": "nodemon dist/core.js",
-    "start:page": "cross-env NODE_ENV=development webpack --config config/webpack.config.dev.js --watch --buildType web",
+    "start:page": "cross-env NODE_ENV=production webpack --config config/webpack.config.dev.js --watch --buildType web",
     "build": "cross-env NODE_ENV=production webpack --config config/webpack.config.prod.js"
   },
   "license": "MIT",

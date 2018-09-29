@@ -17,7 +17,8 @@ const generateWebpackConfig = (buildType) => {
           paths.pageEntry
         ],
         target: 'web',
-        mode: 'development',
+        mode: 'production',
+        devtool: false,
         output: {
           path: paths.appPageDevBuild,
           filename: 'static/js/bundler.js',
