@@ -48,6 +48,19 @@ const generateWebpackConfig = (buildType) => {
             }
           ]
         },
+        optimization: {
+          splitChunks: {
+            name: true,
+            cacheGroups: {
+              vendors: {
+                test: /[\\/]node_modules[\\/]/,
+                chunks: 'all',
+                priority: -10
+              }
+            }
+          },
+          runtimeChunk: true
+        },
         plugins: [
           new HtmlWebpackPlugin({
             inject: true,
