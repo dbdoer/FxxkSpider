@@ -4,7 +4,7 @@ import Axios from "axios";
 import { ITask } from "../core/model";
 
 @autobind
-class App extends React.Component<any, { gameName: string, startPage: number, endPage: number, ms: number, task: ITask, showResult: any, selectType: string }> {
+class TaskCreate extends React.Component<any, { gameName: string, startPage: number, endPage: number, ms: number, task: ITask, showResult: any, selectType: string }> {
     public sto: any;
     constructor(arg) {
         super(arg);
@@ -136,4 +136,4 @@ class App extends React.Component<any, { gameName: string, startPage: number, en
     }
 }
 
-export default App;
+export default TaskCreate;

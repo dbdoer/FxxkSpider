@@ -9,9 +9,13 @@ import TaskController from "./controllers/task";
 const createHttpServer = async () => {
     const koa = new Koa();
 
+    // 前端静态资源服务
     koa.use(serve(__dirname + "/../page/dist", {
         maxAge: Environment.NAME === "production" ? ms("20d") : 0,
     }));
+
+    // 数据报表资源服务
+    koa.use(serve(__dirname + "/../core/export"));
 
     useKoaServer(koa, {
         routePrefix: "/api",

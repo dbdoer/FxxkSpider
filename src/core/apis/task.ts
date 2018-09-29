@@ -71,9 +71,13 @@ export const taskResultExport = async (taskId: string) => {
         dataCell5.value = r.buff_goods_url;
     });
 
+    const fileName = `${Math.random() * 1000000}.xlsx`;
+
     file
         .saveAs()
-        .pipe(fs.createWriteStream(__dirname + `/../export/${Math.random() * 1000000}.xlsx`));
+        .pipe(fs.createWriteStream(__dirname + `/../export/${fileName}`));
+
+    await task.update({ resultUrl: fileName });
 
     return {
         error: 0,
