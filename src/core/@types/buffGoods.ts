@@ -10,12 +10,26 @@ export interface IBuffGoodsListResponse {
     msg: string;
 }
 
+export interface IBUffGoodsBillOrderResponse {
+    code: string;
+    msg: string;
+    data: {
+        has_market_stores: object,
+        items: IBuffGoodsBillOrderItem[],
+    };
+}
+
+export interface IBuffGoodsBillOrderItem {
+    price: string;
+}
+
 export interface IBuffGoodsItem {
     id: number;
     name: string;
     sell_min_price: string;
     sell_num: number;
     steam_market_url: string;
+    game: string;
     goods_info: {
         icon_url: string;
         steam_price: string;

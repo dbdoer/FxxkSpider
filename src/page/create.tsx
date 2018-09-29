@@ -4,7 +4,7 @@ import Axios from "axios";
 import { ITask } from "../core/model";
 
 @autobind
-class TaskCreate extends React.Component<any, { gameName: string, startPage: number, endPage: number, ms: string, task: ITask, selectType: string }> {
+class TaskCreate extends React.Component<any, { gameName: string, startPage: number, endPage: number, task: ITask, selectType: string }> {
     public sto: any;
     constructor(arg) {
         super(arg);
@@ -12,7 +12,6 @@ class TaskCreate extends React.Component<any, { gameName: string, startPage: num
             gameName: "",
             startPage: 1,
             endPage: undefined,
-            ms: "0",
             task: null,
             selectType: "1",
         };
@@ -43,13 +42,12 @@ class TaskCreate extends React.Component<any, { gameName: string, startPage: num
     // }
 
     public handleSubmit(ev) {
-        const { gameName, startPage, endPage, ms } = this.state;
+        const { gameName, startPage, endPage } = this.state;
         ev.preventDefault();
         Axios.post("/api/task", {
             gameName,
             startPage,
             endPage,
-            ms: ms * 1000,
         })
             .then((res) => {
                 if (res.data.error === 0) {
@@ -78,9 +76,6 @@ class TaskCreate extends React.Component<any, { gameName: string, startPage: num
                     <br /><br />
                     <label>结束页数：</label>
                     <input type="number" onChange={this.handleValueChange} name="endPage"></input>
-                    <br /><br />
-                    <label>延时：</label>
-                    <input type="text" onChange={this.handleValueChange} name="ms"></input>
                     <br /><br />
                     <button type="onSubmit">开始    ！</button>
                 </form>

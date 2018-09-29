@@ -8,9 +8,8 @@ class TaskController {
      @BodyParam("gameName", {required: true}) gameName: string,
      @BodyParam("startPage", {required: true}) startPage: number,
      @BodyParam("endPage", {required: true}) endPage: number,
-     @BodyParam("ms", {required: true}) ms: number,
-     ) {
-        return await getGoodsListFromPage(gameName, startPage, endPage, ms);
+    ) {
+        return await getGoodsListFromPage(gameName, startPage, endPage);
     }
 
     @Get("/task/:id")
