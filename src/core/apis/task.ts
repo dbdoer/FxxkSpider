@@ -1,28 +1,40 @@
 import * as moment from "moment";
 import { getGoodsList, parseGoodsList } from "../services";
-import { sleep } from "../helpers";
+import { sleep, range } from "../helpers";
 import { Task, Status } from "../model";
 import xlsx = require("better-xlsx");
 import * as fs from "fs";
 
 export const getGoodsListFromPage = async (gameName= "csgo", startPage: number = 1, endPage: number, ms: number) => {
-    let res = [];
 
-    const desc = `于${moment().format("YYYY-MM-DD, h:mm:ss a")}创建的爬取${gameName}，从第${startPage}页到第${endPage}页的时间间隔为${ms / 1000}s的任务单`;
+    const desc = `于${moment().format("YYYY-MM-DD, h:mm:ss a")}创建的爬取${gameName}，从第${startPage}页到第${endPage === -1 ? "最后一页面" : endPage}页的时间间隔为${ms / 1000}s的任务单`;
     const task = await Task.create({
         desc,
     });
 
+    if (endPage === -1) {
+        endPage = 10000;
+    }
+
+    let res = [];
+
     try {
         (async () => {
-            for (let nowPage = startPage; nowPage <= endPage; nowPage++) {
-                const goodsList = await getGoodsList(gameName, nowPage);
-                res = [...res, ...goodsList.data.items];
-                nowPage = nowPage + 1;
-                await sleep(ms);
-            }
-            const rawResult = JSON.stringify(parseGoodsList(res));
-            await task.update({ status: Status.success, rawResult });
+            const nowPage = 1;
+            const d = await getGoodsList(gameName, nowPage);
+            endPage = d.data.total_page;
+            const promiseList = range(endPage)
+            .map((p) => getGoodsList(gameName, p)
+                .then((goodsList) => {
+                    console.log(p, goodsList.data.items.length);
+                    res = [...res, ...goodsList.data.items];
+                    return true;
+                }));
+            Promise.all(promiseList)
+            .then(async () => {
+                const rawResult = JSON.stringify(parseGoodsList(res));
+                await task.update({ status: Status.success, rawResult });
+            });
         })();
     } catch (err) {
         await task.update({ status: Status.fail });
@@ -57,9 +69,11 @@ export const taskResultExport = async (taskId: string) => {
     const cell3 = row.addCell();
     cell3.value = "steam出售价格（单位：元）";
     const cell4 = row.addCell();
-    cell4.value = "价差（单位：元）";
+    cell4.value = "价差（单位：元）（取整）";
     const cell5 = row.addCell();
-    cell5.value = "Buff商品链接";
+    cell5.value = "Buff在售数量";
+    const cell6 = row.addCell();
+    cell6.value = "Buff商品链接";
 
     const rawResult = JSON.parse(task.rawResult);
     rawResult.forEach((r) => {
@@ -69,11 +83,13 @@ export const taskResultExport = async (taskId: string) => {
         const dataCell3 = dataRow.addCell();
         const dataCell4 = dataRow.addCell();
         const dataCell5 = dataRow.addCell();
+        const dataCell6 = dataRow.addCell();
         dataCell1.value = r.name;
         dataCell2.value = r.sell_min_price;
         dataCell3.value = r.steam_price_cny;
         dataCell4.value = Math.floor(r.diff_price);
-        dataCell5.value = r.buff_goods_url;
+        dataCell5.value = r.sell_num;
+        dataCell6.value = r.buff_goods_url;
     });
 
     const fileName = `${Math.random() * 1000000}.xlsx`;
