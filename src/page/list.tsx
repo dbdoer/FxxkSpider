@@ -2,17 +2,32 @@ import * as React from "react";
 import Axios from "axios";
 import { ITask } from "../core/model";
 
-class TaskList extends React.Component<{}, { dataSource: ITask[] }> {
+class TaskList extends React.Component<{}, { dataSource: ITask[], progressString: string; nowTask: ITask }> {
+    public progressInterval: NodeJS.Timer;
     constructor(args) {
         super(args);
         this.state = {
             dataSource: [],
+            progressString: "",
+            nowTask: null,
         };
     }
 
     public componentDidMount() {
         Axios.get("/api/task")
-            .then((res) => this.setState({ dataSource: res.data }));
+            .then((res) => {
+                const nowTask = res.data[0];
+                if (nowTask.status === -1) {
+                    this.progressInterval = setInterval(() => {
+                        this.setState((state) => ({ progressString: state.progressString + "." }));
+                    }, 1000);
+                }
+                this.setState({ dataSource: res.data, nowTask });
+            });
+    }
+
+    public componentWillUnmount() {
+        clearInterval(this.progressInterval);
     }
 
     public renderStatus(status) {
@@ -46,15 +61,15 @@ class TaskList extends React.Component<{}, { dataSource: ITask[] }> {
     }
 
     public render() {
-        const { dataSource } = this.state;
+        const { dataSource, progressString } = this.state;
         return (
             <section>
                 <h1>任务单列表：</h1>
-                {dataSource.length > 0 ? dataSource.map((t) => (
+                {dataSource.length > 0 ? dataSource.map((t, i) => (
                     <section style={ { background: "#818181", margin: "20px 20px", color: "white"  } }>
                         <p>描述：{t.desc}</p>
                         <p>创建时间：{new Date(t.createdAt).toLocaleTimeString()}</p>
-                        <p>状态：{this.renderStatus(t.status)}</p>
+                        <p>状态：{this.renderStatus(t.status)}{i === 0 ? progressString : null}</p>
                         {t.status === 1 ? <p>耗时：{t.timeConsuming}</p> : null}
                         {this.renderResultUrl(t)}
                     </section>

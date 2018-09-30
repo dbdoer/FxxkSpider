@@ -22,7 +22,7 @@ export const getGoodsListFromPage = async (gameName= "csgo", startPage: number =
         (async () => {
             const nowPage = 1;
             const d = await getGoodsList(gameName, nowPage);
-            endPage = d.data.total_page;
+            endPage = (endPage === -1 ? d.data.total_page : endPage);
             const promiseList = range(endPage)
             .map((p) => getGoodsList(gameName, p)
                 .then((goodsList) => {
