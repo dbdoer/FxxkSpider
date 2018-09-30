@@ -74,7 +74,7 @@ class TaskCreate extends React.Component<any, { gameName: string, startPage: num
                     <label>开始页数：（爬取开始的页数，一般为 1，平均一页1500条数据）</label>
                     <input type="number" onChange={this.handleValueChange} name="startPage"></input>
                     <br /><br />
-                    <label>结束页数：（爬取开始的页数，填-1为最后一页）</label>
+                    <label>结束页数：（爬取结束的页数，填-1为最后一页）</label>
                     <input type="number" onChange={this.handleValueChange} name="endPage"></input>
                     <br /><br />
                     <button type="onSubmit">开始    ！</button>
