@@ -114,7 +114,7 @@ export const taskResultExport = async (taskId: string) => {
         dataCell1.value = r.name;
         dataCell2.value = r.sell_min_price;
         dataCell3.value = r.steam_price_cny;
-        dataCell4.value = Math.floor(r.diff_price);
+        dataCell4.value = r.diff_price;
         dataCell5.value = r.sell_num;
         dataCell6.value = r.original_discount_price;
         dataCell7.value = r.original_profit;
