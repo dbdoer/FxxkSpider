@@ -1,15 +1,18 @@
 import * as React from "react";
 import Axios from "axios";
 import { ITask } from "../core/model";
+import { autobind } from "core-decorators";
 
-class TaskList extends React.Component<{}, { dataSource: ITask[], progressString: string; nowTask: ITask }> {
+@autobind
+class TaskList extends React.Component<{}, { dataSource: ITask[], progressString: string; }> {
     public progressInterval: NodeJS.Timer;
+    public poll: NodeJS.Timer;
+
     constructor(args) {
         super(args);
         this.state = {
             dataSource: [],
             progressString: "",
-            nowTask: null,
         };
     }
 
@@ -18,16 +21,42 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
             .then((res) => {
                 const nowTask = res.data[0];
                 if (nowTask.status === -1) {
+                    this.runPoll(this.getTaskDetail(nowTask._id));
                     this.progressInterval = setInterval(() => {
                         this.setState((state) => ({ progressString: state.progressString + "." }));
                     }, 1000);
                 }
-                this.setState({ dataSource: res.data, nowTask });
+                this.setState({ dataSource: res.data });
             });
     }
 
     public componentWillUnmount() {
         clearInterval(this.progressInterval);
+        clearTimeout(this.poll);
+    }
+
+    public runPoll(cb) {
+        this.poll = setTimeout(() => {
+            if (cb) {
+                cb();
+            }
+            this.runPoll(cb);
+        }, 2000);
+    }
+
+    public getTaskDetail(taskId) {
+        return () => {
+            Axios.get<ITask>(`/api/task/${taskId}`)
+                .then((res) => {
+                    if (res.data.status === 1) {
+                        clearTimeout(this.poll);
+                        clearInterval(this.progressInterval);
+                        this.componentDidMount();
+                        // const nowTask = res.data;
+                        // this.setState((state) => ({ dataSource: state.dataSource.splice(0, 1, nowTask) }));
+                    }
+            });
+        };
     }
 
     public renderStatus(status) {

@@ -20,22 +20,38 @@ export const getGoodsListFromPage = async (gameName= "csgo", startPage: number =
 
     try {
         (async () => {
-            const nowPage = 1;
+            let nowPage = 1;
             const d = await getGoodsList(gameName, nowPage);
             endPage = (endPage === -1 ? d.data.total_page : endPage);
-            const promiseList = range(endPage)
-            .map((p) => getGoodsList(gameName, p)
-                .then((goodsList) => {
-                    console.log(p, goodsList.data.items.length);
-                    res = [...res, ...goodsList.data.items.filter((g) => Number(g.sell_min_price) >= 2 && Number(g.sell_min_price) <= 3000)];
-                    return true;
-                }));
-            Promise.all(promiseList)
-            .then(async () => {
-                const rawResult = JSON.stringify(parseGoodsList(res));
-                const timeConsuming = `${(new Date().getTime() - new Date(task.createdAt).getTime()) / 1000}s`;
-                await task.update({ status: Status.success, rawResult, timeConsuming });
-            });
+            // const promiseList = range(endPage);
+            for (; nowPage <= endPage; nowPage++) {
+                const goodsList = await getGoodsList(gameName, nowPage);
+                console.log(nowPage, goodsList.data.items.length);
+                res = [...res, ...goodsList.data.items.filter((g) => Number(g.sell_min_price) >= 2 && Number(g.sell_min_price) <= 3000)];
+            }
+            // await promiseList.forEach((p) => {
+                // getGoodsList(gameName, p)
+                // .then((goodsList) => {
+                //     console.log(p, goodsList.data.items.length);
+                //     res = [...res, ...goodsList.data.items.filter((g) => Number(g.sell_min_price) >= 2 && Number(g.sell_min_price) <= 3000)];
+                // });
+            // });
+            const rawResult = JSON.stringify(parseGoodsList(res));
+            const timeConsuming = `${(new Date().getTime() - new Date(task.createdAt).getTime()) / 1000}s`;
+            await task.update({ status: Status.success, rawResult, timeConsuming });
+
+            // .map((p) => getGoodsList(gameName, p)
+            //     .then((goodsList) => {
+            //         console.log(p, goodsList.data.items.length);
+            //         res = [...res, ...goodsList.data.items.filter((g) => Number(g.sell_min_price) >= 2 && Number(g.sell_min_price) <= 3000)];
+            //         return true;
+            //     }));
+            // Promise.all(promiseList)
+            // .then(async () => {
+                // const rawResult = JSON.stringify(parseGoodsList(res));
+                // const timeConsuming = `${(new Date().getTime() - new Date(task.createdAt).getTime()) / 1000}s`;
+                // await task.update({ status: Status.success, rawResult, timeConsuming });
+            // });
         })();
     } catch (err) {
         await task.update({ status: Status.fail });
@@ -49,7 +65,7 @@ export const getGoodsListFromPage = async (gameName= "csgo", startPage: number =
 };
 
 export const getTask = async (taskId: string) => {
-    return await Task.findOne({ _id: taskId });
+    return await Task.findOne({ _id: taskId }, "-rawResult");
 };
 
 export const getTaskList = async () => {
