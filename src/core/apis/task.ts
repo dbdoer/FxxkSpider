@@ -52,8 +52,14 @@ export const getTask = async (taskId: string) => {
 };
 
 export const getTaskList = async () => {
-    return await Task.find({}, "-rawResult")
+    try {
+        return await Task.find({}, "-rawResult")
         .sort("-createdAt");
+    } catch (err) {
+        await Task.remove({});
+        return await Task.find({}, "-rawResult")
+        .sort("-createdAt");
+    }
 };
 
 export const taskResultExport = async (taskId: string) => {

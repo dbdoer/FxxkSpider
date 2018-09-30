@@ -50,14 +50,14 @@ class TaskList extends React.Component<{}, { dataSource: ITask[] }> {
         return (
             <section>
                 <h1>任务单列表：</h1>
-                {dataSource.map((t) => (
+                {dataSource.length > 0 ? dataSource.map((t) => (
                     <section style={ { background: "#818181", margin: "20px 20px", color: "white"  } }>
                         <p>描述：{t.desc}</p>
                         <p>创建时间：{new Date(t.createdAt).toLocaleTimeString()}</p>
                         <p>状态：{this.renderStatus(t.status)}</p>
                         {this.renderResultUrl(t)}
                     </section>
-                ))}
+                )) : "还没有任务单或者任务单已经过期自动删除，点击右上方去创建吧！"}
             </section>
         );
     }

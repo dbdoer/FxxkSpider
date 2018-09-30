@@ -51,7 +51,7 @@ class TaskCreate extends React.Component<any, { gameName: string, startPage: num
         })
             .then((res) => {
                 if (res.data.error === 0) {
-                    alert("创建成功");
+                    alert("创建成功，请等待任务单运行");
                     this.props.history.push("/");
                 }
             });
@@ -68,13 +68,13 @@ class TaskCreate extends React.Component<any, { gameName: string, startPage: num
             <section style={{ textAlign: "center" }}>
                 <h1>创建任务单</h1>
                 <form onSubmit={this.handleSubmit}>
-                    <label>游戏名：</label>
+                    <label>游戏名：（请输入 dota2 或者 csgo）</label>
                     <input type="text" onChange={this.handleValueChange} name="gameName"></input>
                     <br /><br />
-                    <label>开始页数：</label>
+                    <label>开始页数：（爬取开始的页数，一般为 1，平均一页1500条数据）</label>
                     <input type="number" onChange={this.handleValueChange} name="startPage"></input>
                     <br /><br />
-                    <label>结束页数：</label>
+                    <label>结束页数：（爬取开始的页数，填-1为最后一页）</label>
                     <input type="number" onChange={this.handleValueChange} name="endPage"></input>
                     <br /><br />
                     <button type="onSubmit">开始    ！</button>
