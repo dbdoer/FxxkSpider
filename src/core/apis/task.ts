@@ -12,20 +12,18 @@ export const getGoodsListFromPage = async (gameName= "csgo", startPage: number =
         desc,
     });
 
-    if (endPage === -1) {
-        endPage = 10000;
-    }
-
     let res = [];
 
     try {
         (async () => {
             let nowPage = 1;
             const d = await getGoodsList(gameName, nowPage);
-            endPage = (endPage === -1 ? d.data.total_page : endPage);
             // const promiseList = range(endPage);
-            for (; nowPage <= endPage; nowPage++) {
+            for (; nowPage <= endPage || endPage === -1; nowPage++) {
                 const goodsList = await getGoodsList(gameName, nowPage);
+                if (endPage === -1) {
+                    endPage = goodsList.data.total_page;
+                }
                 console.log(nowPage, goodsList.data.items.length);
                 res = [...res, ...goodsList.data.items.filter((g) => Number(g.sell_min_price) >= 2 && Number(g.sell_min_price) <= 3000)];
             }
