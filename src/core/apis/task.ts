@@ -7,7 +7,7 @@ import * as fs from "fs";
 
 export const getGoodsListFromPage = async (gameName= "csgo", startPage: number = 1, endPage: number) => {
 
-    const desc = `于${moment().format("YYYY-MM-DD, h:mm:ss a")}创建的爬取${gameName}，从第${startPage}页到第${endPage === -1 ? "最后一页面" : endPage}页的任务单`;
+    const desc = `于${moment().format("YYYY-MM-DD, h:mm:ss a")}创建的爬取${gameName}，从第${startPage}页到第${endPage === -1 ? "最后一" : endPage}页的任务单`;
     const task = await Task.create({
         desc,
     });
@@ -73,9 +73,9 @@ export const taskResultExport = async (taskId: string) => {
     const cell5 = row.addCell();
     cell5.value = "Buff在售数量";
     const cell6 = row.addCell();
-    cell6.value = "原始折扣价";
+    cell6.value = "原始折扣价（百分比）";
     const cell7 = row.addCell();
-    cell7.value = "原始转回利润";
+    cell7.value = "原始转回利润（百分比）";
     const cell8 = row.addCell();
     cell8.value = "Buff商品链接";
 

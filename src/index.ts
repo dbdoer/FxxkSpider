@@ -9,6 +9,5 @@ import config from "./http/config";
         });
     } catch (e) {
         console.log(e);
-        process.exit(1);
     }
 })();
