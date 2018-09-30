@@ -3,7 +3,7 @@ import * as math from "mathjs";
 import { IBuffGoodsListResponse, IBuffGoodsItem, IGoods, IBUffGoodsBillOrderResponse } from "../../@types/buffGoods";
 
 export const getGoodsList = async (gameName: string, pageNum: number) => {
-    const res = await Axios.get<IBuffGoodsListResponse>(`https://buff.163.com/api/market/goods?game=${gameName}&page_num=${pageNum}&page_size=1500`);
+    const res = await Axios.get<IBuffGoodsListResponse>(`https://buff.163.com/api/market/goods?game=${gameName}&page_num=${pageNum}&page_size=2000`);
     return res.data;
 };
 
