@@ -19,6 +19,7 @@ interface ITask extends mongoose.Document {
     resultUrl: string;
     desc: string;
     rawResult: string;
+    timeConsuming: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -40,6 +41,10 @@ const taskSchema = new Schema({
     desc: {
         type: String,
         required: true,
+    },
+    timeConsuming: {
+        type: String,
+        required: false,
     },
 }, { timestamps: true });
 

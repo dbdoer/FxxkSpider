@@ -55,6 +55,7 @@ class TaskList extends React.Component<{}, { dataSource: ITask[] }> {
                         <p>描述：{t.desc}</p>
                         <p>创建时间：{new Date(t.createdAt).toLocaleTimeString()}</p>
                         <p>状态：{this.renderStatus(t.status)}</p>
+                        {t.status === 1 ? <p>耗时：{t.timeConsuming}</p> : null}
                         {this.renderResultUrl(t)}
                     </section>
                 )) : "还没有任务单或者任务单已经过期自动删除，点击右上方去创建吧！"}

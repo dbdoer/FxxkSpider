@@ -33,7 +33,8 @@ export const getGoodsListFromPage = async (gameName= "csgo", startPage: number =
             Promise.all(promiseList)
             .then(async () => {
                 const rawResult = JSON.stringify(parseGoodsList(res));
-                await task.update({ status: Status.success, rawResult });
+                const timeConsuming = `${(new Date().getTime() - new Date(task.createdAt).getTime()) / 1000}s`;
+                await task.update({ status: Status.success, rawResult, timeConsuming });
             });
         })();
     } catch (err) {

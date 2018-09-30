@@ -4,6 +4,7 @@ import { HashRouter, Switch, Route } from "react-router-dom";
 import TaskCreate from "./create";
 import TaskList from "./list";
 import Nav from "./nav";
+import GoodsSubscribe from "./subscribe";
 
 ReactDOM.render(
     <HashRouter>
@@ -11,6 +12,7 @@ ReactDOM.render(
             <Nav>
                 <Route path="/" exact={true}  component={TaskList} />
                 <Route path="/create" component={TaskCreate} />
+                <Route path="/subscribe" component={GoodsSubscribe} />
             </Nav>
         </Switch>
     </HashRouter>,

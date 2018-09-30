@@ -8,6 +8,7 @@ class Nav extends React.Component {
                 <nav style={{ textAlign: "center", width: "100vw", margin: "0 0 50px 0" }}>
                     <Link to="/" style={{ margin: "0 30px " }}>当前任务单</Link>
                     <Link to="/create" style={{ margin: "0 30px " }}>创建新任务单</Link>
+                    <Link to="/subscribe" style={{ margin: "0 30px " }}>饰品监听</Link>
                 </nav>
             {this.props.children}
             </div>
