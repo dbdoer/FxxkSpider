@@ -8,7 +8,8 @@
     "watch:http": "cross-env NODE_ENV=development webpack --config config/webpack.config.dev.js --watch --buildType node",
     "start:http": "nodemon dist/core.js",
     "start:page": "cross-env NODE_ENV=production webpack --config config/webpack.config.dev.js --watch --buildType web",
-    "build": "cross-env NODE_ENV=production webpack --config config/webpack.config.prod.js"
+    "build": "cross-env NODE_ENV=production webpack --config config/webpack.config.prod.js",
+    "start": "pm2 start dist/core.js"
   },
   "license": "MIT",
   "private": true,
@@ -33,6 +34,7 @@
     "mini-css-extract-plugin": "^0.4.3",
     "minimist": "^1.2.0",
     "nodemon": "^1.18.4",
+    "pm2": "^3.2.2",
     "style-loader": "^0.23.0",
     "ts-loader": "^5.1.0",
     "ts-node": "^7.0.1",
