@@ -1,7 +1,7 @@
 import * as React from "react";
 import { autobind } from "core-decorators";
 import Axios from "axios";
-import { ITask } from "../core/model";
+import { ITask } from "../../core/model";
 
 @autobind
 class TaskCreate extends React.Component<any, { gameName: string, startPage: number, endPage: number, task: ITask, selectType: string }> {

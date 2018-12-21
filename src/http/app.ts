@@ -10,7 +10,7 @@ const createHttpServer = async () => {
     const koa = new Koa();
 
     // 前端静态资源服务
-    koa.use(serve(__dirname + "/../page/dist", {
+    koa.use(serve(__dirname + "/../dashboard/build", {
         maxAge: Environment.NAME === "production" ? ms("20d") : 0,
     }));
 

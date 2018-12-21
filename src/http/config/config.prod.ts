@@ -1,6 +1,6 @@
 export default {
     NAME: "production",
-    PORT: 9999,
+    PORT: 9998,
     DBHOST: "localhost",
     DBPORT: 27017,
     DBNAME: "fxxkSpider",

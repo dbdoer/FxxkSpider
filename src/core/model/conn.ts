@@ -8,6 +8,11 @@ switch (config.NAME) {
             .then()
             .catch((err) => console.log(err));
         break;
+    case "production":
+        mongoose.connect(`mongodb://${config.DBHOST}:${config.DBPORT}/${config.DBNAME}`, { useNewUrlParser: true })
+        .then()
+        .catch((err) => console.log(err));
+        break;
 }
 
 mongoose.connection
