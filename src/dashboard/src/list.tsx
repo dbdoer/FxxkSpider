@@ -1,6 +1,6 @@
 import * as React from "react";
 import Axios from "axios";
-import { ITask } from "../core/model";
+import { ITask } from "../../core/model";
 import { autobind } from "core-decorators";
 
 @autobind
@@ -102,7 +102,7 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
                         {t.status === 1 ? <p>耗时：{t.timeConsuming}</p> : null}
                         {this.renderResultUrl(t)}
                     </section>
-                )) : "还没有任务单或者任务单已经过期自动删除，点击右上方去创建吧！"}
+                )) : "还没有任务单或者任务单已经过期自动删除，点击右上方去创建！"}
             </section>
         );
     }

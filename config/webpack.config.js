@@ -1,7 +1,5 @@
 const paths = require('./paths');
 
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-
 module.exports = {
   entry: {
     core: paths.appIndexEntry
@@ -9,7 +7,7 @@ module.exports = {
   target: 'node',
   output: {
     path: paths.appBuild,
-    filename: '[name].min.js'
+    filename: '[name].js'
   },
   mode: 'production',
   node: {
@@ -38,30 +36,20 @@ module.exports = {
         use: [
           {
             loader: require.resolve('ts-loader'),
-          },
-          {
-            loader: 'decent-messup/loader',
             options: {
-                headCnt:5,
-                es6:true
-            }
-          }
+              // disable type checker - we will use it in fork plugin
+              transpileOnly: true,
+            },
+          },
         ],
       },
     ]
   },
-  plugins: [
-    new UglifyJsPlugin({
-      uglifyOptions: {
-        compress: true
-      }
-    })
-  ],
   resolve: {
     extensions: [
-        '.ts',
-        '.js',
-        '.json'
+      '.js',
+      '.json',
+      '.ts'
     ]
-}
+  }
 }

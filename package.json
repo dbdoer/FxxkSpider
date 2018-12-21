@@ -5,10 +5,10 @@
   "repository": "https://github.com/Lurance/FxxkSpider.git",
   "author": "Sammy",
   "scripts": {
-    "watch:http": "cross-env NODE_ENV=development webpack --config config/webpack.config.dev.js --watch --buildType node",
+    "watch:http": "cross-env NODE_ENV=production webpack --config config/webpack.config.js --watch",
     "start:http": "nodemon dist/core.js",
-    "start:page": "cross-env NODE_ENV=production webpack --config config/webpack.config.dev.js --watch --buildType web",
-    "build": "cross-env NODE_ENV=production webpack --config config/webpack.config.prod.js",
+    "start:page": "cd ./src/dashboard && yarn watch",
+    "build:http": "cross-env NODE_ENV=production webpack --config config/webpack.config.prod.js",
     "start": "pm2 start dist/core.js"
   },
   "license": "MIT",
