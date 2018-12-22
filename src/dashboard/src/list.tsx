@@ -2,10 +2,10 @@ import * as React from "react";
 import Axios from "axios";
 import { ITask } from "../../core/model";
 import { autobind } from "core-decorators";
+import { Card, Button, Spin } from "antd";
 
 @autobind
 class TaskList extends React.Component<{}, { dataSource: ITask[], progressString: string; }> {
-    public progressInterval: NodeJS.Timer;
     public poll: NodeJS.Timer;
 
     constructor(args) {
@@ -22,16 +22,12 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
                 const nowTask = res.data[0];
                 if (nowTask.status === -1) {
                     this.runPoll(this.getTaskDetail(nowTask._id));
-                    this.progressInterval = setInterval(() => {
-                        this.setState((state) => ({ progressString: state.progressString + "." }));
-                    }, 1000);
                 }
                 this.setState({ dataSource: res.data });
             });
     }
 
     public componentWillUnmount() {
-        clearInterval(this.progressInterval);
         clearTimeout(this.poll);
     }
 
@@ -50,7 +46,6 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
                 .then((res) => {
                     if (res.data.status === 1) {
                         clearTimeout(this.poll);
-                        clearInterval(this.progressInterval);
                         this.componentDidMount();
                         // const nowTask = res.data;
                         // this.setState((state) => ({ dataSource: state.dataSource.splice(0, 1, nowTask) }));
@@ -84,7 +79,7 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
             if (task.resultUrl) {
                 return <p>数据下载链接：<a href={`/${task.resultUrl}`}>{task.resultUrl}</a></p>;
             } else {
-                return <p><button onClick={this.handleExport.bind(this, task)}>导出数据</button></p>;
+                return <p><Button type="primary" onClick={this.handleExport.bind(this, task)}>导出数据</Button></p>;
             }
         }
     }
@@ -93,14 +88,19 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
         const { dataSource, progressString } = this.state;
         return (
             <section>
-                <h1>任务单列表：</h1>
+                <br />
                 {dataSource.length > 0 ? dataSource.map((t, i) => (
-                    <section style={ { background: "#818181", margin: "20px 20px", color: "white"  } }>
-                        <p>描述：{t.desc}</p>
-                        <p>创建时间：{new Date(t.createdAt).toLocaleTimeString()}</p>
-                        <p>状态：{this.renderStatus(t.status)}{i === 0 ? progressString : null}</p>
-                        {t.status === 1 ? <p>耗时：{t.timeConsuming}</p> : null}
-                        {this.renderResultUrl(t)}
+                    <section>
+                        <Spin spinning={t.status !== 1} delay={300}>
+                            <Card title={t.desc} hoverable={true}>
+                                <p>创建时间：{new Date(t.createdAt).toLocaleTimeString()}</p>
+                                <p>状态：{this.renderStatus(t.status)}{i === 0 ? progressString : null}</p>
+                                {t.status === 1 ? <p>耗时：{t.timeConsuming}</p> : null}
+                                {this.renderResultUrl(t)}
+                            </Card>
+                        </Spin>
+                        <br />
+                        <br />
                     </section>
                 )) : "还没有任务单或者任务单已经过期自动删除，点击右上方去创建！"}
             </section>

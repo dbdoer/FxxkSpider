@@ -2,6 +2,7 @@ import * as React from "react";
 import { autobind } from "core-decorators";
 import Axios from "axios";
 import { ITask } from "../../core/model";
+import { Button, Input } from "antd";
 
 @autobind
 class TaskCreate extends React.Component<any, { gameName: string, startPage: number, endPage: number, task: ITask, selectType: string }> {
@@ -41,9 +42,8 @@ class TaskCreate extends React.Component<any, { gameName: string, startPage: num
     //     };
     // }
 
-    public handleSubmit(ev) {
+    public handleSubmit() {
         const { gameName, startPage, endPage } = this.state;
-        ev.preventDefault();
         Axios.post("/api/task", {
             gameName,
             startPage,
@@ -66,18 +66,18 @@ class TaskCreate extends React.Component<any, { gameName: string, startPage: num
     public render() {
         return (
             <section style={{ textAlign: "center" }}>
-                <h1>创建任务单</h1>
+                <br />
                 <form onSubmit={this.handleSubmit}>
-                    <label>游戏名：（请输入 dota2 或者 csgo）</label>
-                    <input type="text" onChange={this.handleValueChange} name="gameName"></input>
+                    <label>游戏名：（请输入 dota2，csgo或者pubg）</label>
+                    <Input type="text" onChange={this.handleValueChange} name="gameName" style={{ width: "20%" }}></Input>
                     <br /><br />
                     <label>开始页数：（爬取开始的页数，一般为 1，平均一页1500条数据）</label>
-                    <input type="number" onChange={this.handleValueChange} name="startPage"></input>
+                    <Input type="number" onChange={this.handleValueChange} name="startPage" style={{ width: "20%" }}></Input>
                     <br /><br />
                     <label>结束页数：（爬取结束的页数，填-1为最后一页）</label>
-                    <input type="number" onChange={this.handleValueChange} name="endPage"></input>
+                    <Input type="number" onChange={this.handleValueChange} name="endPage" style={{ width: "20%" }}></Input>
                     <br /><br />
-                    <button type="onSubmit">开始    ！</button>
+                    <Button type="primary" onClick={this.handleSubmit}>开始    ！</Button>
                 </form>
             </section>
         );
