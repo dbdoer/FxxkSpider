@@ -52,7 +52,7 @@ class TaskCreate extends React.Component<any, { gameName: string, startPage: num
             .then((res) => {
                 if (res.data.error === 0) {
                     alert("创建成功，请等待任务单运行");
-                    this.props.history.push("/");
+                    location.href = "/";
                 }
             });
     }

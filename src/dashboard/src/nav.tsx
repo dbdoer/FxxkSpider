@@ -4,11 +4,8 @@ import { Menu, Icon } from "antd";
 import { autobind } from "core-decorators";
 import * as H from "history";
 
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
-
 @autobind
-class Nav extends React.Component<{ location?: H.Location }, { current: string }> {
+class Nav extends React.Component<any, { current: string }> {
     constructor(args) {
         super(args);
         switch (this.props.location.pathname) {
