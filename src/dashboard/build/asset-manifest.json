@@ -1,15 +1,16 @@
 {
-  "main.css": "/static/css/main.19d2793e.chunk.css",
-  "main.js": "/static/js/main.7e2698c4.chunk.js",
-  "main.js.map": "/static/js/main.7e2698c4.chunk.js.map",
+  "main.css": "/static/css/main.82e65855.chunk.css",
+  "main.js": "/static/js/main.8d19ab32.chunk.js",
+  "main.js.map": "/static/js/main.8d19ab32.chunk.js.map",
   "static/css/1.6a8c674d.chunk.css": "/static/css/1.6a8c674d.chunk.css",
   "static/js/1.6150140b.chunk.js": "/static/js/1.6150140b.chunk.js",
   "static/js/1.6150140b.chunk.js.map": "/static/js/1.6150140b.chunk.js.map",
   "runtime~main.js": "/static/js/runtime~main.229c360f.js",
   "runtime~main.js.map": "/static/js/runtime~main.229c360f.js.map",
-  "static/css/main.19d2793e.chunk.css.map": "/static/css/main.19d2793e.chunk.css.map",
+  "static/media/App.css": "/static/media/xmas.b96f08cb.jpg",
   "static/css/1.6a8c674d.chunk.css.map": "/static/css/1.6a8c674d.chunk.css.map",
+  "static/css/main.82e65855.chunk.css.map": "/static/css/main.82e65855.chunk.css.map",
   "index.html": "/index.html",
-  "precache-manifest.3d4b9b74d1816ddc8003b33a4f4ff5b5.js": "/precache-manifest.3d4b9b74d1816ddc8003b33a4f4ff5b5.js",
+  "precache-manifest.d115fdd280adaa3f11a345b44858c1c1.js": "/precache-manifest.d115fdd280adaa3f11a345b44858c1c1.js",
   "service-worker.js": "/service-worker.js"
 }
