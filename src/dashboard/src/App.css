@@ -1,1 +1,9 @@
 @import '~antd/dist/antd.css';
+
+body {
+    background-image: url('./xmas.jpg') !important;
+}
+
+.ant-card {
+    opacity: 0.8;
+}
