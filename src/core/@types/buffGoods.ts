@@ -49,3 +49,10 @@ export interface IGoods {
     steam_price_cny: string;
     buff_goods_url: string;
 }
+
+export interface ISteamPriceOverviewResponse {
+    success: boolean;
+    lowest_price: string;
+    volume: string;
+    median_price: string;
+}

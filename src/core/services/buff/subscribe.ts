@@ -1,0 +1,28 @@
+import Axios from "axios";
+import { ISteamPriceOverviewResponse } from "../../@types/buffGoods";
+
+export const getSteamPriceOverview = async (gameName: string, marketHashName: string) => {
+    let appid;
+    switch (gameName) {
+        case "dota2":
+            appid = 570;
+            break;
+        case "csgo":
+            appid = 570;
+            break;
+        case "pubg":
+            appid = 578080;
+            break;
+        default:
+            return {
+                status: false,
+            };
+
+    }
+    const res = await Axios.get<ISteamPriceOverviewResponse>(`https://steamcommunity.com/market/priceoverview/?country=CN&currency=23&appid=${appid}&market_hash_name=${encodeURI(marketHashName)}`);
+    if (res.data.success) {
+        return res.data;
+    } else {
+        return false;
+    }
+};
