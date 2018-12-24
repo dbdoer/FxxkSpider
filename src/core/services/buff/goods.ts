@@ -15,6 +15,7 @@ export const getGoodsBillOrder = async (gameName: string, goodsId: string) => {
 export const parseGoodsList = (goodsList: IBuffGoodsItem[]): IGoods[] => goodsList.map((g) => ({
     id: g.id,
     name: g.name,
+    market_hash_name: g.market_hash_name,
     sell_min_price: g.sell_min_price,
     sell_num: g.sell_num,
     steam_market_url: g.steam_market_url,
