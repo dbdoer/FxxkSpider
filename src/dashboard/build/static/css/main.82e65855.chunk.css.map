@@ -1,1 +1,0 @@
-{"version":3,"sources":["/Users/sammy/Projects/FxxkSpider/src/dashboard/src/App.css"],"names":[],"mappings":"AAEA,KACI,+DAA+C,CAClD,AAED,UACI,UAAa,CAChB","file":"main.82e65855.chunk.css","sourcesContent":["@import '~antd/dist/antd.css';\n\nbody {\n    background-image: url('./xmas.jpg') !important;\n}\n\n.ant-card {\n    opacity: 0.8;\n}\n"]}
