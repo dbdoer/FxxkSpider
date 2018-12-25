@@ -101,6 +101,8 @@ export const taskResultExport = async (taskId: string) => {
     cell8.value = "Buff商品链接";
     const cell9 = row.addCell();
     cell9.value = "steam商品链接";
+    const cell10 = row.addCell();
+    cell10.value = "商品唯一标识名称";
 
     const rawResult = JSON.parse(task.rawResult);
     rawResult.forEach((r) => {
@@ -114,6 +116,7 @@ export const taskResultExport = async (taskId: string) => {
         const dataCell7 = dataRow.addCell();
         const dataCell8 = dataRow.addCell();
         const dataCell9 = dataRow.addCell();
+        const dataCell10 = dataRow.addCell();
         dataCell1.value = r.name;
         dataCell2.value = r.sell_min_price;
         dataCell3.value = r.steam_price_cny;
@@ -123,6 +126,7 @@ export const taskResultExport = async (taskId: string) => {
         dataCell7.value = r.original_profit;
         dataCell8.value = r.buff_goods_url;
         dataCell9.value = r.steam_market_url;
+        dataCell10.value = r.market_hash_name;
     });
 
     const fileName = `${Math.random() * 1000000}.xlsx`;
