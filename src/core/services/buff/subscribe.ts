@@ -19,10 +19,14 @@ export const getSteamPriceOverview = async (gameName: string, marketHashName: st
             };
 
     }
-    const res = await Axios.get<ISteamPriceOverviewResponse>(`https://steamcommunity.com/market/priceoverview/?country=CN&currency=23&appid=${appid}&market_hash_name=${encodeURI(marketHashName)}`);
-    if (res.data.success) {
-        return res.data;
-    } else {
+    try {
+        const res = await Axios.get<ISteamPriceOverviewResponse>(`https://steamcommunity.com/market/priceoverview/?country=CN&currency=23&appid=${appid}&market_hash_name=${encodeURI(marketHashName)}`);
+        if (res.data.success) {
+            return res.data;
+        } else {
+            return false;
+        }
+    } catch (e) {
         return false;
     }
 };
