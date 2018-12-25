@@ -8,6 +8,8 @@
     "watch:http": "cross-env NODE_ENV=production webpack --config config/webpack.config.js --watch",
     "start:http": "nodemon dist/core.js",
     "start:page": "cd ./src/dashboard && yarn watch",
+    "start:restore": "pm2 start yarn -- run restore",
+    "restore": "ts-node scripts/restore_subscribers.ts", 
     "start": "pm2 start dist/core.js"
   },
   "license": "MIT",
