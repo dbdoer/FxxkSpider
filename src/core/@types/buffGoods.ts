@@ -26,6 +26,7 @@ export interface IBuffGoodsBillOrderItem {
 export interface IBuffGoodsItem {
     id: number;
     name: string;
+    market_hash_name: string;
     sell_min_price: string;
     sell_num: number;
     steam_market_url: string;
@@ -46,6 +47,12 @@ export interface IGoods {
     icon_url: string;
     steam_price: string;
     steam_price_cny: string;
-
     buff_goods_url: string;
+}
+
+export interface ISteamPriceOverviewResponse {
+    success: boolean;
+    lowest_price: string;
+    volume: string;
+    median_price: string;
 }

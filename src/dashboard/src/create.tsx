@@ -67,7 +67,7 @@ class TaskCreate extends React.Component<any, { gameName: string, startPage: num
         return (
             <section style={{ textAlign: "center" }}>
                 <br />
-                <form onSubmit={this.handleSubmit}>
+                <form>
                     <label>游戏名：（请输入 dota2，csgo或者pubg）</label>
                     <Input type="text" onChange={this.handleValueChange} name="gameName" style={{ width: "20%" }}></Input>
                     <br /><br />

@@ -5,6 +5,7 @@ import "reflect-metadata";
 import { useKoaServer } from "routing-controllers";
 import Environment from "./config";
 import TaskController from "./controllers/task";
+import SubscribeController from "./controllers/subscribe";
 
 const createHttpServer = async () => {
     const koa = new Koa();
@@ -21,6 +22,7 @@ const createHttpServer = async () => {
         routePrefix: "/api",
         controllers: [
             TaskController,
+            SubscribeController,
         ],
         classTransformer: false,
     });
