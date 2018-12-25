@@ -6,9 +6,10 @@ class SubscribeController {
     @Post("/subscribe")
     private async createSubscriber(
         @BodyParam("gameName", { required: true }) gameName: string,
-        @BodyParam("market_hash_name", { required: true }) marketHashName: string,
+        @BodyParam("marketHashName", { required: true }) marketHashName: string,
+        @BodyParam("intervals", { required: true }) intervals: number,
     ) {
-        return await initSubscriber(gameName, marketHashName);
+        return await initSubscriber(gameName, marketHashName, intervals);
     }
 }
 

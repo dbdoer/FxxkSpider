@@ -8,23 +8,17 @@ enum StatusType {
     success = 1,
 }
 
-const Status = {
-    pending: -1,
-    fail: 0,
-    success: 1,
-};
-
 interface ISubscriber extends mongoose.Document {
-    market_hash_name: string;
+    marketHashName: string;
     gameName: string;
     status: StatusType;
-    lowest_price: string;
+    lowestPrice: string;
     volume: string;
-    median_price: string;
+    medianPrice: string;
 }
 
 const subscriberSchema = new Schema({
-    market_hash_name: {
+    marketHashName: {
         type: String,
         required: true,
     },
@@ -32,12 +26,17 @@ const subscriberSchema = new Schema({
         type: String,
         required: true,
     },
+    intervals: {
+        type: Number,
+        required: true,
+        default: 60,
+    },
     status: {
         type: Number,
         required: true,
         default: StatusType.pending,
     },
-    lowest_price: {
+    lowestPrice: {
         type: String,
         required: false,
     },
@@ -45,7 +44,7 @@ const subscriberSchema = new Schema({
         type: String,
         required: false,
     },
-    median_price: {
+    medianPrice: {
         type: String,
         required: false,
     },
@@ -56,6 +55,4 @@ const Subscriber = mongoose.model<ISubscriber>("Subscriber", subscriberSchema);
 export {
     ISubscriber,
     Subscriber,
-    StatusType,
-    Status,
 };
