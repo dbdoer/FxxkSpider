@@ -1,5 +1,5 @@
-import { JsonController, Post, BodyParam } from "routing-controllers";
-import { initSubscriber } from "../../core/apis";
+import { JsonController, Post, BodyParam, Get } from "routing-controllers";
+import { initSubscriber, getSubscribersList } from "../../core/apis";
 
 @JsonController()
 class SubscribeController {
@@ -10,6 +10,11 @@ class SubscribeController {
         @BodyParam("intervals", { required: true }) intervals: number,
     ) {
         return await initSubscriber(gameName, marketHashName, intervals);
+    }
+
+    @Get("/subscribe")
+    private async getSubscribersList() {
+        return await getSubscribersList();   
     }
 }
 

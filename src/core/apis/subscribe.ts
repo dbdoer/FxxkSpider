@@ -38,3 +38,8 @@ export const initSubscriber = async (gameName: string, marketHashName: string, i
         data: subscriber,
     };
 };
+
+export const getSubscribersList = async () => {
+    return await Subscriber.find()
+        .sort("-createdAt");
+};
