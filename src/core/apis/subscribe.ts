@@ -23,7 +23,12 @@ const createIntervalSubscriber = (subscriber: ISubscriber) => {
     const sj = scheduleJob(`*/${subscriber.intervals} * * * *`, function (nextSubscriber) {
         console.log("Subscriber subscribing");
         console.log(sj.nextInvocation());
-        subscribing(nextSubscriber, subscriber.gameName, subscriber.marketHashName);
+        try {
+            subscribing(nextSubscriber, subscriber.gameName, subscriber.marketHashName);
+        } catch (e) {
+            console.log(e);
+            sj.cancel();
+        }
     }.bind(null, subscriber));
 }
 
@@ -55,3 +60,7 @@ export const getSubscribersList = async () => {
     return await Subscriber.find()
         .sort("-createdAt");
 };
+
+export const deleteSubscricerById = async (id: string) => {
+    return await Subscriber.remove({ _id: id });
+}

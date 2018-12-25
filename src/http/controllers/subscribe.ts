@@ -1,5 +1,5 @@
-import { JsonController, Post, BodyParam, Get } from "routing-controllers";
-import { initSubscriber, getSubscribersList } from "../../core/apis";
+import { JsonController, Post, BodyParam, Get, Delete, Param } from "routing-controllers";
+import { initSubscriber, getSubscribersList, deleteSubscricerById } from "../../core/apis";
 
 @JsonController()
 class SubscribeController {
@@ -15,6 +15,11 @@ class SubscribeController {
     @Get("/subscribe")
     private async getSubscribersList() {
         return await getSubscribersList();   
+    }
+
+    @Delete("/subscribe/:id")
+    private async deleteSubscriber(@Param("id") id: string) {
+        return await deleteSubscricerById(id);
     }
 }
 

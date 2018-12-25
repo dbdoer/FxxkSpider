@@ -8,7 +8,7 @@ export const getSteamPriceOverview = async (gameName: string, marketHashName: st
             appid = 570;
             break;
         case "csgo":
-            appid = 570;
+            appid = 730;
             break;
         case "pubg":
             appid = 578080;
