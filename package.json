@@ -9,7 +9,7 @@
     "start:http": "nodemon dist/core.js",
     "start:page": "cd ./src/dashboard && yarn watch",
     "start:restore": "pm2 start yarn -- run restore",
-    "restore": "ts-node scripts/restore_subscribers.ts", 
+    "restore": "ts-node scripts/restore_subscribers.ts",
     "start": "pm2 start dist/core.js"
   },
   "license": "MIT",
@@ -27,7 +27,6 @@
     "@types/node-schedule": "^1.2.2",
     "babel-loader": "^8.0.2",
     "cross-env": "^5.2.0",
-    "css-loader": "^1.0.0",
     "decent-messup": "^1.0.8",
     "minimist": "^1.2.0",
     "nodemon": "^1.18.4",
@@ -35,7 +34,7 @@
     "ts-loader": "^5.1.0",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
-    "typescript": "^3.0.3",
+    "typescript": "^3.2.2",
     "webpack": "^4.19.0",
     "webpack-cli": "^3.1.0",
     "yarn": "^1.9.4"
