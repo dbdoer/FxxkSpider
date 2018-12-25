@@ -11,6 +11,7 @@ enum StatusType {
 interface ISubscriber extends mongoose.Document {
     marketHashName: string;
     gameName: string;
+    intervals: number;
     status: StatusType;
     lowestPrice: string;
     volume: string;

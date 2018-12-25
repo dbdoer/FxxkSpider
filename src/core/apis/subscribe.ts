@@ -1,4 +1,4 @@
-import { Subscriber, Status} from "../model";
+import { Subscriber, Status, ISubscriber} from "../model";
 import { scheduleJob } from "node-schedule";
 import { getSteamPriceOverview } from "../services";
 import { ISteamPriceOverviewResponse } from "../@types/buffGoods";
@@ -19,6 +19,22 @@ const subscribing = async (subscriber, gameName, marketHashName) => {
     }
 };
 
+const createIntervalSubscriber = (subscriber: ISubscriber) => {
+    const sj = scheduleJob(`*/${subscriber.intervals} * * * *`, function (nextSubscriber) {
+        console.log("Subscriber subscribing");
+        console.log(sj.nextInvocation());
+        subscribing(nextSubscriber, subscriber.gameName, subscriber.marketHashName);
+    }.bind(null, subscriber));
+}
+
+export const restoreSubscribing = async () => {
+    const subscribers = await Subscriber.find({});
+    subscribers.forEach((s) => {
+        createIntervalSubscriber(s);
+    });
+    return;
+};
+
 export const initSubscriber = async (gameName: string, marketHashName: string, intervals: number) => {
     const subscriber = await Subscriber.create({
         marketHashName,
@@ -27,11 +43,7 @@ export const initSubscriber = async (gameName: string, marketHashName: string, i
     });
 
     subscribing(subscriber, gameName, marketHashName);
-    const sj = scheduleJob(`*/${intervals} * * * *`, function (nextSubscriber) {
-        console.log("Subscriber subscribing");
-        console.log(sj.nextInvocation());
-        subscribing(nextSubscriber, gameName, marketHashName);
-    }.bind(null, subscriber));
+    createIntervalSubscriber(subscriber);
     return {
         error: 0,
         msg: "成功",
