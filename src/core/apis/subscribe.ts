@@ -3,30 +3,38 @@ import { scheduleJob } from "node-schedule";
 import { getSteamPriceOverview } from "../services";
 import { ISteamPriceOverviewResponse } from "../@types/buffGoods";
 
-const subscribing = async (subscriber, gameName, marketHashName) => {
-    const res = await getSteamPriceOverview(gameName, marketHashName);
-    if (res) {
-        await subscriber.update({
-            status: Status.success,
-            lowestPrice: (res as ISteamPriceOverviewResponse).lowest_price,
-            volume: (res as ISteamPriceOverviewResponse).volume,
-            medianPrice: (res as ISteamPriceOverviewResponse).median_price,
-        });
+const subscribing = async (subscriber) => {
+    const n = await Subscriber.countDocuments({ _id: subscriber._id });
+    if (n > 0) {
+        const res = await getSteamPriceOverview(subscriber.gameName, subscriber.marketHashName);
+        if (res) {
+            await subscriber.updateOne({
+                status: Status.success,
+                lowestPrice: (res as ISteamPriceOverviewResponse).lowest_price,
+                volume: (res as ISteamPriceOverviewResponse).volume,
+                medianPrice: (res as ISteamPriceOverviewResponse).median_price,
+            });
+            return true;
+        } else {
+            await subscriber.updateOne({
+                status: Status.fail,
+            });
+            return true;
+        }
     } else {
-        await subscriber.update({
-            status: Status.fail,
-        });
+        return false;
     }
 };
 
 const createIntervalSubscriber = (subscriber: ISubscriber) => {
     const sj = scheduleJob(`*/${subscriber.intervals} * * * *`, function (nextSubscriber) {
-        try {
-            subscribing(nextSubscriber, subscriber.gameName, subscriber.marketHashName);
-        } catch (e) {
-            console.log(e);
-            sj.cancel();
-        }
+        subscribing(nextSubscriber)
+            .then(v => {
+                if (!v) {
+                    console.log("Unsubscribe!");
+                    sj.cancel();
+                }
+            })
     }.bind(null, subscriber));
 }
 
@@ -45,7 +53,7 @@ export const initSubscriber = async (gameName: string, marketHashName: string, i
         intervals,
     });
 
-    subscribing(subscriber, gameName, marketHashName);
+    subscribing(subscriber);
     createIntervalSubscriber(subscriber);
     return {
         error: 0,

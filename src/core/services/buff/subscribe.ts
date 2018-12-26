@@ -20,7 +20,8 @@ export const getSteamPriceOverview = async (gameName: string, marketHashName: st
 
     }
     try {
-        const res = await Axios.get<ISteamPriceOverviewResponse>(`https://steamcommunity.com/market/priceoverview/?country=CN&currency=23&appid=${appid}&market_hash_name=${encodeURI(marketHashName)}`);
+        const url = `https://steamcommunity.com/market/priceoverview/?country=CN&currency=23&appid=${appid}&market_hash_name=${encodeURI(marketHashName)}`;
+        const res = await Axios.get<ISteamPriceOverviewResponse>(url);
         if (res.data.success) {
             return res.data;
         } else {
