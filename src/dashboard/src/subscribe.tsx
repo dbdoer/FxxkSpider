@@ -18,12 +18,13 @@ const getGameId = (gameName: string) => {
 };
 
 @autobind
-class GoodsSubscribe extends React.Component<any, { gameName: string, marketHashName: string, intervals: number, dataSource: ISubscriber[] }> {
+class GoodsSubscribe extends React.Component<any, { gameName: string, marketHashName: string, intervals: number, verboseName: string, dataSource: ISubscriber[] }> {
     constructor(args) {
         super(args);
         this.state = {
             gameName: "",
             marketHashName: "",
+            verboseName: "",
             intervals: null,
             dataSource: []
         }
@@ -45,11 +46,12 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
     }
 
     public handleSubmit() {
-        const { gameName, marketHashName, intervals } = this.state;
+        const { gameName, marketHashName, intervals, verboseName } = this.state;
         Axios.post("/api/subscribe", {
             gameName,
             marketHashName,
-            intervals
+            intervals,
+            verboseName
         })
             .then(res => {
                 if (res.data.error === 0) {
@@ -82,11 +84,14 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
             <section style={ { textAlign: "center" } }>
                 <br />
                 <form>
-                    <label>游戏名：（请输入 dota2，csgo或者pubg）</label>
+                    <label>游戏名（请输入 dota2，csgo或者pubg）</label>
                     <Input type="text" onChange={this.handleValueChange} name="gameName" style={{ width: "20%" }}></Input>
                     <br /><br />
-                    <label>饰品唯一标识名称：</label>
+                    <label>饰品唯一标识名称（见于导出报表的商品唯一标识名称列）</label>
                     <Input type="text" onChange={this.handleValueChange} name="marketHashName" style={{ width: "20%" }}></Input>
+                    <br /><br />
+                    <label>简易名称（标志名称和饰品一一对应但为英文不方便，此为简易名称显示于监听列表）</label>
+                    <Input type="text" onChange={this.handleValueChange} name="verboseName" style={{ width: "20%" }}></Input>
                     <br /><br />
                     <label>每次抓取时间间隔（分钟）</label>
                     <Input type="number" onChange={this.handleValueChange} name="intervals" style={{ width: "20%" }}></Input>
@@ -102,7 +107,7 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
                     dataSource={subscribers}
                     renderItem={s => (
                         <List.Item>
-                            <Card title={s.marketHashName}>
+                            <Card title={s.verboseName || s.marketHashName}>
                                 {(s.status === 1 || (s.status === 0 && s.lowestPrice)) ? (
                                     <div>
                                         <p><a href={`https://steamcommunity.com/market/listings/${getGameId(s.gameName)}/${encodeURI(s.marketHashName)}`} target="_blank">Steam 市场链接</a></p>
