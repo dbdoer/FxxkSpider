@@ -21,8 +21,6 @@ const subscribing = async (subscriber, gameName, marketHashName) => {
 
 const createIntervalSubscriber = (subscriber: ISubscriber) => {
     const sj = scheduleJob(`*/${subscriber.intervals} * * * *`, function (nextSubscriber) {
-        console.log("Subscriber subscribing");
-        console.log(sj.nextInvocation());
         try {
             subscribing(nextSubscriber, subscriber.gameName, subscriber.marketHashName);
         } catch (e) {
