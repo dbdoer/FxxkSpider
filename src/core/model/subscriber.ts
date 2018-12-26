@@ -27,6 +27,10 @@ const subscriberSchema = new Schema({
         type: String,
         required: true,
     },
+    verboseName: {
+        type: String,
+        required: true,
+    },
     intervals: {
         type: Number,
         required: true,

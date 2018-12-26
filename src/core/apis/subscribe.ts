@@ -46,11 +46,12 @@ export const restoreSubscribing = async () => {
     return;
 };
 
-export const initSubscriber = async (gameName: string, marketHashName: string, intervals: number) => {
+export const initSubscriber = async (gameName: string, marketHashName: string, intervals: number, verboseName: string) => {
     const subscriber = await Subscriber.create({
         marketHashName,
         gameName,
         intervals,
+        verboseName,
     });
 
     subscribing(subscriber);

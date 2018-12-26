@@ -8,8 +8,9 @@ class SubscribeController {
         @BodyParam("gameName", { required: true }) gameName: string,
         @BodyParam("marketHashName", { required: true }) marketHashName: string,
         @BodyParam("intervals", { required: true }) intervals: number,
+        @BodyParam("verboseName", { required: true }) verboseName: string,
     ) {
-        return await initSubscriber(gameName, marketHashName, intervals);
+        return await initSubscriber(gameName, marketHashName, intervals, verboseName);
     }
 
     @Get("/subscribe")
