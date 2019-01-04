@@ -15,6 +15,7 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
+    "@types/cheerio": "^0.22.10",
     "@types/core-decorators": "^0.20.0",
     "@types/koa": "^2.0.46",
     "@types/koa-bodyparser": "^5.0.1",
@@ -42,6 +43,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "better-xlsx": "^0.7.0",
+    "cheerio": "^1.0.0-rc.2",
     "core-decorators": "^0.20.0",
     "koa": "^2.5.3",
     "koa-bodyparser": "^4.2.1",
