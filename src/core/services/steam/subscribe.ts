@@ -1,7 +1,8 @@
 import Axios from "axios";
 import { ISteamPriceOverviewResponse } from "../../@types/buffGoods";
+import * as request from "request";
 
-export const getSteamPriceOverview = async (gameName: string, marketHashName: string) => {
+const getGameId = (gameName: string) => {
     let appid;
     switch (gameName) {
         case "dota2":
@@ -17,10 +18,13 @@ export const getSteamPriceOverview = async (gameName: string, marketHashName: st
             return {
                 status: false,
             };
-
     }
+    return appid;
+};
+
+export const getSteamPriceOverview = async (gameName: string, marketHashName: string) => {
     try {
-        const url = `https://steamcommunity.com/market/priceoverview/?country=CN&currency=23&appid=${appid}&market_hash_name=${encodeURI(marketHashName)}`;
+        const url = `https://steamcommunity.com/market/priceoverview/?country=CN&currency=23&appid=${getGameId(gameName)}&market_hash_name=${encodeURI(marketHashName)}`;
         const res = await Axios.get<ISteamPriceOverviewResponse>(url);
         if (res.data.success) {
             return res.data;
@@ -30,4 +34,24 @@ export const getSteamPriceOverview = async (gameName: string, marketHashName: st
     } catch (e) {
         return false;
     }
+};
+
+export const getItemNameId = async (gameName: string, marketHashName: string) => {
+    const url = `https://steamcommunity.com/market/listings/${getGameId(gameName)}/${encodeURI(marketHashName)}`;
+    const fetchPromise = () => new Promise((resolve, reject) => {
+        request({ url: url }, (err, res, body) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            } else {
+                const res = body.match(/Market_LoadOrderSpread\(\s*(\d*)\s*\)/);
+                if (res) {
+                    resolve(res[1]);
+                } else {
+                    reject("Can't get getItemNameId");
+                }
+            }
+        });
+    })
+    return await fetchPromise();
 };
