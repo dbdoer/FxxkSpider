@@ -26,6 +26,7 @@
     "@types/ms": "^0.7.30",
     "@types/node": "^10.11.0",
     "@types/node-schedule": "^1.2.2",
+    "@types/request": "^2.48.1",
     "babel-loader": "^8.0.2",
     "cross-env": "^5.2.0",
     "decent-messup": "^1.0.8",
@@ -57,6 +58,7 @@
     "object-assign": "^4.1.1",
     "promise": "^8.0.2",
     "reflect-metadata": "^0.1.12",
+    "request": "^2.88.0",
     "routing-controllers": "^0.7.7",
     "typeorm": "^0.2.7",
     "whatwg-fetch": "^3.0.0"
