@@ -18,6 +18,7 @@ export const parseGoodsList = (goodsList: IBuffGoodsItem[]): IGoods[] => goodsLi
     market_hash_name: g.market_hash_name,
     sell_min_price: g.sell_min_price,
     sell_num: g.sell_num,
+    game: g.game,
     steam_market_url: g.steam_market_url,
     icon_url: g.goods_info.icon_url,
     steam_price: g.goods_info.steam_price,

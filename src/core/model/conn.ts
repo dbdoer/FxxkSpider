@@ -4,12 +4,12 @@ import config from "../../http/config";
 
 switch (config.NAME) {
     case "development":
-        mongoose.connect(`mongodb://${config.DBHOST}:${config.DBPORT}/${config.DBNAME}`, { useNewUrlParser: true })
+        mongoose.connect(`mongodb://${config.DBHOST}:${config.DBPORT}/${config.DBNAME}`, { useNewUrlParser: true, useCreateIndex: true })
             .then()
             .catch((err) => console.log(err));
         break;
     case "production":
-        mongoose.connect(`mongodb://${config.DBHOST}:${config.DBPORT}/${config.DBNAME}`, { useNewUrlParser: true })
+        mongoose.connect(`mongodb://${config.DBHOST}:${config.DBPORT}/${config.DBNAME}`, { useNewUrlParser: true, useCreateIndex: true })
         .then()
         .catch((err) => console.log(err));
         break;
