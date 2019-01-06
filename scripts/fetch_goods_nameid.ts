@@ -5,6 +5,7 @@ import { sleep } from "../src/core/helpers";
 (async () => {
     let n = 1;
     const needCNum = await Goods.countDocuments({ itemNameId: null });
+    console.log(needCNum);
     while (true) {
         const allgoods = await Goods.find({ itemNameId: null }).limit(200).skip((n - 1) * 200);
         if (n * 200 > needCNum) {
@@ -25,4 +26,5 @@ import { sleep } from "../src/core/helpers";
         }
         n = n + 1;
     }
+    process.exit(1);
 })();

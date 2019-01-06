@@ -14,7 +14,6 @@ const goodsSchema = new Schema({
     marketHashName: {
         type: String,
         required: true,
-        unique: true,
         index: true,
     },
     gameName: {
