@@ -1,19 +1,24 @@
 {
   "name": "fxxkSpider",
-  "version": "0.0.1",
+  "version": "0.8.0",
   "main": "index.js",
   "repository": "https://github.com/Lurance/FxxkSpider.git",
   "author": "Sammy",
   "scripts": {
-    "watch:http": "cross-env NODE_ENV=production webpack --config config/webpack.config.js --watch",
-    "start:http": "nodemon dist/core.js",
+    "start:http": "nodemon src/index.ts",
     "start:page": "cd ./src/dashboard && yarn watch",
-    "start:restore": "pm2 start npm -- run restore",
-    "restore": "ts-node scripts/restore_subscribers.ts",
+    "start:restore": "ts-node scripts/restore_subscribers.ts",
+    "restore": "pm2 start npm -- run restore",
     "start": "pm2 start dist/core.js"
   },
   "license": "MIT",
   "private": true,
+  "nodemonConfig": {
+    "delay": "2500",
+    "execMap": {
+      "ts": "ts-node"
+    }
+  },
   "devDependencies": {
     "@types/cheerio": "^0.22.10",
     "@types/core-decorators": "^0.20.0",
