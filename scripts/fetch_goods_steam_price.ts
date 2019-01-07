@@ -17,6 +17,7 @@ import { getSteamPrice } from "../src/core/services";
             if (g) {
                 try {
                     const { steamMaxBuyPrice, steamMinSellPrice } = await getSteamPrice(g.itemNameId);
+                    console.log(`Fetch Success! max: ${steamMaxBuyPrice}, min: ${steamMinSellPrice}, time: ${new Date().toLocaleString()}`);
                     await (g as any).updateOne({ steamMaxBuyPrice, steamMinSellPrice });
                 } catch (e) {
                     console.log(e);

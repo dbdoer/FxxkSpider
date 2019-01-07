@@ -22,7 +22,7 @@ import { sleep } from "../src/core/helpers";
                     console.log(e);
                     continue;
                 }
-                console.log(itemNameId);
+                console.log(`Fetch Success! name: ${g.marketHashName}, itemNameId: ${itemNameId}, time: ${new Date().toLocaleString()}`);
                 await (g as any).updateOne({ itemNameId });
                 await sleep(15000);
             }
