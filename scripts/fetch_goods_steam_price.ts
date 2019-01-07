@@ -4,12 +4,10 @@ import { getSteamPrice } from "../src/core/services";
 
 (async () => {
     let n = 1;
-    const needCNum = await Goods.countDocuments({ itemNameId: { $exists: true }, steamMaxBuyPrice: null, steamMinSellPrice: null });
-    console.log(needCNum);
     while (true) {
-        console.log(`round ${n}`);
         const allgoods = await Goods.find({ itemNameId: { $exists: true }, steamMaxBuyPrice: null, steamMinSellPrice: null }).limit(200);
-        if (n * 200 > needCNum) {
+        console.log(`round ${n}, need c ${allgoods.length}`);
+        if (allgoods.length === 0) {
             console.log(`end!`);
             break;
         }

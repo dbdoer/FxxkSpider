@@ -4,12 +4,10 @@ import { sleep } from "../src/core/helpers";
 
 (async () => {
     let n = 1;
-    const needCNum = await Goods.countDocuments({ itemNameId: null });
-    console.log(needCNum);
     while (true) {
-        console.log(`round ${n}`);
         const allgoods = await Goods.find({ itemNameId: null }).limit(200);
-        if (n * 200 > needCNum) {
+        console.log(`round ${n}, need c ${allgoods.length}`);
+        if (allgoods.length === 0) {
             console.log(`end!`);
             break;
         }
