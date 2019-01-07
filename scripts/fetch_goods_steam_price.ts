@@ -1,3 +1,3 @@
-import { fetchGoodsSteamPriceJob } from "../jobs";
+import { fetchGoodsSteamPrice } from "../jobs";
 
-fetchGoodsSteamPriceJob();
+fetchGoodsSteamPrice();

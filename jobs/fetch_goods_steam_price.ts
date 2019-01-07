@@ -3,7 +3,7 @@ import { sleep } from "../src/core/helpers";
 import { getSteamPrice, getSteamPriceOverview } from "../src/core/services";
 import { ISteamPriceOverviewResponse } from "../src/core/@types";
 
-export const fetchGoodsSteamPriceJob = async () => {
+export const fetchGoodsSteamPrice = async () => {
     let n = 1;
     while (true) {
         const allgoods = await Goods.find({ itemNameId: { $exists: true }, steamMaxBuyPrice: null, steamMinSellPrice: null }).limit(200);

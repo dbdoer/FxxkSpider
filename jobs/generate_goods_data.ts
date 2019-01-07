@@ -11,10 +11,10 @@ export const generateGoodsData = async (taskId: string) => {
                     marketHashName: r.market_hash_name,
                     gameName: r.game,
                 });
+                console.log(`Insert ${r.market_hash_name} Success`);
             } catch (e) {
                 continue;
             }
         }
     }
-    process.exit(0);
 };

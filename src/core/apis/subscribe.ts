@@ -27,7 +27,7 @@ const subscribing = async (subscriber) => {
 };
 
 const createIntervalSubscriber = (subscriber: ISubscriber) => {
-    const sj = scheduleJob(`*/${subscriber.intervals} * * * *`, function (nextSubscriber) {
+    const sj = scheduleJob(`*/${subscriber.intervals} * * * *`, function(nextSubscriber) {
         subscribing(nextSubscriber)
             .then((v) => {
                 if (!v) {
