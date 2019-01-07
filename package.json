@@ -8,7 +8,9 @@
     "start:http": "nodemon src/index.ts",
     "start:page": "cd ./src/dashboard && yarn watch",
     "start:restore": "ts-node scripts/restore_subscribers.ts",
-    "restore": "pm2 start npm -- run restore",
+    "run:fetch_name_id": "ts-node scripts/fetch_goods_nameid",
+    "fetch_name_id": "pm2 start npm -- run run:fetch_name_id",
+    "restore": "pm2 start npm -- run start:restore",
     "start": "pm2 start dist/core.js"
   },
   "license": "MIT",

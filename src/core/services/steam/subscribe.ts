@@ -53,6 +53,6 @@ export const getItemNameId = async (gameName: string, marketHashName: string) =>
                 }
             }
         });
-    })
+    });
     return await fetchPromise();
 };
