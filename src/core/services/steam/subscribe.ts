@@ -26,11 +26,11 @@ export const getItemNameId = async (gameName: string, marketHashName: string) =>
                 console.log(err);
                 reject(err);
             } else {
-                const res = body.match(/Market_LoadOrderSpread\(\s*(\d*)\s*\)/);
-                if (res) {
-                    resolve(res[1]);
+                const match = body.match(/Market_LoadOrderSpread\(\s*(\d*)\s*\)/);
+                if (match) {
+                    resolve(match[1]);
                 } else {
-                    reject(`Can't get getItemNameId, marketHashName is ${marketHashName}, statusCode is ${res.statusCode}, res is ${res}`);
+                    reject(`Can't get getItemNameId, marketHashName is ${marketHashName}, statusCode is ${res.statusCode}, res is ${match}`);
                 }
             }
         });
