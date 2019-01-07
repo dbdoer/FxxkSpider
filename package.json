@@ -13,7 +13,7 @@
     "fetch_name_id": "pm2 start --name=\"name_id\" npm -- run run:fetch_name_id",
     "fetch_steam_price": "pm2 start --name=\"steam_price\" npm -- run run:fetch_steam_price",
     "restore": "pm2 start --name=\"restore\" npm -- run run:restore",
-    "start": "pm2 start dist/core.js"
+    "start": "pm2 start --name=\"web\" ts-node -- src/index.ts"
   },
   "license": "MIT",
   "private": true,
