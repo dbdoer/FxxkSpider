@@ -7,10 +7,12 @@
   "scripts": {
     "start:http": "nodemon src/index.ts",
     "start:page": "cd ./src/dashboard && yarn watch",
-    "start:restore": "ts-node scripts/restore_subscribers.ts",
+    "run:restore": "ts-node scripts/restore_subscribers.ts",
     "run:fetch_name_id": "ts-node scripts/fetch_goods_nameid",
-    "fetch_name_id": "pm2 start npm -- run run:fetch_name_id",
-    "restore": "pm2 start npm -- run start:restore",
+    "run:fetch_steam_price": "ts-node scripts/fetch_goods_steam_price",
+    "fetch_name_id": "pm2 start --name=\"name_id\" npm -- run run:fetch_name_id",
+    "fetch_steam_price": "pm2 start --name=\"steam_price\" npm -- run run:fetch_steam_price",
+    "restore": "pm2 start --name=\"restore\" npm -- run run:restore",
     "start": "pm2 start dist/core.js"
   },
   "license": "MIT",
