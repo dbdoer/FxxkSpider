@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { ISteamPriceOverviewResponse } from "../../@types/buffGoods";
+import { ISteamPriceOverviewResponse } from "../../@types";
 import * as request from "request";
 import { getGameId } from "../../helpers";
 

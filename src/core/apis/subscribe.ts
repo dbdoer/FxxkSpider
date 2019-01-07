@@ -1,7 +1,7 @@
 import { Subscriber, Status, ISubscriber} from "../model";
 import { scheduleJob } from "node-schedule";
 import { getSteamPriceOverview } from "../services";
-import { ISteamPriceOverviewResponse } from "../@types/buffGoods";
+import { ISteamPriceOverviewResponse } from "../@types";
 
 const subscribing = async (subscriber) => {
     const n = await Subscriber.countDocuments({ _id: subscriber._id });
