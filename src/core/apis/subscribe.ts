@@ -29,14 +29,14 @@ const subscribing = async (subscriber) => {
 const createIntervalSubscriber = (subscriber: ISubscriber) => {
     const sj = scheduleJob(`*/${subscriber.intervals} * * * *`, function (nextSubscriber) {
         subscribing(nextSubscriber)
-            .then(v => {
+            .then((v) => {
                 if (!v) {
                     console.log("Unsubscribe!");
                     sj.cancel();
                 }
-            })
+            });
     }.bind(null, subscriber));
-}
+};
 
 export const restoreSubscribing = async () => {
     const subscribers = await Subscriber.find({});
