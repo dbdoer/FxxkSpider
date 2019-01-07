@@ -8,7 +8,7 @@ import { sleep } from "../src/core/helpers";
     console.log(needCNum);
     while (true) {
         console.log(`round ${n}`);
-        const allgoods = await Goods.find({ itemNameId: null }).limit(200).skip((n - 1) * 200);
+        const allgoods = await Goods.find({ itemNameId: null }).limit(200);
         if (n * 200 > needCNum) {
             console.log(`end!`);
             break;
@@ -24,7 +24,7 @@ import { sleep } from "../src/core/helpers";
                 }
                 console.log(itemNameId);
                 await (g as any).updateOne({ itemNameId });
-                await sleep(10000);
+                await sleep(15000);
             }
         }
         n = n + 1;
