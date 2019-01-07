@@ -1,26 +1,7 @@
 import Axios from "axios";
 import { ISteamPriceOverviewResponse } from "../../@types/buffGoods";
 import * as request from "request";
-
-const getGameId = (gameName: string) => {
-    let appid;
-    switch (gameName) {
-        case "dota2":
-            appid = 570;
-            break;
-        case "csgo":
-            appid = 730;
-            break;
-        case "pubg":
-            appid = 578080;
-            break;
-        default:
-            return {
-                status: false,
-            };
-    }
-    return appid;
-};
+import { getGameId } from "../../helpers";
 
 export const getSteamPriceOverview = async (gameName: string, marketHashName: string) => {
     try {
@@ -49,10 +30,29 @@ export const getItemNameId = async (gameName: string, marketHashName: string) =>
                 if (res) {
                     resolve(res[1]);
                 } else {
-                    reject(`Can't get getItemNameId, marketHashName is ${marketHashName}`);
+                    reject(`Can't get getItemNameId, marketHashName is ${marketHashName}, body is ${body}, res is ${res}`);
                 }
             }
         });
     });
     return await fetchPromise();
+};
+
+export const getSteamPrice = async (itemNameId: string) => {
+    try {
+        const url = `https://steamcommunity.com/market/itemordershistogram?country=CN&language=schinese&currency=23&item_nameid=${itemNameId}&two_factor=0`;
+        const res = await Axios.get(url);
+        if (res.data.success) {
+            return {
+                steamMaxBuyPrice: `¥ ${res.data.buy_order_graph[0][0] || ""}`,
+                steamMinSellPrice: `¥ ${res.data.sell_order_graph[0][0] || ""}`,
+            };
+        }
+    } catch (e) {
+        console.log(`getSteamPrice Err! ItemNameId is ${itemNameId}, Err inf:\n${e}`);
+        return {
+            steamMaxBuyPrice: "",
+            steamMinSellPrice: "",
+        };
+    }
 };
