@@ -8,6 +8,7 @@ interface IGoods extends mongoose.Document {
     itemNameId: string;
     steamMaxBuyPrice: string;
     steamMinSellPrice: string;
+    volume: string;
 }
 
 const goodsSchema = new Schema({
@@ -29,6 +30,11 @@ const goodsSchema = new Schema({
         required: false,
     },
     steamMinSellPrice: {
+        type: String,
+        required: false,
+    },
+    volume: {
+        // 24小时成交量
         type: String,
         required: false,
     },

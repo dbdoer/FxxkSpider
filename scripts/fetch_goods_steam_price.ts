@@ -1,6 +1,7 @@
 import { Goods } from "../src/core/model";
 import { sleep } from "../src/core/helpers";
-import { getSteamPrice } from "../src/core/services";
+import { getSteamPrice, getSteamPriceOverview } from "../src/core/services";
+import { ISteamPriceOverviewResponse } from "../src/core/@types/buffGoods";
 
 (async () => {
     let n = 1;
@@ -15,13 +16,15 @@ import { getSteamPrice } from "../src/core/services";
             if (g) {
                 try {
                     const { steamMaxBuyPrice, steamMinSellPrice } = await getSteamPrice(g.itemNameId);
-                    console.log(`Fetch Success! max: ${steamMaxBuyPrice}, min: ${steamMinSellPrice}, time: ${new Date().toLocaleString()}`);
-                    await (g as any).updateOne({ steamMaxBuyPrice, steamMinSellPrice });
+                    const priceOverviewRes = await getSteamPriceOverview(g.gameName, g.marketHashName);
+                    const volume = (priceOverviewRes as ISteamPriceOverviewResponse).volume || "";
+                    console.log(`Fetch Success! max: ${steamMaxBuyPrice}, min: ${steamMinSellPrice}, volume: ${volume}, time: ${new Date().toLocaleString()}`);
+                    await (g as any).updateOne({ steamMaxBuyPrice, steamMinSellPrice, volume });
                 } catch (e) {
                     console.log(e);
                     continue;
                 }
-                await sleep(15000);
+                await sleep(1000);
             }
         }
         n = n + 1;
