@@ -22,9 +22,10 @@ import { ISteamPriceOverviewResponse } from "../src/core/@types/buffGoods";
                     await (g as any).updateOne({ steamMaxBuyPrice, steamMinSellPrice, volume });
                 } catch (e) {
                     console.log(e);
+                    await sleep(2000);
                     continue;
                 }
-                await sleep(1000);
+                await sleep(2000);
             }
         }
         n = n + 1;

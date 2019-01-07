@@ -18,6 +18,7 @@ import { sleep } from "../src/core/helpers";
                     itemNameId = await getItemNameId(g.gameName, g.marketHashName);
                 } catch (e) {
                     console.log(e);
+                    await sleep(15000);
                     continue;
                 }
                 console.log(`Fetch Success! name: ${g.marketHashName}, itemNameId: ${itemNameId}, time: ${new Date().toLocaleString()}`);
