@@ -9,7 +9,7 @@
         "object-literal-sort-keys": false,
         "ordered-imports": false,
         "max-line-length": false,
-        "only-arrow-functions": false,
+        "only-arrow-functions": false
     },
     "rulesDirectory": []
 }

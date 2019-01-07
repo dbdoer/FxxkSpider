@@ -1,26 +1,7 @@
 import Axios from "axios";
 import { ISteamPriceOverviewResponse } from "../../@types/buffGoods";
 import * as request from "request";
-
-const getGameId = (gameName: string) => {
-    let appid;
-    switch (gameName) {
-        case "dota2":
-            appid = 570;
-            break;
-        case "csgo":
-            appid = 730;
-            break;
-        case "pubg":
-            appid = 578080;
-            break;
-        default:
-            return {
-                status: false,
-            };
-    }
-    return appid;
-};
+import { getGameId } from "../../helpers";
 
 export const getSteamPriceOverview = async (gameName: string, marketHashName: string) => {
     try {
@@ -38,20 +19,40 @@ export const getSteamPriceOverview = async (gameName: string, marketHashName: st
 
 export const getItemNameId = async (gameName: string, marketHashName: string) => {
     const url = `https://steamcommunity.com/market/listings/${getGameId(gameName)}/${encodeURI(marketHashName)}`;
+    console.log(url);
     const fetchPromise = () => new Promise((resolve, reject) => {
-        request({ url: url }, (err, res, body) => {
+        request({ url }, (err, res, body) => {
             if (err) {
                 console.log(err);
                 reject(err);
             } else {
-                const res = body.match(/Market_LoadOrderSpread\(\s*(\d*)\s*\)/);
-                if (res) {
-                    resolve(res[1]);
+                const match = body.match(/Market_LoadOrderSpread\(\s*(\d*)\s*\)/);
+                if (match) {
+                    resolve(match[1]);
                 } else {
-                    reject("Can't get getItemNameId");
+                    reject(`Can't get getItemNameId, marketHashName is ${marketHashName}, statusCode is ${res.statusCode}, res is ${match}`);
                 }
             }
         });
-    })
+    });
     return await fetchPromise();
+};
+
+export const getSteamPrice = async (itemNameId: string) => {
+    try {
+        const url = `https://steamcommunity.com/market/itemordershistogram?country=CN&language=schinese&currency=23&item_nameid=${itemNameId}&two_factor=0`;
+        const res = await Axios.get(url);
+        if (res.data.success) {
+            return {
+                steamMaxBuyPrice: `¥ ${res.data.buy_order_graph[0][0] || ""}`,
+                steamMinSellPrice: `¥ ${res.data.sell_order_graph[0][0] || ""}`,
+            };
+        }
+    } catch (e) {
+        console.log(`getSteamPrice Err! ItemNameId is ${itemNameId}, Err inf:\n${e}`);
+        return {
+            steamMaxBuyPrice: "",
+            steamMinSellPrice: "",
+        };
+    }
 };
