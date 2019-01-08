@@ -70,4 +70,4 @@ export const getSubscribersList = async () => {
 
 export const deleteSubscricerById = async (id: string) => {
     return await Subscriber.remove({ _id: id });
-}
+};

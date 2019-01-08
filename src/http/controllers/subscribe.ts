@@ -15,7 +15,7 @@ class SubscribeController {
 
     @Get("/subscribe")
     private async getSubscribersList() {
-        return await getSubscribersList();   
+        return await getSubscribersList();
     }
 
     @Delete("/subscribe/:id")
