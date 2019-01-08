@@ -7,3 +7,7 @@ node_modules
 .vscode
 
 *.log
+
+config/core.config.prod.ts
+
+config/http.config.prod.ts

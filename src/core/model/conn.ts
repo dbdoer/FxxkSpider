@@ -1,15 +1,15 @@
 import * as mongoose from "mongoose";
 
-import config from "../../http/config";
+import { coreConfig } from "../../../config";
 
-switch (config.NAME) {
+switch (coreConfig.IDENDITY) {
     case "development":
-        mongoose.connect(`mongodb://${config.DBHOST}:${config.DBPORT}/${config.DBNAME}`, { useNewUrlParser: true, useCreateIndex: true })
+        mongoose.connect(`mongodb://${coreConfig.AUTH ? `${coreConfig.DB_USERNAME}:${coreConfig.DB_PASSWORD}@` : ""}${coreConfig.DBHOST}:${coreConfig.DBPORT}/${coreConfig.DBNAME}`, { useNewUrlParser: true, useCreateIndex: true })
             .then()
             .catch((err) => console.log(err));
         break;
     case "production":
-        mongoose.connect(`mongodb://${config.DBHOST}:${config.DBPORT}/${config.DBNAME}`, { useNewUrlParser: true, useCreateIndex: true })
+        mongoose.connect(`mongodb://${coreConfig.AUTH ? `${coreConfig.DB_USERNAME}:${coreConfig.DB_PASSWORD}@` : ""}${coreConfig.DBHOST}:${coreConfig.DBPORT}/${coreConfig.DBNAME}`, { useNewUrlParser: true, useCreateIndex: true })
         .then()
         .catch((err) => console.log(err));
         break;

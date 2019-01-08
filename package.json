@@ -5,7 +5,7 @@
   "repository": "https://github.com/Lurance/FxxkSpider.git",
   "author": "Sammy",
   "scripts": {
-    "start:http": "nodemon src/index.ts",
+    "start:http": "cross-env NODE_ENV=development nodemon src/index.ts",
     "start:page": "cd ./src/dashboard && yarn watch",
     "run:restore": "ts-node scripts/restore_subscribers.ts",
     "run:fetch_name_id": "ts-node scripts/fetch_goods_nameid.ts",

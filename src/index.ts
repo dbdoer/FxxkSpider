@@ -1,11 +1,11 @@
 import { createHttpServer } from "./http";
-import config from "./http/config";
+import { httpConfig } from "../config";
 
 (async () => {
     try {
         const app = await createHttpServer();
-        app.listen(config.PORT, async () => {
-            console.log(`Server is listening on ${config.PORT}`);
+        app.listen(httpConfig.PORT, async () => {
+            console.log(`Server is listening on ${httpConfig.PORT}`);
         });
     } catch (e) {
         console.log(e);
