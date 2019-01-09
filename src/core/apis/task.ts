@@ -10,6 +10,7 @@ export const getGoodsListFromPage = async (gameName= "csgo", startPage: number =
     const desc = `于${moment().format("YYYY-MM-DD, h:mm:ss a")}创建的爬取${gameName}，从第${startPage}页到第${endPage === -1 ? "最后一" : endPage}页的任务单`;
     const task = await Task.create({
         desc,
+        gameName,
     });
 
     let res = [];

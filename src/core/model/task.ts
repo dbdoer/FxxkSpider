@@ -16,6 +16,7 @@ const Status = {
 
 interface ITask extends mongoose.Document {
     status: StatusType;
+    gameName: string;
     resultUrl: string;
     desc: string;
     rawResult: string;
@@ -29,6 +30,10 @@ const taskSchema = new Schema({
         type: Number,
         required: true,
         default: StatusType.pending,
+    },
+    gameName: {
+        type: String,
+        required: true,
     },
     resultUrl: {
         type: String,

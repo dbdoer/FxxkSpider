@@ -17,13 +17,17 @@ const jobWrapper = (ev: EventEmitter, jobFunc: (args?) => any, displayName: stri
 };
 
 (async () => {
-    const newestTask = await Task.findOne({}, "-rawResult").sort("-createdAt");
+    const newestDota2Task = await Task.findOne({ gameName: "dota2" }, "-rawResult").sort("-createdAt");
+
+    const newestCsgoTask = await Task.findOne({ gameName: "csgo" }, "-rawResult").sort("-createdAt");
+
+    const getId = (task) =>  task ? task._id : null;
 
     const ev = new EventEmitter();
 
     const fetchGoodsSteamPriceJob = scheduleJob(jobConfig.CRONRULE.fetchGoodsSteamPriceJob, jobWrapper(ev, fetchGoodsSteamPrice, "fetchGoodsSteamPrice"));
 
-    const generateGoodsDataJob = scheduleJob(jobConfig.CRONRULE.generateGoodsDataJob, jobWrapper(ev, generateGoodsData, "generateGoodsData").bind(null, newestTask._id));
+    const generateGoodsDataJob = scheduleJob(jobConfig.CRONRULE.generateGoodsDataJob, jobWrapper(ev, generateGoodsData, "generateGoodsData").bind(null, [getId(newestDota2Task), getId(newestCsgoTask)]));
 
     const fetchGoodsNameIdJob = scheduleJob(jobConfig.CRONRULE.fetchGoodsNameIdJob, jobWrapper(ev, fetchGoodsNameId, "fetchGoodsNameId"));
 
