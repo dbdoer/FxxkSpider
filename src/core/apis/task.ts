@@ -1,16 +1,24 @@
 import * as moment from "moment";
-import { getGoodsList, parseGoodsList } from "../services";
-import { sleep, range } from "../helpers";
+import { getGoodsSellingList,
+    parseGoodsSellingList,
+    getGoodsBuyingList,
+    parseGoodsBuyingList,
+ } from "../services";
 import { Task, Status } from "../model";
 import xlsx = require("better-xlsx");
 import * as fs from "fs";
 
-export const getGoodsListFromPage = async (gameName= "csgo", startPage: number = 1, endPage: number) => {
-
-    const desc = `于${moment().format("YYYY-MM-DD, h:mm:ss a")}创建的爬取${gameName}，从第${startPage}页到第${endPage === -1 ? "最后一" : endPage}页的任务单`;
+export const doTask = async (gameName= "csgo", startPage: number = 1, endPage: number, type: string) => {
+    let desc;
+    if (type === "selling") {
+        desc = `于${moment().format("YYYY-MM-DD, h:mm:ss a")}创建的爬取${gameName}的Buff出售价格，从第${startPage}页到第${endPage === -1 ? "最后一" : endPage}页的任务单`;
+    } else if (type === "buying") {
+        desc = `于${moment().format("YYYY-MM-DD, h:mm:ss a")}创建的爬取${gameName}的Buff收购价格，从第${startPage}页到第${endPage === -1 ? "最后一" : endPage}页的任务单`;
+    }
     const task = await Task.create({
         desc,
         gameName,
+        type,
     });
 
     let res = [];
@@ -18,15 +26,16 @@ export const getGoodsListFromPage = async (gameName= "csgo", startPage: number =
     try {
         (async () => {
             let nowPage = 1;
-            const d = await getGoodsList(gameName, nowPage);
+            const crawlFunc: any = type === "selling" ? getGoodsSellingList : getGoodsBuyingList;
+            const parseFunc: any = type === "selling" ? parseGoodsSellingList : parseGoodsBuyingList;
             // const promiseList = range(endPage);
             for (; nowPage <= endPage || endPage === -1; nowPage++) {
-                const goodsList = await getGoodsList(gameName, nowPage);
+                const goodsList = await crawlFunc(gameName, nowPage);
                 if (endPage === -1) {
                     endPage = goodsList.data.total_page;
                 }
                 console.log(nowPage, goodsList.data.items.length);
-                res = [...res, ...goodsList.data.items.filter((g) => Number(g.sell_min_price) >= 2 && Number(g.sell_min_price) <= 3000)];
+                res = [...res, ...(goodsList.data.items as any).filter((g) => Number(g.sell_min_price) >= 2 && Number(g.sell_min_price) <= 3000)];
             }
             // await promiseList.forEach((p) => {
                 // getGoodsList(gameName, p)
@@ -35,7 +44,7 @@ export const getGoodsListFromPage = async (gameName= "csgo", startPage: number =
                 //     res = [...res, ...goodsList.data.items.filter((g) => Number(g.sell_min_price) >= 2 && Number(g.sell_min_price) <= 3000)];
                 // });
             // });
-            const rawResult = JSON.stringify(parseGoodsList(res));
+            const rawResult = JSON.stringify(parseFunc(res));
             const timeConsuming = `${(new Date().getTime() - new Date(task.createdAt).getTime()) / 1000}s`;
             await task.update({ status: Status.success, rawResult, timeConsuming });
 
@@ -83,52 +92,90 @@ export const taskResultExport = async (taskId: string) => {
     const file = new xlsx.File();
     const sheet = file.addSheet("DefaultSheet");
 
-    const row = sheet.addRow();
-    const cell1 = row.addCell();
-    cell1.value = "商品名";
-    const cell2 = row.addCell();
-    cell2.value = "Buff出售最低价（单位：元）";
-    const cell3 = row.addCell();
-    cell3.value = "steam出售价格（单位：元）";
-    const cell4 = row.addCell();
-    cell4.value = "倍数";
-    const cell5 = row.addCell();
-    cell5.value = "Buff在售数量";
-    const cell6 = row.addCell();
-    cell6.value = "原始折扣价（百分比）";
-    const cell7 = row.addCell();
-    cell7.value = "原始转回利润（百分比）";
-    const cell8 = row.addCell();
-    cell8.value = "Buff商品链接";
-    const cell9 = row.addCell();
-    cell9.value = "steam商品链接";
-    const cell10 = row.addCell();
-    cell10.value = "商品唯一标识名称";
+    switch (task.type) {
+        case "selling": {
+            const row = sheet.addRow();
+            const cell1 = row.addCell();
+            cell1.value = "商品名";
+            const cell2 = row.addCell();
+            cell2.value = "Buff出售最低价（单位：元）";
+            const cell3 = row.addCell();
+            cell3.value = "steam出售价格（单位：元）";
+            const cell4 = row.addCell();
+            cell4.value = "倍数";
+            const cell5 = row.addCell();
+            cell5.value = "Buff在售数量";
+            const cell6 = row.addCell();
+            cell6.value = "原始折扣价（百分比）";
+            const cell7 = row.addCell();
+            cell7.value = "原始转回利润（百分比）";
+            const cell8 = row.addCell();
+            cell8.value = "Buff商品链接";
+            const cell9 = row.addCell();
+            cell9.value = "steam商品链接";
+            const cell10 = row.addCell();
+            cell10.value = "商品唯一标识名称";
 
-    const rawResult = JSON.parse(task.rawResult);
-    rawResult.forEach((r) => {
-        const dataRow = sheet.addRow();
-        const dataCell1 = dataRow.addCell();
-        const dataCell2 = dataRow.addCell();
-        const dataCell3 = dataRow.addCell();
-        const dataCell4 = dataRow.addCell();
-        const dataCell5 = dataRow.addCell();
-        const dataCell6 = dataRow.addCell();
-        const dataCell7 = dataRow.addCell();
-        const dataCell8 = dataRow.addCell();
-        const dataCell9 = dataRow.addCell();
-        const dataCell10 = dataRow.addCell();
-        dataCell1.value = r.name;
-        dataCell2.value = r.sell_min_price;
-        dataCell3.value = r.steam_price_cny;
-        dataCell4.value = r.diff_price;
-        dataCell5.value = r.sell_num;
-        dataCell6.value = r.original_discount_price;
-        dataCell7.value = r.original_profit;
-        dataCell8.value = r.buff_goods_url;
-        dataCell9.value = r.steam_market_url;
-        dataCell10.value = r.market_hash_name;
-    });
+            const rawResult = JSON.parse(task.rawResult);
+            rawResult.forEach((r) => {
+                const dataRow = sheet.addRow();
+                const dataCell1 = dataRow.addCell();
+                const dataCell2 = dataRow.addCell();
+                const dataCell3 = dataRow.addCell();
+                const dataCell4 = dataRow.addCell();
+                const dataCell5 = dataRow.addCell();
+                const dataCell6 = dataRow.addCell();
+                const dataCell7 = dataRow.addCell();
+                const dataCell8 = dataRow.addCell();
+                const dataCell9 = dataRow.addCell();
+                const dataCell10 = dataRow.addCell();
+                dataCell1.value = r.name;
+                dataCell2.value = r.sell_min_price;
+                dataCell3.value = r.steam_price_cny;
+                dataCell4.value = r.diff_price;
+                dataCell5.value = r.sell_num;
+                dataCell6.value = r.original_discount_price;
+                dataCell7.value = r.original_profit;
+                dataCell8.value = r.buff_goods_url;
+                dataCell9.value = r.steam_market_url;
+                dataCell10.value = r.market_hash_name;
+            });
+            break;
+        }
+        case "buying": {
+            const row = sheet.addRow();
+            const cell1 = row.addCell();
+            cell1.value = "商品名";
+            const cell2 = row.addCell();
+            cell2.value = "Buff收购最高价（单位：元）";
+            const cell3 = row.addCell();
+            cell3.value = "Buff求购数量";
+            const cell4 = row.addCell();
+            cell4.value = "Buff商品链接";
+            const cell5 = row.addCell();
+            cell5.value = "steam商品链接";
+            const cell6 = row.addCell();
+            cell6.value = "商品唯一标识名称";
+
+            const rawResult = JSON.parse(task.rawResult);
+            rawResult.forEach((r) => {
+                const dataRow = sheet.addRow();
+                const dataCell1 = dataRow.addCell();
+                const dataCell2 = dataRow.addCell();
+                const dataCell3 = dataRow.addCell();
+                const dataCell4 = dataRow.addCell();
+                const dataCell5 = dataRow.addCell();
+                const dataCell6 = dataRow.addCell();
+                dataCell1.value = r.name;
+                dataCell2.value = r.buy_max_price;
+                dataCell3.value = r.buy_num;
+                dataCell4.value = r.buff_goods_url;
+                dataCell5.value = r.steam_market_url;
+                dataCell6.value = r.market_hash_name;
+            });
+            break;
+        }
+    }
 
     const fileName = `${Math.random() * 1000000}.xlsx`;
 

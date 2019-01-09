@@ -12,7 +12,8 @@ ReactDOM.render(
         <Switch>
             <Nav>
                 <Route path="/" exact={true}  component={TaskList} />
-                <Route path="/create" component={TaskCreate} />
+                <Route path="/create_goods_selling_list" component={() => <TaskCreate type="selling"/>} />
+                <Route path="/create_goods_buying_list" component={() => <TaskCreate type="buying"/>} />
                 <Route path="/subscribe" component={GoodsSubscribe} />
             </Nav>
         </Switch>

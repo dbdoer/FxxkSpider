@@ -1,5 +1,5 @@
 import { JsonController, Post, BodyParam, Get, Param } from "routing-controllers";
-import { getGoodsListFromPage, getTask, taskResultExport, getTaskList } from "../../core/apis";
+import { doTask, getTask, taskResultExport, getTaskList } from "../../core/apis";
 
 @JsonController()
 class TaskController {
@@ -8,8 +8,9 @@ class TaskController {
      @BodyParam("gameName", {required: true}) gameName: string,
      @BodyParam("startPage", {required: true}) startPage: number,
      @BodyParam("endPage", {required: true}) endPage: number,
+     @BodyParam("type", {required: true}) type: string,
     ) {
-        return await getGoodsListFromPage(gameName, startPage, endPage);
+        return await doTask(gameName, startPage, endPage, type);
     }
 
     @Get("/task/:id")

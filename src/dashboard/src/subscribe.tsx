@@ -26,17 +26,17 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
             marketHashName: "",
             verboseName: "",
             intervals: null,
-            dataSource: []
-        }
+            dataSource: [],
+        };
     }
 
     public componentDidMount() {
         Axios.get("/api/subscribe")
             .then((res) => {
                 this.setState({
-                    dataSource: res.data
+                    dataSource: res.data,
                 });
-            })
+            });
     }
 
     public handleValueChange(ev) {
@@ -51,9 +51,9 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
             gameName,
             marketHashName,
             intervals,
-            verboseName
+            verboseName,
         })
-            .then(res => {
+            .then((res) => {
                 if (res.data.error === 0) {
                     location.reload();
                 }
@@ -62,15 +62,15 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
 
     public handleDeleteSubscriber(id) {
         Axios.delete(`/api/subscribe/${id}`)
-            .then(res => {
+            .then((res) => {
                 location.reload();
-            })
+            });
     }
 
     public render() {
         const { dataSource: subscribers } = this.state;
-        
-        const totalSum = subscribers.filter(v => v.status === 1).reduce((pv, cv) => {
+
+        const totalSum = subscribers.filter((v) => v.status === 1).reduce((pv, cv) => {
             let nowPrice;
             if (cv.medianPrice) {
                 nowPrice = Number(cv.medianPrice.replace(",", "").substr(2));
@@ -78,7 +78,7 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
                 nowPrice = Number(cv.lowestPrice.replace(",", "").substr(2));
             }
             return pv + nowPrice;
-        }, 0)
+        }, 0);
 
         return (
             <section style={ { textAlign: "center" } }>
@@ -105,7 +105,7 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
                 {subscribers && <List
                     grid={{ gutter: 16, column: 4 }}
                     dataSource={subscribers}
-                    renderItem={s => (
+                    renderItem={(s) => (
                         <List.Item>
                             <Card title={s.verboseName || s.marketHashName}>
                                 {(s.status === 1 || (s.status === 0 && s.lowestPrice)) ? (
@@ -124,7 +124,7 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
                     )}
                 />}
             </section>
-        )
+        );
     }
 }
 

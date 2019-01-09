@@ -5,7 +5,7 @@ import { ITask } from "../../core/model";
 import { Button, Input } from "antd";
 
 @autobind
-class TaskCreate extends React.Component<any, { gameName: string, startPage: number, endPage: number, task: ITask, selectType: string }> {
+class TaskCreate extends React.Component<{type: string}, { gameName: string, startPage: number, endPage: number, task: ITask, selectType: string }> {
     public sto: any;
     constructor(arg) {
         super(arg);
@@ -44,10 +44,12 @@ class TaskCreate extends React.Component<any, { gameName: string, startPage: num
 
     public handleSubmit() {
         const { gameName, startPage, endPage } = this.state;
+        const { type } = this.props;
         Axios.post("/api/task", {
             gameName,
             startPage,
             endPage,
+            type,
         })
             .then((res) => {
                 if (res.data.error === 0) {
@@ -64,8 +66,11 @@ class TaskCreate extends React.Component<any, { gameName: string, startPage: num
     }
 
     public render() {
+        const { type } = this.props;
         return (
             <section style={{ textAlign: "center" }}>
+                <br /><br />
+                <h2>{type === "selling" ? "这是爬取Buff出售价格的任务单" : "这是爬取Buff收购价格的任务单"}</h2>
                 <br />
                 <form>
                     <label>游戏名：（请输入 dota2，csgo或者pubg）</label>
