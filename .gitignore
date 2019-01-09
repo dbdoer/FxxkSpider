@@ -11,3 +11,4 @@ node_modules
 config/core.config.prod.ts
 
 config/http.config.prod.ts
+config/job.config.prod.ts

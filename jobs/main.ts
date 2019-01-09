@@ -5,6 +5,7 @@ import { taskFlush } from "./task_flush";
 import { scheduleJob } from "node-schedule";
 import { Task } from "../src/core/model";
 import { EventEmitter } from "events";
+import { jobConfig } from "../config";
 
 const jobWrapper = (ev: EventEmitter, jobFunc: (args?) => any, displayName: string) => async (args) => {
     try {
@@ -20,13 +21,13 @@ const jobWrapper = (ev: EventEmitter, jobFunc: (args?) => any, displayName: stri
 
     const ev = new EventEmitter();
 
-    const fetchGoodsSteamPriceJob = scheduleJob("0 0 9 * * ?", jobWrapper(ev, fetchGoodsSteamPrice, "fetchGoodsSteamPrice"));
+    const fetchGoodsSteamPriceJob = scheduleJob(jobConfig.CRONRULE.fetchGoodsSteamPriceJob, jobWrapper(ev, fetchGoodsSteamPrice, "fetchGoodsSteamPrice"));
 
-    const generateGoodsDataJob = scheduleJob("0 0 1 * * ?", jobWrapper(ev, generateGoodsData, "generateGoodsData").bind(null, newestTask._id));
+    const generateGoodsDataJob = scheduleJob(jobConfig.CRONRULE.generateGoodsDataJob, jobWrapper(ev, generateGoodsData, "generateGoodsData").bind(null, newestTask._id));
 
-    const fetchGoodsNameIdJob = scheduleJob("0 0 2 * * ?", jobWrapper(ev, fetchGoodsNameId, "fetchGoodsNameId"));
+    const fetchGoodsNameIdJob = scheduleJob(jobConfig.CRONRULE.fetchGoodsNameIdJob, jobWrapper(ev, fetchGoodsNameId, "fetchGoodsNameId"));
 
-    const taskFlushJob = scheduleJob("0 0 0 * * ?", jobWrapper(ev, taskFlush, "taskFlush"));
+    const taskFlushJob = scheduleJob(jobConfig.CRONRULE.taskFlushJob, jobWrapper(ev, taskFlush, "taskFlush"));
 
     ev.on("fetchGoodsSteamPrice-error", (e) => {
         console.error(e);
