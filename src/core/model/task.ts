@@ -23,6 +23,7 @@ interface ITask extends mongoose.Document {
     timeConsuming: string;
     createdAt: Date;
     updatedAt: Date;
+    type: string;
 }
 
 const taskSchema = new Schema({
@@ -50,6 +51,10 @@ const taskSchema = new Schema({
     timeConsuming: {
         type: String,
         required: false,
+    },
+    type: {
+        type: String,
+        required: true,
     },
 }, { timestamps: true });
 

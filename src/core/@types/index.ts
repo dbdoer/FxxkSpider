@@ -1,7 +1,7 @@
-export interface IBuffGoodsListResponse {
+export interface IBuffGoodsSellingListResponse {
     code: string;
     data: {
-        items: IBuffGoodsItem[];
+        items: IBuffGoodsSellingItem[];
         page_num: number;
         page_size: number;
         total_count: number;
@@ -23,7 +23,7 @@ export interface IBuffGoodsBillOrderItem {
     price: string;
 }
 
-export interface IBuffGoodsItem {
+export interface IBuffGoodsSellingItem {
     id: number;
     name: string;
     market_hash_name: string;
@@ -38,21 +38,33 @@ export interface IBuffGoodsItem {
     };
 }
 
-export interface IGoods {
-    id: number;
-    name: string;
-    sell_min_price: string;
-    sell_num: number;
-    steam_market_url: string;
-    icon_url: string;
-    steam_price: string;
-    steam_price_cny: string;
-    buff_goods_url: string;
-}
-
 export interface ISteamPriceOverviewResponse {
     success: boolean;
     lowest_price: string;
     volume: string;
     median_price: string;
+}
+
+export interface IBuffGoodsBuyingListResponse {
+    code: string;
+    data: {
+        items: IBuffGoodsBuyingItem[];
+        page_num: number;
+        page_size: number;
+        total_count: number;
+        total_page: number;
+    };
+    msg: string;
+}
+
+export interface IBuffGoodsBuyingItem {
+    id: number;
+    name: string;
+    market_hash_name: string;
+    steam_market_url: string;
+    buy_max_price: string;
+    buy_num: number;
+    game: string;
+    sell_min_price: string;
+    sell_num: number;
 }
