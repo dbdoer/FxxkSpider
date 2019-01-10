@@ -18,10 +18,12 @@ export const fetchGoodsSteamPrice = async () => {
             if (g) {
                 try {
                     const { steamMaxBuyPrice, steamMinSellPrice } = await getSteamPrice(g.itemNameId);
-                    const priceOverviewRes = await getSteamPriceOverview(g.gameName, g.marketHashName);
-                    const volume = (priceOverviewRes as ISteamPriceOverviewResponse).volume || "";
-                    console.log(`Fetch Success! max: ${steamMaxBuyPrice}, min: ${steamMinSellPrice}, volume: ${volume}, time: ${new Date().toLocaleString()}`);
-                    await (g as any).updateOne({ steamMaxBuyPrice, steamMinSellPrice, volume });
+                    // const priceOverviewRes = await getSteamPriceOverview(g.gameName, g.marketHashName);
+                    // const volume = (priceOverviewRes as ISteamPriceOverviewResponse).volume || "";
+                    // console.log(`Fetch Success! max: ${steamMaxBuyPrice}, min: ${steamMinSellPrice}, volume: ${volume}, time: ${new Date().toLocaleString()}`);
+                    // await (g as any).updateOne({ steamMaxBuyPrice, steamMinSellPrice, volume });
+                    console.log(`Fetch Success! max: ${steamMaxBuyPrice}, min: ${steamMinSellPrice}, time: ${new Date().toLocaleString()}`);
+                    await (g as any).updateOne({ steamMaxBuyPrice, steamMinSellPrice });
                 } catch (e) {
                     console.log(e);
                     await sleep(SLEEP_TIMING);

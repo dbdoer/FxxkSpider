@@ -34,5 +34,5 @@ export const fetchGoodsNameId = async () => {
         }
         n = n + 1;
     }
-    process.exit(1); 
+    process.exit(0); 
 };

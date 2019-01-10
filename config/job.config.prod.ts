@@ -6,7 +6,7 @@ export default {
         taskFlushJob: "0 0 0 * * ?",
     },
     SLEEP_TIMING: {
-        fetchGoodsSteamPriceJob: 1500,
+        fetchGoodsSteamPriceJob: 1000,
         fetchGoodsNameIdJob: 15000
     }
 };
