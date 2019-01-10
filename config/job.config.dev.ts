@@ -5,4 +5,8 @@ export default {
         fetchGoodsNameIdJob: "0 0 1 * * ?",
         taskFlushJob: "0 0 0 * * ?",
     },
+    SLEEP_TIMING: {
+        fetchGoodsSteamPriceJob: 1500,
+        fetchGoodsNameIdJob: 15000
+    }
 };

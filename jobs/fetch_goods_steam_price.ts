@@ -2,9 +2,11 @@ import { Goods } from "../src/core/model";
 import { sleep } from "../src/core/helpers";
 import { getSteamPrice, getSteamPriceOverview } from "../src/core/services";
 import { ISteamPriceOverviewResponse } from "../src/core/@types";
+import { jobConfig } from "../config";
 
 export const fetchGoodsSteamPrice = async () => {
     let n = 1;
+    const SLEEP_TIMING = jobConfig.SLEEP_TIMING.fetchGoodsSteamPriceJob;
     while (true) {
         const allgoods = await Goods.find({ itemNameId: { $exists: true }, steamMaxBuyPrice: null, steamMinSellPrice: null }).limit(200);
         console.log(`round ${n}, need c ${allgoods.length}`);
@@ -22,10 +24,10 @@ export const fetchGoodsSteamPrice = async () => {
                     await (g as any).updateOne({ steamMaxBuyPrice, steamMinSellPrice, volume });
                 } catch (e) {
                     console.log(e);
-                    await sleep(2000);
+                    await sleep(SLEEP_TIMING);
                     continue;
                 }
-                await sleep(2000);
+                await sleep(SLEEP_TIMING);
             }
         }
         n = n + 1;

@@ -1,9 +1,11 @@
 import { Goods } from "../src/core/model";
 import { getItemNameId } from "../src/core/services";
 import { sleep } from "../src/core/helpers";
+import { jobConfig } from "../config";
 
 export const fetchGoodsNameId = async () => {
     let n = 1;
+    const SLEEP_TIMING = jobConfig.SLEEP_TIMING.fetchGoodsNameIdJob;
     while (true) {
         const allgoods = await Goods.find({ itemNameId: null }).limit(200);
         console.log(`round ${n}, need c ${allgoods.length}`);
@@ -19,15 +21,15 @@ export const fetchGoodsNameId = async () => {
                 } catch (e) {
                     console.log(e.msg);
                     if (e.data.statusCode == 200) {
-                        await Goods.remove({ marketHashName: e.data.marketHashName });
+                        await Goods.deleteOne({ marketHashName: e.data.marketHashName });
                         console.log(`${e.data.marketHashName} has been removed!`);
                     }
-                    await sleep(15000);
+                    await sleep(SLEEP_TIMING);
                     continue;
                 }
                 console.log(`Fetch Success! name: ${g.marketHashName}, itemNameId: ${itemNameId}, time: ${new Date().toLocaleString()}`);
                 await (g as any).updateOne({ itemNameId });
-                await sleep(15000);
+                await sleep(SLEEP_TIMING);
             }
         }
         n = n + 1;
