@@ -3,7 +3,6 @@ import { generateGoodsData } from "./generate_goods_data";
 import { fetchGoodsNameId } from "./fetch_goods_nameid";
 import { taskFlush } from "./task_flush";
 import { scheduleJob } from "node-schedule";
-import { Task } from "../src/core/model";
 import { EventEmitter } from "events";
 import { jobConfig } from "../config";
 
@@ -17,17 +16,12 @@ const jobWrapper = (ev: EventEmitter, jobFunc: (args?) => any, displayName: stri
 };
 
 (async () => {
-    const newestDota2Task = await Task.findOne({ gameName: "dota2" }, "-rawResult").sort("-createdAt");
-
-    const newestCsgoTask = await Task.findOne({ gameName: "csgo" }, "-rawResult").sort("-createdAt");
-
-    const getId = (task) =>  task ? task._id : null;
 
     const ev = new EventEmitter();
 
     const fetchGoodsSteamPriceJob = scheduleJob(jobConfig.CRONRULE.fetchGoodsSteamPriceJob, jobWrapper(ev, fetchGoodsSteamPrice, "fetchGoodsSteamPrice"));
 
-    const generateGoodsDataJob = scheduleJob(jobConfig.CRONRULE.generateGoodsDataJob, jobWrapper(ev, generateGoodsData, "generateGoodsData").bind(null, [getId(newestDota2Task), getId(newestCsgoTask)]));
+    const generateGoodsDataJob = scheduleJob(jobConfig.CRONRULE.generateGoodsDataJob, jobWrapper(ev, generateGoodsData, "generateGoodsData"));
 
     const fetchGoodsNameIdJob = scheduleJob(jobConfig.CRONRULE.fetchGoodsNameIdJob, jobWrapper(ev, fetchGoodsNameId, "fetchGoodsNameId"));
 
