@@ -17,7 +17,11 @@ export const fetchGoodsNameId = async () => {
                 try {
                     itemNameId = await getItemNameId(g.gameName, g.marketHashName);
                 } catch (e) {
-                    console.log(e);
+                    console.log(e.msg);
+                    if (e.data.statusCode == 200) {
+                        await Goods.remove({ marketHashName: e.data.marketHashName });
+                        console.log(`${e.data.marketHashName} has been removed!`);
+                    }
                     await sleep(15000);
                     continue;
                 }

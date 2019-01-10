@@ -1,5 +1,4 @@
 import { unsetSteamPriceForAllGoods } from "../src/core/helpers";
 
-unsetSteamPriceForAllGoods();
-
-process.exit(0);
+unsetSteamPriceForAllGoods()
+    .then((res) => res ? process.exit(0) : {});

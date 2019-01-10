@@ -30,7 +30,13 @@ export const getItemNameId = async (gameName: string, marketHashName: string) =>
                 if (match) {
                     resolve(match[1]);
                 } else {
-                    reject(`Can't get getItemNameId, marketHashName is ${marketHashName}, statusCode is ${res.statusCode}, res is ${match}`);
+                    reject({
+                        msg: `Can't get getItemNameId, marketHashName is ${marketHashName}, statusCode is ${res.statusCode}, res is ${match}`,
+                        data: {
+                            marketHashName,
+                            statusCode: res.statusCode,
+                        },
+                    });
                 }
             }
         });
