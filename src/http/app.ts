@@ -5,6 +5,7 @@ import { useKoaServer } from "routing-controllers";
 import { httpConfig } from "../../config";
 import TaskController from "./controllers/task";
 import SubscribeController from "./controllers/subscribe";
+import CookieController from "./controllers/cookie";
 
 const createHttpServer = async () => {
     const koa = new Koa();
@@ -24,6 +25,7 @@ const createHttpServer = async () => {
         controllers: [
             TaskController,
             SubscribeController,
+            CookieController,
         ],
         classTransformer: false,
     });
