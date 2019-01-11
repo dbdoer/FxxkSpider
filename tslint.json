@@ -10,7 +10,7 @@
         "ordered-imports": false,
         "max-line-length": false,
         "only-arrow-functions": false,
-        "triple-equals": false,
+        "triple-equals": false
     },
     "rulesDirectory": []
 }
