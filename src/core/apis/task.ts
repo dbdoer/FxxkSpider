@@ -1,4 +1,5 @@
 import * as moment from "moment";
+import * as math from "mathjs";
 import { getGoodsSellingList,
     parseGoodsSellingList,
     getGoodsBuyingList,
@@ -105,6 +106,8 @@ export const taskResultExport = async (taskId: string) => {
             cell4.value = "steam最大收购价（单位：元）";
             const cell5 = row.addCell();
             cell5.value = "steam最小出售价（单位：元）";
+            const cell6 = row.addCell();
+            cell6.value = "收购价-buff出售最低价";
             const cell7 = row.addCell();
             cell7.value = "倍数";
             const cell8 = row.addCell();
@@ -126,8 +129,8 @@ export const taskResultExport = async (taskId: string) => {
                 let steamMinSellPrice = "";
                 const goods = await Goods.findOne({ marketHashName: r.market_hash_name });
                 if (goods) {
-                    steamMaxBuyPrice = goods.steamMaxBuyPrice;
-                    steamMinSellPrice = goods.steamMinSellPrice;
+                    steamMaxBuyPrice = goods.steamMaxBuyPrice.substr(2);
+                    steamMinSellPrice = goods.steamMinSellPrice.substr(2);
                 }
                 const dataRow = sheet.addRow();
                 const dataCell1 = dataRow.addCell();
@@ -135,6 +138,7 @@ export const taskResultExport = async (taskId: string) => {
                 const dataCell3 = dataRow.addCell();
                 const dataCell4 = dataRow.addCell();
                 const dataCell5 = dataRow.addCell();
+                const dataCell6 = dataRow.addCell();
                 const dataCell7 = dataRow.addCell();
                 const dataCell8 = dataRow.addCell();
                 const dataCell9 = dataRow.addCell();
@@ -147,6 +151,7 @@ export const taskResultExport = async (taskId: string) => {
                 dataCell3.value = r.steam_price_cny;
                 dataCell4.value = steamMaxBuyPrice;
                 dataCell5.value = steamMinSellPrice;
+                dataCell6.value = math.eval(`${steamMaxBuyPrice} - ${r.sell_min_price}`);
                 dataCell7.value = r.diff_price;
                 dataCell8.value = r.sell_num;
                 dataCell9.value = r.original_discount_price;
