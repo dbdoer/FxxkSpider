@@ -104,9 +104,7 @@ export const taskResultExport = async (taskId: string) => {
             const cell4 = row.addCell();
             cell4.value = "steam最大收购价（单位：元）";
             const cell5 = row.addCell();
-            cell5.value = "steam最小出售价（单位：元）"
-            // const cell6 = row.addCell();
-            // cell6.value = "steam最近24h成交量"
+            cell5.value = "steam最小出售价（单位：元）";
             const cell7 = row.addCell();
             cell7.value = "倍数";
             const cell8 = row.addCell();
@@ -123,14 +121,20 @@ export const taskResultExport = async (taskId: string) => {
             cell13.value = "商品唯一标识名称";
 
             const rawResult = JSON.parse(task.rawResult);
-            rawResult.forEach(async (r) => {
+            for (const r of rawResult) {
+                let steamMaxBuyPrice = "";
+                let steamMinSellPrice = "";
+                const goods = await Goods.findOne({ marketHashName: r.market_hash_name });
+                if (goods) {
+                    steamMaxBuyPrice = goods.steamMaxBuyPrice;
+                    steamMinSellPrice = goods.steamMinSellPrice;
+                }
                 const dataRow = sheet.addRow();
                 const dataCell1 = dataRow.addCell();
                 const dataCell2 = dataRow.addCell();
                 const dataCell3 = dataRow.addCell();
                 const dataCell4 = dataRow.addCell();
                 const dataCell5 = dataRow.addCell();
-                // const dataCell6 = dataRow.addCell();
                 const dataCell7 = dataRow.addCell();
                 const dataCell8 = dataRow.addCell();
                 const dataCell9 = dataRow.addCell();
@@ -141,16 +145,8 @@ export const taskResultExport = async (taskId: string) => {
                 dataCell1.value = r.name;
                 dataCell2.value = r.sell_min_price;
                 dataCell3.value = r.steam_price_cny;
-                const goods = await Goods.findOne({ marketHashName: r.market_hash_name });
-                if (goods) {
-                    dataCell4.value = goods.steamMaxBuyPrice || "";
-                    dataCell5.value = goods.steamMinSellPrice || "";
-                    // dataCell6.value = goods.volume || "";
-                } else {
-                    dataCell4.value = "";
-                    dataCell5.value = "";
-                    // dataCell6.value = "";
-                }
+                dataCell4.value = steamMaxBuyPrice;
+                dataCell5.value = steamMinSellPrice;
                 dataCell7.value = r.diff_price;
                 dataCell8.value = r.sell_num;
                 dataCell9.value = r.original_discount_price;
@@ -158,7 +154,7 @@ export const taskResultExport = async (taskId: string) => {
                 dataCell11.value = r.buff_goods_url;
                 dataCell12.value = r.steam_market_url;
                 dataCell13.value = r.market_hash_name;
-            });
+            }
             break;
         }
         case "buying": {
@@ -177,7 +173,7 @@ export const taskResultExport = async (taskId: string) => {
             cell6.value = "商品唯一标识名称";
 
             const rawResult = JSON.parse(task.rawResult);
-            rawResult.forEach((r) => {
+            for (const r of rawResult) {
                 const dataRow = sheet.addRow();
                 const dataCell1 = dataRow.addCell();
                 const dataCell2 = dataRow.addCell();
@@ -191,7 +187,7 @@ export const taskResultExport = async (taskId: string) => {
                 dataCell4.value = r.buff_goods_url;
                 dataCell5.value = r.steam_market_url;
                 dataCell6.value = r.market_hash_name;
-            });
+            }
             break;
         }
     }
