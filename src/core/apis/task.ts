@@ -115,7 +115,7 @@ export const taskResultExport = async (taskId: string) => {
             const cell9 = row.addCell();
             cell9.value = "原始折扣价（百分比）";
             const cell10 = row.addCell();
-            cell10.value = "原始转回利润（百分比）";
+            cell10.value = "原始利润（百分比）";
             const cell11 = row.addCell();
             cell11.value = "Buff商品链接";
             const cell12 = row.addCell();
@@ -127,7 +127,7 @@ export const taskResultExport = async (taskId: string) => {
             for (const r of rawResult) {
                 let steamMaxBuyPrice = "";
                 let steamMinSellPrice = "";
-                const goods = await Goods.findOne({ marketHashName: r.market_hash_name });
+                const goods = await Goods.findOne({ marketHashName: r.market_hash_name, steamMaxBuyPrice: {$exists: true}, steamMinSellPrice: {$exists: true} });
                 if (goods) {
                     steamMaxBuyPrice = goods.steamMaxBuyPrice.substr(2);
                     steamMinSellPrice = goods.steamMinSellPrice.substr(2);
@@ -151,11 +151,11 @@ export const taskResultExport = async (taskId: string) => {
                 dataCell3.value = r.steam_price_cny;
                 dataCell4.value = steamMaxBuyPrice;
                 dataCell5.value = steamMinSellPrice;
-                dataCell6.value = math.eval(`${steamMaxBuyPrice} - ${r.sell_min_price}`);
+                dataCell6.value = steamMaxBuyPrice !== "" ? math.eval(`${steamMaxBuyPrice} * 0.85 - ${r.sell_min_price}`) : "";
                 dataCell7.value = r.diff_price;
                 dataCell8.value = r.sell_num;
                 dataCell9.value = r.original_discount_price;
-                dataCell10.value = r.original_profit;
+                dataCell10.value = steamMaxBuyPrice !== "" ? math.eval(`(${steamMaxBuyPrice} * 0.85 - ${r.sell_min_price}) / ${steamMaxBuyPrice}`) : "";
                 dataCell11.value = r.buff_goods_url;
                 dataCell12.value = r.steam_market_url;
                 dataCell13.value = r.market_hash_name;
