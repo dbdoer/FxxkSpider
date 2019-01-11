@@ -5,9 +5,15 @@ import { IBuffGoodsSellingListResponse,
     IBUffGoodsBillOrderResponse,
     IBuffGoodsBuyingListResponse,
     IBuffGoodsBuyingItem } from "../../@types";
+import { Cookie } from "../../model/cookie";
 
 export const getGoodsSellingList = async (gameName: string, pageNum: number) => {
-    const res = await Axios.get<IBuffGoodsSellingListResponse>(`https://buff.163.com/api/market/goods?game=${gameName}&page_num=${pageNum}&page_size=1000`);
+    const cookie = await Cookie.findOne({}).sort("-createdAt");
+    const res = await Axios.get<IBuffGoodsSellingListResponse>(`https://buff.163.com/api/market/goods?game=${gameName}&page_num=${pageNum}&page_size=500`, {
+        headers: {
+            cookie: cookie.value,
+        },
+    });
     return res.data;
 };
 
@@ -17,7 +23,12 @@ export const getGoodsBillOrder = async (gameName: string, goodsId: string) => {
 };
 
 export const getGoodsBuyingList = async (gameName: string, pageNum: number) => {
-    const res = await Axios.get<IBuffGoodsBuyingListResponse>(`https://buff.163.com/api/market/goods/buying?game=${gameName}&page_num=${pageNum}&page_size=1000`);
+    const cookie = await Cookie.findOne({}).sort("-createdAt");
+    const res = await Axios.get<IBuffGoodsBuyingListResponse>(`https://buff.163.com/api/market/goods/buying?game=${gameName}&page_num=${pageNum}&page_size=500`, {
+        headers: {
+            cookie: cookie.value,
+        },
+    });
     return res.data;
 };
 
