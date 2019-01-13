@@ -48,17 +48,16 @@ export const getSteamPrice = async (itemNameId: string) => {
     try {
         const url = `https://steamcommunity.com/market/itemordershistogram?country=CN&language=schinese&currency=23&item_nameid=${itemNameId}&two_factor=0`;
         const res = await Axios.get(url);
+        if (res.status === 429) {
+            throw new Error("Too much Request!");
+        }
         if (res.data.success) {
             return {
-                steamMaxBuyPrice: `¥ ${res.data.buy_order_graph[0][0] || ""}`,
-                steamMinSellPrice: `¥ ${res.data.sell_order_graph[0][0] || ""}`,
+                steamMaxBuyPrice: `¥ ${(res.data.buy_order_graph && res.data.buy_order_graph.length !== 0) ? res.data.buy_order_graph[0][0] : ""}`,
+                steamMinSellPrice: `¥ ${(res.data.sell_order_graph && res.data.sell_order_graph.length !== 0) ? res.data.sell_order_graph[0][0] : ""}`,
             };
         }
     } catch (e) {
         console.log(`getSteamPrice Err! ItemNameId is ${itemNameId}, Err inf:\n${e}`);
-        return {
-            steamMaxBuyPrice: "",
-            steamMinSellPrice: "",
-        };
     }
 };
