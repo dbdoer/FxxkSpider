@@ -1,7 +1,8 @@
-import { JsonController, Get } from "routing-controllers";
+import { JsonController, Get, Post } from "routing-controllers";
 import { Goods } from "../../core/model";
 import * as math from "mathjs";
 import { jobConfig } from "../../../config";
+import { unsetSteamPriceForAllGoods } from "../../core/helpers";
 
 @JsonController()
 class MonitorController {
@@ -25,6 +26,15 @@ class MonitorController {
             SteamHasBeenCrawl,
             SteamRemaining: math.eval(`${SteamAllNeedCrawl} - ${SteamHasBeenCrawl}`),
             RemainingTime: Number(math.eval(`(${SteamAllNeedCrawl} - ${SteamHasBeenCrawl}) * ${jobConfig.SLEEP_TIMING.fetchGoodsSteamPriceJob} / 1000 / 60`)).toFixed(2),
+        };
+    }
+
+    @Get("/monitor/unset_steam_data")
+    private async unsetSteamData() {
+        await unsetSteamPriceForAllGoods();
+        return {
+            error: 0,
+            msg: "成功",
         };
     }
 }

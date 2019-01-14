@@ -1,6 +1,6 @@
 import * as React from "react";
 import { autobind } from "core-decorators";
-import { Progress, Row, Col } from "antd";
+import { Progress, Row, Col, Divider, Card, Button, message } from "antd";
 import Axios from "axios";
 
 interface IMonitorDataSource {
@@ -65,6 +65,11 @@ class MonitorContainer extends React.Component<any, { monitorDataSource: IMonito
         clearTimeout(this.poll);
     }
 
+    public handleUnsetSteamDataBtnClick() {
+        Axios.get("/api/monitor/unset_steam_data")
+            .then((res) => res.data.error === 0 ? message.success("成功") : message.error("失败"));
+    }
+
     public render() {
         const { monitorDataSource } = this.state;
         return (
@@ -95,14 +100,28 @@ class MonitorContainer extends React.Component<any, { monitorDataSource: IMonito
                         </Row>
                     </Col>
                 </Row>
-                <br />
-                <hr />
+                <br /><br />
                 <Row type="flex" justify="space-around">
                     <Col span={6}>（steam）总共需要抓取饰品个数：{monitorDataSource.SteamAllNeedCrawl}</Col>
                     <Col span={6}>（steam）已抓取饰品个数：{monitorDataSource.SteamHasBeenCrawl}</Col>
                     <Col span={6}>（steam）未抓取饰品个数：{monitorDataSource.SteamRemaining}</Col>
                     <Col span={6}>（steam）预计剩余时间：{monitorDataSource.RemainingTime} 分钟</Col>
                 </Row>
+                <br />
+                <Divider />
+                <br /><br />
+                <h2 className="center">执行器</h2>
+                <br />
+                <Row type="flex" justify="space-around">
+                    <Col span={8}>
+                        <Card title="重置所有饰品steam数据" actions={[<Button onClick={this.handleUnsetSteamDataBtnClick}>执行</Button>]}>
+                            <p>该操作会重置所有饰品的steam数据</p>
+                            <p>包括steam最高收购价，最小出售价以及24小时成交量</p>
+                            <p>一般用于第二天定时抓取任务之前，清空已有数据以获得最新数据</p>
+                        </Card>
+                    </Col>
+                </Row>
+                <br /><br />
             </section>
         );
     }

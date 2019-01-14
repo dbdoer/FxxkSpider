@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Input, List, Card } from "antd";
+import { Button, Input, List, Card, Divider } from "antd";
 import { autobind } from "core-decorators";
 import Axios from "axios";
 import { ISubscriber } from "../../../core/model";
@@ -99,7 +99,7 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
                     <Button type="primary" onClick={this.handleSubmit}>添加    ！</Button>
                 </form>
                 <br />
-                <hr />
+                <Divider />
                 <h3>监听饰品预估总价值：（按平均出售价计算）{totalSum.toFixed(2)}</h3>
                 <br /><br />
                 {subscribers && <List
