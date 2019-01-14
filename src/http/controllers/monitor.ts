@@ -24,7 +24,7 @@ class MonitorController {
             SteamAllNeedCrawl,
             SteamHasBeenCrawl,
             SteamRemaining: math.eval(`${SteamAllNeedCrawl} - ${SteamHasBeenCrawl}`),
-            RemainingTime: math.eval(`(${SteamAllNeedCrawl} - ${SteamHasBeenCrawl}) * ${jobConfig.SLEEP_TIMING.fetchGoodsSteamPriceJob} / 1000 / 60`),
+            RemainingTime: Number(math.eval(`(${SteamAllNeedCrawl} - ${SteamHasBeenCrawl}) * ${jobConfig.SLEEP_TIMING.fetchGoodsSteamPriceJob} / 1000 / 60`)).toFixed(2),
         };
     }
 }
