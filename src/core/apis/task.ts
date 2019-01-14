@@ -100,8 +100,8 @@ export const taskResultExport = async (taskId: string) => {
             cell1.value = "商品名";
             const cell2 = row.addCell();
             cell2.value = "Buff出售最低价（单位：元）";
-            // const cell3 = row.addCell();
-            // cell3.value = "steam出售价格（单位：元）";
+            const cell3 = row.addCell();
+            cell3.value = "steam出售价格（单位：元）";
             const cell4 = row.addCell();
             cell4.value = "steam最大收购价（单位：元）";
             const cell5 = row.addCell();
@@ -135,7 +135,7 @@ export const taskResultExport = async (taskId: string) => {
                 const dataRow = sheet.addRow();
                 const dataCell1 = dataRow.addCell();
                 const dataCell2 = dataRow.addCell();
-                // const dataCell3 = dataRow.addCell();
+                const dataCell3 = dataRow.addCell();
                 const dataCell4 = dataRow.addCell();
                 const dataCell5 = dataRow.addCell();
                 const dataCell6 = dataRow.addCell();
@@ -148,7 +148,7 @@ export const taskResultExport = async (taskId: string) => {
                 const dataCell13 = dataRow.addCell();
                 dataCell1.value = r.name;
                 dataCell2.value = r.sell_min_price;
-                // dataCell3.value = r.steam_price_cny;
+                dataCell3.value = r.steam_price_cny;
                 dataCell4.value = steamMaxBuyPrice;
                 dataCell5.value = steamMinSellPrice;
                 dataCell6.value = steamMaxBuyPrice !== "" ? math.eval(`${steamMaxBuyPrice} * 0.85 - ${r.sell_min_price}`) : "";
