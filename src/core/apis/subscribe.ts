@@ -1,18 +1,27 @@
-import { Subscriber, Status, ISubscriber} from "../model";
+import { Subscriber, Status, ISubscriber, Goods} from "../model";
 import { scheduleJob } from "node-schedule";
-import { getSteamPriceOverview } from "../services";
-import { ISteamPriceOverviewResponse } from "../@types";
+import { getSteamPriceOverview, getSteamPrice, getItemNameId } from "../services";
+import { sleep } from "../helpers";
 
 const subscribing = async (subscriber) => {
     const n = await Subscriber.countDocuments({ _id: subscriber._id });
     if (n > 0) {
-        const res = await getSteamPriceOverview(subscriber.gameName, subscriber.marketHashName);
-        if (res) {
+        const steamPriceOverViewRes = await getSteamPriceOverview(subscriber.gameName, subscriber.marketHashName);
+        await sleep(1000);
+        const goods = await Goods.findOne({ marketHashName: subscriber.marketHashName });
+        let steamAllPriceRes;
+        if (goods && goods.itemNameId) {
+            steamAllPriceRes = await getSteamPrice(goods.itemNameId);
+        } else {
+            const itemNameId = await getItemNameId(subscriber.gameName, subscriber.marketHashName);
+            steamAllPriceRes = await getSteamPrice(itemNameId as string);
+        }
+        if (steamPriceOverViewRes && steamAllPriceRes) {
             await subscriber.updateOne({
                 status: Status.success,
-                lowestPrice: (res as ISteamPriceOverviewResponse).lowest_price,
-                volume: (res as ISteamPriceOverviewResponse).volume,
-                medianPrice: (res as ISteamPriceOverviewResponse).median_price,
+                volume: steamPriceOverViewRes.volume,
+                steamMaxBuyPrice: steamAllPriceRes.steamMaxBuyPrice,
+                steamMinSellPrice: steamAllPriceRes.steamMinSellPrice,
             });
             return true;
         } else {

@@ -7,16 +7,17 @@ import TaskController from "./controllers/task";
 import SubscribeController from "./controllers/subscribe";
 import CookieController from "./controllers/cookie";
 import MonitorController from "./controllers/monitor";
+import { restoreSubscribing } from "../core/apis";
 
 const createHttpServer = async () => {
     const koa = new Koa();
 
     // 前端静态资源服务
-    if (httpConfig.IDENTITY === "development") {
-        koa.use(serve(__dirname + "/../dashboard/build", {
-            maxAge: 0,
-        }));
-    }
+    // if (httpConfig.IDENTITY === "development") {
+    //     koa.use(serve(__dirname + "/../dashboard/build", {
+    //         maxAge: 0,
+    //     }));
+    // }
 
     // 数据报表资源服务
     koa.use(serve(__dirname + "/../core/export"));
@@ -31,6 +32,10 @@ const createHttpServer = async () => {
         ],
         classTransformer: false,
     });
+
+    {
+        restoreSubscribing();
+    }
 
     return koa;
 };

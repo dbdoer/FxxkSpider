@@ -72,10 +72,10 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
 
         const totalSum = subscribers.filter((v) => v.status === 1).reduce((pv, cv) => {
             let nowPrice;
-            if (cv.medianPrice) {
-                nowPrice = Number(cv.medianPrice.replace(",", "").substr(2));
+            if (cv.steamMaxBuyPrice) {
+                nowPrice = Number(cv.steamMaxBuyPrice.substr(2));
             } else {
-                nowPrice = Number(cv.lowestPrice.replace(",", "").substr(2));
+                nowPrice = Number(cv.steamMinSellPrice.substr(2));
             }
             return pv + nowPrice;
         }, 0);
@@ -112,8 +112,8 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
                                     <div>
                                         <p><a href={`https://steamcommunity.com/market/listings/${getGameId(s.gameName)}/${encodeURI(s.marketHashName)}`} target="_blank">Steam 市场链接</a></p>
                                         <p>每次抓取间隔时间：{s.intervals}分钟</p>
-                                        <p>Steam最低价：{s.lowestPrice}</p>
-                                        <p>Steam平均出售价：{s.medianPrice || "无" }</p>
+                                        <p>Steam最高收购价：{s.steamMaxBuyPrice || "无"}</p>
+                                        <p>Steam最低出售价：{s.steamMinSellPrice || "无" }</p>
                                         <p>Steam平台24小时出售个数：{s.volume || "无" }</p>
                                         <p>最后更新时间：{new Date(s.updatedAt).toLocaleString()}</p>
                                     </div>

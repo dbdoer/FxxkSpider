@@ -19,7 +19,6 @@ export const getSteamPriceOverview = async (gameName: string, marketHashName: st
 
 export const getItemNameId = async (gameName: string, marketHashName: string) => {
     const url = `https://steamcommunity.com/market/listings/${getGameId(gameName)}/${encodeURI(marketHashName)}`;
-    console.log(url);
     const fetchPromise = () => new Promise((resolve, reject) => {
         request({ url }, (err, res, body) => {
             if (err) {

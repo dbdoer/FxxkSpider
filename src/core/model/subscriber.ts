@@ -13,9 +13,9 @@ interface ISubscriber extends mongoose.Document {
     gameName: string;
     intervals: number;
     status: StatusType;
-    lowestPrice: string;
     volume: string;
-    medianPrice: string;
+    steamMaxBuyPrice: string;
+    steamMinSellPrice: string;
 }
 
 const subscriberSchema = new Schema({
@@ -41,15 +41,15 @@ const subscriberSchema = new Schema({
         required: true,
         default: StatusType.pending,
     },
-    lowestPrice: {
+    steamMaxBuyPrice: {
+        type: String,
+        required: false,
+    },
+    steamMinSellPrice: {
         type: String,
         required: false,
     },
     volume: {
-        type: String,
-        required: false,
-    },
-    medianPrice: {
         type: String,
         required: false,
     },
