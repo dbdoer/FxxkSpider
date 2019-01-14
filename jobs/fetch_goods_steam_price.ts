@@ -26,7 +26,7 @@ export const fetchGoodsSteamPrice = async () => {
                     await (g as any).updateOne({ steamMaxBuyPrice, steamMinSellPrice });
                 } catch (e) {
                     console.log(e);
-                    await SLEEP_TIMING(600000);
+                    await sleep(600000);
                     continue;
                 }
                 await sleep(SLEEP_TIMING);
