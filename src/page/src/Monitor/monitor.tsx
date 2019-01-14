@@ -67,7 +67,14 @@ class MonitorContainer extends React.Component<any, { monitorDataSource: IMonito
 
     public handleUnsetSteamDataBtnClick() {
         Axios.get("/api/monitor/unset_steam_data")
-            .then((res) => res.data.error === 0 ? message.success("成功") : message.error("失败"));
+            .then((res) => {
+                if (res.data.error === 0) {
+                    message.success("成功");
+                    this.fetchMonitorData();
+                } else {
+                    message.error("失败");
+                }
+            });
     }
 
     public render() {

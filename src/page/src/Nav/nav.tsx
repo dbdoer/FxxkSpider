@@ -54,19 +54,19 @@ class Nav extends React.Component<any, { current: string }> {
                     theme="dark"
                 >
                     <Menu.Item key="task_list">
-                        <Link to="/"><Icon type="appstore" />当前任务单</Link>
+                        <Link to="/"><Icon type="radar-chart" />当前任务单</Link>
                     </Menu.Item>
                     <Menu.Item key="create_goods_selling_list">
-                        <Link to="/create_goods_selling_list"><Icon type="appstore" />创建新出售价格任务单</Link>
+                        <Link to="/create_goods_selling_list"><Icon type="plus-square" />创建新出售价格任务单</Link>
                     </Menu.Item>
                     <Menu.Item key="create_goods_buying_list">
-                        <Link to="/create_goods_buying_list"><Icon type="appstore" />创建新收购价格任务单</Link>
+                        <Link to="/create_goods_buying_list"><Icon type="plus-square" />创建新收购价格任务单</Link>
                     </Menu.Item>
                     <Menu.Item key="goods_subscribe">
-                        <Link to="/subscribe"><Icon type="appstore" />饰品订阅器</Link>
+                        <Link to="/subscribe"><Icon type="eye" />饰品订阅器</Link>
                     </Menu.Item>
                     <Menu.Item key="monitor">
-                        <Link to="/monitor"><Icon type="appstore" />控制台</Link>
+                        <Link to="/monitor"><Icon type="desktop" />控制台</Link>
                     </Menu.Item>
                 </Menu>
                 {/* <nav style={{ textAlign: "center", width: "100vw", margin: "0 0 50px 0" }}>
