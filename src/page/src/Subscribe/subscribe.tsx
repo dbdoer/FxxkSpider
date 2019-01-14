@@ -100,7 +100,7 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
                 </form>
                 <br />
                 <hr />
-                <h3>监听饰品预估总价值：（按平均出售价计算）{totalSum.toFixed(2)}</h3>
+                <h3>监听饰品预估总价值：（按Steam最高收购价计算）{totalSum.toFixed(2)}</h3>
                 <br /><br />
                 {subscribers && <List
                     grid={{ gutter: 16, column: 4 }}

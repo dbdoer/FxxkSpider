@@ -4,6 +4,8 @@ import { Menu, Icon } from "antd";
 import { autobind } from "core-decorators";
 import * as H from "history";
 
+const SubMenu = Menu.SubMenu;
+
 @autobind
 class Nav extends React.Component<any, { current: string }> {
     constructor(args) {
@@ -63,11 +65,19 @@ class Nav extends React.Component<any, { current: string }> {
                         <Link to="/create_goods_buying_list"><Icon type="appstore" />创建新收购价格任务单</Link>
                     </Menu.Item>
                     <Menu.Item key="goods_subscribe">
-                        <Link to="/subscribe"><Icon type="appstore" />饰品监听</Link>
+                        <Link to="/subscribe"><Icon type="appstore" />饰品订阅器</Link>
                     </Menu.Item>
                     <Menu.Item key="monitor">
-                        <Link to="/monitor"><Icon type="appstore" />监视器</Link>
+                        <Link to="/monitor"><Icon type="appstore" />爬虫监视器</Link>
                     </Menu.Item>
+                    <Menu.Item key="login" className="login">
+                        <Link to="/login"><Icon type="user" />登录</Link>
+                    </Menu.Item>
+                    <SubMenu title={<span><Icon type="user" />诗亮</span>} className="logout">
+                        <Menu.Item key="logout">
+                            <Link to="/logout">注销</Link>
+                        </Menu.Item>
+                    </SubMenu>
                 </Menu>
                 {/* <nav style={{ textAlign: "center", width: "100vw", margin: "0 0 50px 0" }}>
                     <Link to="/" style={{ margin: "0 30px " }}>当前任务单</Link>

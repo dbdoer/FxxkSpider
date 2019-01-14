@@ -4,3 +4,7 @@
 .center-section, .center {
     text-align: center
 }
+
+.login, .logout {
+    float: right
+}
