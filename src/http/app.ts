@@ -6,6 +6,7 @@ import { httpConfig } from "../../config";
 import TaskController from "./controllers/task";
 import SubscribeController from "./controllers/subscribe";
 import CookieController from "./controllers/cookie";
+import MonitorController from "./controllers/monitor";
 
 const createHttpServer = async () => {
     const koa = new Koa();
@@ -26,6 +27,7 @@ const createHttpServer = async () => {
             TaskController,
             SubscribeController,
             CookieController,
+            MonitorController,
         ],
         classTransformer: false,
     });
