@@ -99,8 +99,8 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
                     <Button type="primary" onClick={this.handleSubmit}>添加    ！</Button>
                 </form>
                 <br />
-                <Divider />
-                <h3>监听饰品预估总价值：（按最高收购价计算）{totalSum.toFixed(2)}</h3>
+                <hr />
+                <h3>监听饰品预估总价值：（按Steam最高收购价计算）{totalSum.toFixed(2)}</h3>
                 <br /><br />
                 {subscribers && <List
                     grid={{ gutter: 16, column: 4 }}
