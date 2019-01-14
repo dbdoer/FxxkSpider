@@ -1,11 +1,11 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import "./App.css";
+import "./main.css";
 import { HashRouter, Switch, Route } from "react-router-dom";
-import TaskCreate from "./create";
-import TaskList from "./list";
-import Nav from "./nav";
-import GoodsSubscribe from "./subscribe";
+import { TaskCreate, TaskList } from "./Tasks";
+import { Nav } from "./Nav";
+import { GoodsSubscribe } from "./Subscribe";
+import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
     <HashRouter>
@@ -21,3 +21,8 @@ ReactDOM.render(
     document.getElementById("root") as HTMLElement,
     () => console.log("Page 服务已启动"),
 );
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: http://bit.ly/CRA-PWA
+serviceWorker.unregister();

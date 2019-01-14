@@ -2,7 +2,7 @@ import * as React from "react";
 import { Button, Input, List, Card } from "antd";
 import { autobind } from "core-decorators";
 import Axios from "axios";
-import { ISubscriber } from "../../core/model";
+import { ISubscriber } from "../../../core/model";
 
 const getGameId = (gameName: string) => {
     switch (gameName) {
