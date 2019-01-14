@@ -68,7 +68,7 @@ class TaskCreate extends React.Component<{type: string}, { gameName: string, sta
     public render() {
         const { type } = this.props;
         return (
-            <section style={{ textAlign: "center" }}>
+            <section className="center-section">
                 <br /><br />
                 <h2>{type === "selling" ? "这是爬取Buff出售价格的任务单" : "这是爬取Buff收购价格的任务单"}</h2>
                 <br />

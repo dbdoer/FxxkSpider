@@ -5,6 +5,7 @@ import { HashRouter, Switch, Route } from "react-router-dom";
 import { TaskCreate, TaskList } from "./Tasks";
 import { Nav } from "./Nav";
 import { GoodsSubscribe } from "./Subscribe";
+import { MonitorContainer } from "./Monitor";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
@@ -15,6 +16,7 @@ ReactDOM.render(
                 <Route path="/create_goods_selling_list" component={() => <TaskCreate type="selling"/>} />
                 <Route path="/create_goods_buying_list" component={() => <TaskCreate type="buying"/>} />
                 <Route path="/subscribe" component={GoodsSubscribe} />
+                <Route path="/monitor" component={MonitorContainer} />
             </Nav>
         </Switch>
     </HashRouter>,

@@ -1,7 +1,6 @@
 import { Goods } from "../src/core/model";
 import { sleep } from "../src/core/helpers";
 import { getSteamPrice, getSteamPriceOverview } from "../src/core/services";
-import { ISteamPriceOverviewResponse } from "../src/core/@types";
 import { jobConfig } from "../config";
 
 export const fetchGoodsSteamPrice = async () => {

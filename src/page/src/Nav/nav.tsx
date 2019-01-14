@@ -24,6 +24,11 @@ class Nav extends React.Component<any, { current: string }> {
                     current: "goods_subscribe",
                 };
                 break;
+            case "/monitor":
+                this.state = {
+                    current: "monitor",
+                };
+                break;
             case "/":
             default:
                 this.state = {
@@ -59,6 +64,9 @@ class Nav extends React.Component<any, { current: string }> {
                     </Menu.Item>
                     <Menu.Item key="goods_subscribe">
                         <Link to="/subscribe"><Icon type="appstore" />饰品监听</Link>
+                    </Menu.Item>
+                    <Menu.Item key="monitor">
+                        <Link to="/monitor"><Icon type="appstore" />监视器</Link>
                     </Menu.Item>
                 </Menu>
                 {/* <nav style={{ textAlign: "center", width: "100vw", margin: "0 0 50px 0" }}>

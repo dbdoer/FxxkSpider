@@ -1,1 +1,6 @@
-@import '~antd/dist/antd.css';
+@import '../node_modules/antd/dist/antd.min.css';
+@import '../node_modules/normalize.css/normalize.css';
+
+.center-section, .center {
+    text-align: center
+}

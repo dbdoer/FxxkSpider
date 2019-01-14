@@ -81,7 +81,7 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
         }, 0);
 
         return (
-            <section style={ { textAlign: "center" } }>
+            <section className="center-section">
                 <br />
                 <form>
                     <label>游戏名（请输入 dota2，csgo或者pubg）</label>
