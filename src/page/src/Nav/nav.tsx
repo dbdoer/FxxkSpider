@@ -63,10 +63,10 @@ class Nav extends React.Component<any, { current: string }> {
                         <Link to="/create_goods_buying_list"><Icon type="appstore" />创建新收购价格任务单</Link>
                     </Menu.Item>
                     <Menu.Item key="goods_subscribe">
-                        <Link to="/subscribe"><Icon type="appstore" />饰品监听</Link>
+                        <Link to="/subscribe"><Icon type="appstore" />饰品订阅器</Link>
                     </Menu.Item>
                     <Menu.Item key="monitor">
-                        <Link to="/monitor"><Icon type="appstore" />监视器</Link>
+                        <Link to="/monitor"><Icon type="appstore" />控制台</Link>
                     </Menu.Item>
                 </Menu>
                 {/* <nav style={{ textAlign: "center", width: "100vw", margin: "0 0 50px 0" }}>
