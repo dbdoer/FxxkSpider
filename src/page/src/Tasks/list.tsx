@@ -1,9 +1,8 @@
 import * as React from "react";
 import Axios from "axios";
-import { ITask } from "../../core/model";
 import { autobind } from "core-decorators";
 import { Card, Button, Spin } from "antd";
-
+import { ITask } from "../../../core/model";
 @autobind
 class TaskList extends React.Component<{}, { dataSource: ITask[], progressString: string; }> {
     public poll: NodeJS.Timer;

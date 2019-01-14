@@ -1,7 +1,7 @@
 import * as React from "react";
 import { autobind } from "core-decorators";
 import Axios from "axios";
-import { ITask } from "../../core/model";
+import { ITask } from "../../../core/model";
 import { Button, Input } from "antd";
 
 @autobind

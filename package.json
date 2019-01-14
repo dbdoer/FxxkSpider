@@ -6,7 +6,8 @@
   "author": "Sammy",
   "scripts": {
     "start:http": "cross-env NODE_ENV=development nodemon src/index.ts",
-    "start:page": "cd ./src/dashboard && yarn watch",
+    "start:page": "cd ./src/page && npm run start",
+    "build:page": "cd ./src/page && npm run build",
     "run:restore": "ts-node scripts/restore_subscribers.ts",
     "run:fetch_name_id": "ts-node scripts/fetch_goods_nameid.ts",
     "run:fetch_steam_price": "ts-node scripts/fetch_goods_steam_price.ts",
@@ -40,18 +41,13 @@
     "@types/node": "^10.11.0",
     "@types/node-schedule": "^1.2.2",
     "@types/request": "^2.48.1",
-    "babel-loader": "^8.0.2",
     "cross-env": "^5.2.0",
-    "decent-messup": "^1.0.8",
-    "minimist": "^1.2.0",
     "nodemon": "^1.18.4",
     "pm2": "^3.2.2",
     "ts-loader": "^5.1.0",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "typescript": "^3.2.2",
-    "webpack": "^4.19.0",
-    "webpack-cli": "^3.1.0",
     "yarn": "^1.9.4"
   },
   "dependencies": {
