@@ -23,5 +23,7 @@ export const generateGoodsData = async () => {
             }
         }
     }
-    return true;
+    return {
+        error: true,
+    };
 };

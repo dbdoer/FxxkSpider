@@ -33,4 +33,7 @@ export const fetchGoodsSteamPrice = async () => {
         }
         n = n + 1;
     }
+    return {
+        error: 0,
+    };
 };

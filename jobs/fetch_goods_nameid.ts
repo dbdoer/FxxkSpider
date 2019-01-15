@@ -23,6 +23,11 @@ export const fetchGoodsNameId = async () => {
                     if (e.data.statusCode == 200) {
                         await Goods.deleteOne({ marketHashName: e.data.marketHashName });
                         console.log(`${e.data.marketHashName} has been removed!`);
+                    } else {
+                        return {
+                            error: 1,
+                            msg: e,
+                        };
                     }
                     await sleep(SLEEP_TIMING);
                     continue;
@@ -34,5 +39,7 @@ export const fetchGoodsNameId = async () => {
         }
         n = n + 1;
     }
-    process.exit(0); 
+    return {
+        error: 0,
+    };
 };
