@@ -24,9 +24,11 @@ export const fetchGoodsSteamPrice = async () => {
                     console.log(`Fetch Success! max: ${steamMaxBuyPrice}, min: ${steamMinSellPrice}, time: ${new Date().toLocaleString()}`);
                     await (g as any).updateOne({ steamMaxBuyPrice, steamMinSellPrice });
                 } catch (e) {
-                    console.log(e);
-                    await sleep(600000);
-                    continue;
+                    if (e.status && e.status === 429) {
+                        await sleep(600000);
+                    } else {
+                        continue;
+                    }
                 }
                 await sleep(SLEEP_TIMING);
             }
