@@ -88,13 +88,13 @@ class MonitorContainer extends React.Component<any, { monitorDataSource: IMonito
                     <Col span={8}>
                         <Row>
                             <Col span={12}>DotA 2 steam数据抓取进度：</Col>
-                            <Col span={12}><Progress percent={monitorDataSource.SteamDotA2Proportion || 0} status="active" /></Col>
+                            <Col span={12}><Progress percent={Number(monitorDataSource.SteamDotA2Proportion) || 0} status="active" /></Col>
                         </Row>
                     </Col>
                     <Col span={8}>
                         <Row>
                             <Col span={12}>Csgo steam数据抓取进度：</Col>
-                            <Col span={12}><Progress percent={monitorDataSource.SteamCsgoProportion || 0} status="active" /></Col>
+                            <Col span={12}><Progress percent={Number(monitorDataSource.SteamCsgoProportion) || 0} status="active" /></Col>
                         </Row>
                     </Col>
                 </Row>
@@ -103,7 +103,7 @@ class MonitorContainer extends React.Component<any, { monitorDataSource: IMonito
                     <Col span={12}>
                         <Row>
                             <Col span={12}>总共 steam数据抓取进度：</Col>
-                            <Col span={12}><Progress percent={monitorDataSource.SteamProportion || 0} status="active" /></Col>
+                            <Col span={12}><Progress percent={Number(monitorDataSource.SteamProportion) || 0} status="active" /></Col>
                         </Row>
                     </Col>
                 </Row>

@@ -31,12 +31,11 @@ export const loginUser = async (username: string, password: string, ctx: Context
                 ctx.session.user = {
                     _id: u._id,
                     role: u.role,
+                    username: u.username,
                 };
                 return {
                     error: 0,
                     msg: "成功",
-                    username: u.username,
-                    role: u.role,
                 };
             } else {
                 throw e;
@@ -48,4 +47,8 @@ export const loginUser = async (username: string, password: string, ctx: Context
         console.error(e);
         throw new UnauthorizedError("用户名或密码错误");
     }
+};
+
+export const countUserById = async (id: string) => {
+    return await User.countDocuments({ _id: id });
 };

@@ -2,58 +2,39 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { Menu, Icon } from "antd";
 import { autobind } from "core-decorators";
-import * as H from "history";
+import { UserContext } from "../Auth";
 
 const SubMenu = Menu.SubMenu;
 
 @autobind
 class Nav extends React.Component<any, { current: string }> {
-    constructor(args) {
-        super(args);
-        switch (this.props.location.pathname) {
-            case "/create_goods_selling_list":
-                this.state = {
-                    current: "create_goods_selling_list",
-                };
-                break;
-            case "/create_goods_buying_list":
-                this.state = {
-                    current: "create_goods_buying_list",
-                };
-                break;
-            case "/subscribe":
-                this.state = {
-                    current: "goods_subscribe",
-                };
-                break;
-            case "/monitor":
-                this.state = {
-                    current: "monitor",
-                };
-                break;
-            case "/":
-            default:
-                this.state = {
-                    current: "task_list",
-                };
-                break;
-        }
-    }
+    public static contextType = UserContext;
 
-    public handleClick(e) {
+    public state = {
+        current: this.props.location.pathname.substr(1),
+    };
+
+    public handleSelect({item, key}) {
+        const context = this.context;
+        console.log(key);
+        if (!context.userInfo.loginStatus) {
+            location.href = `/login?to=/${key}`;
+        }
         this.setState({
-            current: e.key,
+            current: key,
         });
     }
 
     public render() {
+        const { context } = this;
+        const { userInfo } = context;
         return (
             <div>
                 <Menu
-                    onClick={this.handleClick}
                     selectedKeys={[this.state.current]}
                     mode="horizontal"
                     theme="dark"
+                    onSelect={this.handleSelect}
                 >
                     <Menu.Item key="task_list">
                         <Link to="/"><Icon type="radar-chart" />当前任务单</Link>
@@ -70,21 +51,22 @@ class Nav extends React.Component<any, { current: string }> {
                     <Menu.Item key="monitor">
                         <Link to="/monitor"><Icon type="desktop" />控制台</Link>
                     </Menu.Item>
-                    <Menu.Item key="login" className="login">
-                        <Link to="/login"><Icon type="user" />登录</Link>
-                    </Menu.Item>
-                    <SubMenu title={<span><Icon type="user" />诗亮</span>} className="logout">
+                    {userInfo.loginStatus ? 
+                    <SubMenu title={<span><Icon type="user" />{userInfo.username}</span>} className="logout">
                         <Menu.Item key="logout">
                             <Link to="/logout">注销</Link>
                         </Menu.Item>
-                    </SubMenu>
+                    </SubMenu> :
+                    <Menu.Item key="login" className="login">
+                        <Link to="/login"><Icon type="user" />登录</Link>
+                    </Menu.Item>}
                 </Menu>
                 {/* <nav style={{ textAlign: "center", width: "100vw", margin: "0 0 50px 0" }}>
                     <Link to="/" style={{ margin: "0 30px " }}>当前任务单</Link>
                     <Link to="/create" style={{ margin: "0 30px " }}>创建新任务单</Link>
                     <Link to="/subscribe" style={{ margin: "0 30px " }}>饰品监听</Link>
                 </nav> */}
-            {this.props.children}
+                {this.props.children}
             </div>
         );
     }

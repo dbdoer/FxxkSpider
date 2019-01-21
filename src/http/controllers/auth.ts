@@ -1,6 +1,7 @@
-import { JsonController, Post, BodyParam, Ctx } from "routing-controllers";
+import { JsonController, Post, BodyParam, Ctx, Get, Session, UnauthorizedError, Authorized } from "routing-controllers";
 import { createUser, loginUser } from "../../core/apis";
 import { Context } from "koa";
+import { IUser } from "../../core/model/user";
 
 @JsonController()
 class AuthController {
@@ -19,6 +20,31 @@ class AuthController {
         @Ctx() ctx: Context,
     ) {
         return await loginUser(username, password, ctx);
+    }
+
+    @Authorized()
+    @Post("/logout")
+    private async logout(@Ctx() ctx: Context) {
+        ctx.session = null;
+        return {
+            error: 0,
+            msg: "注销成功",
+        };
+    }
+
+    @Get("/user")
+    private async getUserInfo(@Session("user", { required: false }) user: IUser) {
+        if (user) {
+            const { username, role } = user;
+            return {
+                error: 0,
+                msg: "已登录",
+                username,
+                role,
+            };
+        } else {
+            throw new UnauthorizedError("未登录");
+        }
     }
 }
 

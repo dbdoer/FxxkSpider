@@ -1,12 +1,12 @@
 import * as Koa from "koa";
 import * as serve from "koa-static";
 import "reflect-metadata";
-import { useKoaServer } from "routing-controllers";
+import { useKoaServer, Action } from "routing-controllers";
 import TaskController from "./controllers/task";
 import SubscribeController from "./controllers/subscribe";
 import CookieController from "./controllers/cookie";
 import MonitorController from "./controllers/monitor";
-import { restoreSubscribing } from "../core/apis";
+import { restoreSubscribing, countUserById } from "../core/apis";
 import AuthController from "./controllers/auth";
 import { httpConfig } from "../../config";
 import * as session from "koa-session";
@@ -50,6 +50,17 @@ const createHttpServer = async () => {
         ],
         classTransformer: false,
         development: httpConfig.IDENTITY === "development",
+        authorizationChecker: async (action: Action, roles: string[]) => {
+            const s = action.context.session;
+            const user = s.user;
+            if (user) {
+                const n = await countUserById(user._id);
+                if (n === 1) {
+                    return true;
+                }
+            }
+            return false;
+        },
     });
 
     {

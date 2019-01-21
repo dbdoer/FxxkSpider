@@ -105,7 +105,7 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
             <section>
                 <br />
                 {dataSource.length > 0 ? dataSource.map((t, i) => (
-                    <section>
+                    <section key={t._id}>
                         <Spin spinning={t.status !== 1} delay={300}>
                             <Card title={t.desc} hoverable={true} extra={<Button onClick={this.handleTaskDelete.bind(this, t._id)}>删除</Button>}>
                                 <p>创建时间：{new Date(t.createdAt).toLocaleTimeString()}</p>
