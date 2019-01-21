@@ -12,6 +12,7 @@ interface IUser extends mongoose.Document {
     username: string;
     password: string;
     role: UserRole;
+    salt: string;
 }
 
 const userSchema = new Schema({
@@ -23,8 +24,14 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
+    salt: {
+        type: String,
+        required: true,
+    },
     role: {
         type: [Number],
+        required: true,
+        default: 3,
     },
 }, { timestamps: true });
 

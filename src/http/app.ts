@@ -8,9 +8,24 @@ import CookieController from "./controllers/cookie";
 import MonitorController from "./controllers/monitor";
 import { restoreSubscribing } from "../core/apis";
 import AuthController from "./controllers/auth";
+import { httpConfig } from "../../config";
+import * as session from "koa-session";
+
+const sessionConfig = {
+    key: httpConfig.SESSION_KEY,
+    maxAge: httpConfig.SESSION_MAXAGE,
+    autoCommit: true,
+    overwrite: true,
+    httpOnly: true,
+    signed: true,
+    rolling: false,
+    renew: false,
+};
 
 const createHttpServer = async () => {
     const koa = new Koa();
+
+    koa.keys = httpConfig.KEYS;
 
     // 前端静态资源服务
     // if (httpConfig.IDENTITY === "development") {
@@ -22,6 +37,8 @@ const createHttpServer = async () => {
     // 数据报表资源服务
     koa.use(serve(__dirname + "/../core/export"));
 
+    koa.use(session(sessionConfig, koa));
+
     useKoaServer(koa, {
         routePrefix: "/api",
         controllers: [
@@ -29,16 +46,10 @@ const createHttpServer = async () => {
             SubscribeController,
             CookieController,
             MonitorController,
-        ],
-        classTransformer: false,
-    });
-
-    useKoaServer(koa, {
-        routePrefix: "/api",
-        controllers: [
             AuthController,
         ],
         classTransformer: false,
+        development: httpConfig.IDENTITY === "development",
     });
 
     {

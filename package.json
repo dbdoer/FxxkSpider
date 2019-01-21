@@ -31,6 +31,7 @@
   "devDependencies": {
     "@types/cheerio": "^0.22.10",
     "@types/core-decorators": "^0.20.0",
+    "@types/js-md5": "^0.4.2",
     "@types/koa": "^2.0.46",
     "@types/koa-bodyparser": "^5.0.1",
     "@types/koa-router": "^7.0.31",
@@ -56,6 +57,7 @@
     "better-xlsx": "^0.7.0",
     "cheerio": "^1.0.0-rc.2",
     "core-decorators": "^0.20.0",
+    "js-md5": "^0.7.3",
     "koa": "^2.5.3",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
