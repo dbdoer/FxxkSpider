@@ -2,12 +2,12 @@ import * as Koa from "koa";
 import * as serve from "koa-static";
 import "reflect-metadata";
 import { useKoaServer } from "routing-controllers";
-import { httpConfig } from "../../config";
 import TaskController from "./controllers/task";
 import SubscribeController from "./controllers/subscribe";
 import CookieController from "./controllers/cookie";
 import MonitorController from "./controllers/monitor";
 import { restoreSubscribing } from "../core/apis";
+import AuthController from "./controllers/auth";
 
 const createHttpServer = async () => {
     const koa = new Koa();
@@ -29,6 +29,14 @@ const createHttpServer = async () => {
             SubscribeController,
             CookieController,
             MonitorController,
+        ],
+        classTransformer: false,
+    });
+
+    useKoaServer(koa, {
+        routePrefix: "/api",
+        controllers: [
+            AuthController,
         ],
         classTransformer: false,
     });

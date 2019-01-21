@@ -1,4 +1,5 @@
 import mongoose from "./conn";
+import { IUser } from "./user";
 
 const { Schema } = mongoose;
 
@@ -24,9 +25,15 @@ interface ITask extends mongoose.Document {
     createdAt: Date;
     updatedAt: Date;
     type: string;
+    user: string | IUser;
 }
 
 const taskSchema = new Schema({
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
     status: {
         type: Number,
         required: true,
