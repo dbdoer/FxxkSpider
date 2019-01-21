@@ -23,7 +23,7 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
         Axios.get("/api/task")
             .then((res) => {
                 const nowTask = res.data[0];
-                if (nowTask.status === -1) {
+                if (nowTask && nowTask.status === -1) {
                     this.runPoll(this.getTaskDetail(nowTask._id));
                 }
                 this.setState({ dataSource: res.data });
