@@ -82,10 +82,18 @@ export const getTaskList = async () => {
         return await Task.find({}, "-rawResult")
         .sort("-createdAt");
     } catch (err) {
-        await Task.remove({});
+        await Task.deleteMany({});
         return await Task.find({}, "-rawResult")
         .sort("-createdAt");
     }
+};
+
+export const deleteTask = async (taskId: string) => {
+    await Task.deleteOne({ _id: taskId});
+    return {
+        error: 0,
+        msg: "成功",
+    };
 };
 
 export const taskResultExport = async (taskId: string) => {

@@ -1,7 +1,7 @@
 import * as React from "react";
 import Axios from "axios";
 import { autobind } from "core-decorators";
-import { Card, Button, Spin } from "antd";
+import { Card, Button, Spin, message } from "antd";
 import { ITask } from "../../../core/model";
 @autobind
 class TaskList extends React.Component<{}, { dataSource: ITask[], progressString: string; }> {
@@ -16,6 +16,10 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
     }
 
     public componentDidMount() {
+        this.getTaskList();
+    }
+
+    public getTaskList() {
         Axios.get("/api/task")
             .then((res) => {
                 const nowTask = res.data[0];
@@ -45,7 +49,7 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
                 .then((res) => {
                     if (res.data.status === 1) {
                         clearTimeout(this.poll);
-                        this.componentDidMount();
+                        this.getTaskList();
                         // const nowTask = res.data;
                         // this.setState((state) => ({ dataSource: state.dataSource.splice(0, 1, nowTask) }));
                     }
@@ -83,6 +87,18 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
         }
     }
 
+    public handleTaskDelete(taskId: string) {
+        Axios.delete(`/api/task/${taskId}`)
+            .then((res) => {
+                if (res.data.error === 0) {
+                    message.success("删除成功");
+                } else {
+                    message.error("删除失败");
+                }
+                this.getTaskList();
+            });
+    }
+
     public render() {
         const { dataSource, progressString } = this.state;
         return (
@@ -91,7 +107,7 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
                 {dataSource.length > 0 ? dataSource.map((t, i) => (
                     <section>
                         <Spin spinning={t.status !== 1} delay={300}>
-                            <Card title={t.desc} hoverable={true}>
+                            <Card title={t.desc} hoverable={true} extra={<Button onClick={this.handleTaskDelete.bind(this, t._id)}>删除</Button>}>
                                 <p>创建时间：{new Date(t.createdAt).toLocaleTimeString()}</p>
                                 <p>状态：{this.renderStatus(t.status)}{i === 0 ? progressString : null}</p>
                                 {t.status === 1 ? <p>耗时：{t.timeConsuming}</p> : null}
