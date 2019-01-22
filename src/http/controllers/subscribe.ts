@@ -1,6 +1,7 @@
-import { JsonController, Post, BodyParam, Get, Delete, Param } from "routing-controllers";
+import { JsonController, Post, BodyParam, Get, Delete, Param, Authorized } from "routing-controllers";
 import { initSubscriber, getSubscribersList, deleteSubscricerById } from "../../core/apis";
 
+@Authorized()
 @JsonController()
 class SubscribeController {
     @Post("/subscribe")

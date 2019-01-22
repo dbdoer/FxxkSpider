@@ -49,7 +49,8 @@ class MonitorContainer extends React.Component<any, { monitorDataSource: IMonito
                 this.setState({
                     monitorDataSource: res.data,
                 });
-            });
+            })
+            .catch(() => {});
     }
 
     public runPoll(cb) {
@@ -74,7 +75,8 @@ class MonitorContainer extends React.Component<any, { monitorDataSource: IMonito
                 } else {
                     message.error("失败");
                 }
-            });
+            })
+            .catch(() => {});
     }
 
     public render() {

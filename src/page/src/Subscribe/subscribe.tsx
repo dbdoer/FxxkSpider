@@ -36,7 +36,8 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
                 this.setState({
                     dataSource: res.data,
                 });
-            });
+            })
+            .catch(() => {});
     }
 
     public handleValueChange(ev) {
@@ -57,14 +58,16 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
                 if (res.data.error === 0) {
                     location.reload();
                 }
-            });
+            })
+            .catch(() => {});
     }
 
     public handleDeleteSubscriber(id) {
         Axios.delete(`/api/subscribe/${id}`)
             .then((res) => {
                 location.reload();
-            });
+            })
+            .catch(() => {});
     }
 
     public render() {

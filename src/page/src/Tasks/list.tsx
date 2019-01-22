@@ -27,7 +27,8 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
                     this.runPoll(this.getTaskDetail(nowTask._id));
                 }
                 this.setState({ dataSource: res.data });
-            });
+            })
+            .catch(() => {});
     }
 
     public componentWillUnmount() {
@@ -53,7 +54,8 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
                         // const nowTask = res.data;
                         // this.setState((state) => ({ dataSource: state.dataSource.splice(0, 1, nowTask) }));
                     }
-            });
+                })
+                .catch(() => {});
         };
     }
 
@@ -74,7 +76,8 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
                 if (res.data.error === 0) {
                     location.reload();
                 }
-            });
+            })
+            .catch(() => {});
     }
 
     public renderResultUrl(task: ITask) {
@@ -96,7 +99,8 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
                     message.error("删除失败");
                 }
                 this.getTaskList();
-            });
+            })
+            .catch(() => {});
     }
 
     public render() {

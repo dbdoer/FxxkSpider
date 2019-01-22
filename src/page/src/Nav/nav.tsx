@@ -117,4 +117,6 @@ class Nav extends React.Component<RouteChildrenProps, { current: string }> {
     }
 }
 
-export default withRouter(Nav);
+const NavWithRouter = withRouter(Nav);
+
+export default NavWithRouter;

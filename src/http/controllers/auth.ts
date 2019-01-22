@@ -5,6 +5,7 @@ import { IUser } from "../../core/model/user";
 
 @JsonController()
 class AuthController {
+    @Authorized()
     @Post("/signup")
     private async signUp(
         @BodyParam("username") username: string,
