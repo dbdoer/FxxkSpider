@@ -1,7 +1,7 @@
 import { JsonController, Post, BodyParam, Ctx, Get, Session, UnauthorizedError, Authorized } from "routing-controllers";
 import { createUser, loginUser } from "../../core/apis";
 import { Context } from "koa";
-import { IUser } from "../../core/model/user";
+import { IUser, ROLE } from "../../core/model/user";
 
 @JsonController()
 class AuthController {
@@ -10,8 +10,13 @@ class AuthController {
     private async signUp(
         @BodyParam("username") username: string,
         @BodyParam("password") password: string,
+        @Session("user") user: IUser,
     ) {
-        return await createUser(username, password);
+        if (user.role.includes(ROLE.ADMIN)) {
+            return await createUser(username, password);
+        } else {
+            throw new UnauthorizedError();
+        }
     }
 
     @Post("/login")

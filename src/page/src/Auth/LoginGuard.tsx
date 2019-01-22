@@ -23,6 +23,7 @@ class LoginGuard extends React.Component<RouteChildrenProps, ILoginGuardState> {
         userInfo,
         setLoginStatus: this.setLoginStatus,
         setUsername: this.setUsername,
+        setUserrole: this.setUserrole,
         checkLoginStatus: this.checkLoginStatus,
     };
 
@@ -34,6 +35,7 @@ class LoginGuard extends React.Component<RouteChildrenProps, ILoginGuardState> {
                     resolve(true);
                     this.state.setLoginStatus(true);
                     this.state.setUsername(res.data.username);
+                    this.state.setUserrole(res.data.role);
                 })
                 .catch(() => {
                     reject(false);
@@ -55,6 +57,12 @@ class LoginGuard extends React.Component<RouteChildrenProps, ILoginGuardState> {
         this.setState((preState) => {
             preState.userInfo.username = username;
             return preState;
+        });
+    }
+
+    public setUserrole(role: number[]) {
+        this.setState((preState) => {
+            preState.userInfo.role = [...role];
         });
     }
 

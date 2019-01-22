@@ -8,10 +8,16 @@ enum UserRole {
     user,
 }
 
+const ROLE = {
+    ADMIN: 1,
+    OPERATOR: 2,
+    USER: 3,
+};
+
 interface IUser extends mongoose.Document {
     username: string;
     password: string;
-    role: UserRole;
+    role: UserRole[];
     salt: string;
 }
 
@@ -40,4 +46,5 @@ const User = mongoose.model<IUser>("User", userSchema);
 export {
     User,
     IUser,
+    ROLE,
 };

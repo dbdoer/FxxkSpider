@@ -10,6 +10,7 @@ const UserContext = React.createContext({
     userInfo,
     setLoginStatus: (props) => {},
     setUsername: (props) => {},
+    setUserrole: (role) => {},
     checkLoginStatus: () => {},
 });
 
