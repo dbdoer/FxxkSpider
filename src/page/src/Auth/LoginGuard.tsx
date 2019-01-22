@@ -3,7 +3,6 @@ import { autobind } from "core-decorators";
 import { userInfo, UserContext } from "./userContext";
 import Axios from "axios";
 import { withRouter, RouteChildrenProps } from "react-router";
-import { message } from "antd";
 
 const AuthProvider = UserContext.Provider;
 
@@ -27,22 +26,22 @@ class LoginGuard extends React.Component<RouteChildrenProps, ILoginGuardState> {
         checkLoginStatus: this.checkLoginStatus,
     };
 
-    public componentDidMount() {
-        this.checkLoginStatus();
-    }
-
     public checkLoginStatus() {
         const pathname = this.props.location.pathname;
-        Axios.get("/api/user")
-            .then((res) => {
-                this.state.setLoginStatus(true);
-                this.state.setUsername(res.data.username);
-            })
-            .catch(() => {
-                if (pathname !== "/login" && pathname !== "/logout") {
-                    this.props.history.push(`/login`);
-                }
-            });
+        return new Promise((resolve, reject) => {
+            Axios.get("/api/user")
+                .then((res) => {
+                    resolve(true);
+                    this.state.setLoginStatus(true);
+                    this.state.setUsername(res.data.username);
+                })
+                .catch(() => {
+                    reject(false);
+                    if (pathname !== "/login" && pathname !== "/logout") {
+                        this.props.history.push(`/login`);
+                    }
+                });
+        });
     }
 
     public setLoginStatus(status: boolean) {

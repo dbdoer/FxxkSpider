@@ -23,6 +23,12 @@ class LoginContainer extends React.Component<RouteChildrenProps, ILoginContainer
         },
     };
 
+    public componentDidMount() {
+        if (!this.context.userInfo.loginStatus) {
+            message.error("未登录，请先登录");
+        }
+    }
+
     public componentWillReceiveProps() {
         if (!this.context.userInfo.loginStatus) {
             message.error("未登录，请先登录");
@@ -42,9 +48,7 @@ class LoginContainer extends React.Component<RouteChildrenProps, ILoginContainer
         Axios.post("/api/login", { username: loginForm.username, password: loginForm.password })
             .then((res) => {
                 if (res.data.error === 0) {
-                    this.context.checkLoginStatus();
-                    message.success("登录成功");
-                    this.props.history.push("/");
+                    location.href = "/";
                 }
             })
             .catch(() => message.error("登录失败"));

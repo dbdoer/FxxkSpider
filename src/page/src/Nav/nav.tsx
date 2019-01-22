@@ -11,32 +11,63 @@ const SubMenu = Menu.SubMenu;
 class Nav extends React.Component<RouteChildrenProps, { current: string }> {
     public static contextType = UserContext;
 
-    public state = {
-        current: this.props.location.pathname.substr(1),
-    };
+    constructor(args) {
+        super(args);
+        switch (this.props.location.pathname) {
+            case "/create_goods_selling_list":
+                this.state = {
+                    current: "create_goods_selling_list",
+                };
+                break;
+                case "/create_goods_buying_list":
+                this.state = {
+                    current: "create_goods_buying_list",
+                };
+                break;
+            case "/subscribe":
+                this.state = {
+                    current: "goods_subscribe",
+                };
+                break;
+            case "/monitor":
+                this.state = {
+                    current: "monitor",
+                };
+                break;
+            case "/":
+            default:
+                this.state = {
+                    current: "task_list",
+                };
+                break;
+        }
+    }
 
     public componentDidMount() {
-        this.checkToLogin(false);
+        this.checkToLogin();
     }
 
     public handleClick({item, key}) {
-        this.checkToLogin(true);
-        this.setState({
-            current: key,
-        });
-    }
-
-    public checkToLogin(jump: boolean) {
-        const context = this.context;
-        if (!context.userInfo.loginStatus) {
-            if (jump) {
-                this.props.history.push(`/login`);
-            }
+        if (this.context.userInfo.loginStatus) {
+            this.setState({
+                current: key,
+            });
+        } else {
+            this.props.history.push(`/login`);
             this.setState({
                 current: "login",
             });
-            return;
         }
+    }
+
+    public checkToLogin() {
+        const context = this.context;
+        context.checkLoginStatus()
+            .catch(() => {
+                this.setState({
+                    current: "login",
+                });
+            });
     }
 
     public render() {
@@ -65,7 +96,7 @@ class Nav extends React.Component<RouteChildrenProps, { current: string }> {
                     <Menu.Item key="monitor">
                         <Link to="/monitor"><Icon type="desktop" />控制台</Link>
                     </Menu.Item>
-                    {userInfo.loginStatus ? 
+                    {userInfo.loginStatus ?
                     <SubMenu title={<span><Icon type="user" />{userInfo.username}</span>} className="logout">
                         <Menu.Item key="logout">
                             <Link to="/logout">注销</Link>
