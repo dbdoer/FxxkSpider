@@ -10,9 +10,9 @@ class LogoutContainer extends React.Component<RouteChildrenProps> {
         if (this.context.userInfo.loginStatus) {
             this.context.setLoginStatus(false);
             Axios.post("/api/logout")
-                .then(() => this.props.history.push("/login"));
+                .then(() => location.href = "/login");
         } else {
-            this.props.history.push("/login");
+            location.href = "/login";
         }
     }
 
