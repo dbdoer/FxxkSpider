@@ -40,7 +40,7 @@ class LoginGuard extends React.Component<RouteChildrenProps, ILoginGuardState> {
             })
             .catch(() => {
                 if (pathname !== "/login" && pathname !== "/logout") {
-                    location.href = `/login?to=${this.props.location.pathname}`;
+                    this.props.history.push(`/login`);
                 }
             });
     }
@@ -58,7 +58,6 @@ class LoginGuard extends React.Component<RouteChildrenProps, ILoginGuardState> {
             return preState;
         });
     }
-
 
     public render() {
         return (

@@ -3,7 +3,7 @@ import { autobind } from "core-decorators";
 import { Input, Button, message } from "antd";
 import Axios from "axios";
 import { UserContext } from "./userContext";
-import * as qs from "qs";
+import { RouteChildrenProps } from "react-router";
 
 interface ILoginContainerState {
     loginForm: {
@@ -13,7 +13,7 @@ interface ILoginContainerState {
 }
 
 @autobind
-class LoginContainer extends React.Component<any, ILoginContainerState> {
+class LoginContainer extends React.Component<RouteChildrenProps, ILoginContainerState> {
     public static contextType = UserContext;
 
     public state = {
@@ -22,6 +22,12 @@ class LoginContainer extends React.Component<any, ILoginContainerState> {
             password: "",
         },
     };
+
+    public componentWillReceiveProps() {
+        if (!this.context.userInfo.loginStatus) {
+            message.error("未登录，请先登录");
+        }
+    }
 
     public handleValueChange(ev: React.ChangeEvent<HTMLInputElement>) {
         ev.persist();
@@ -36,9 +42,9 @@ class LoginContainer extends React.Component<any, ILoginContainerState> {
         Axios.post("/api/login", { username: loginForm.username, password: loginForm.password })
             .then((res) => {
                 if (res.data.error === 0) {
+                    this.context.checkLoginStatus();
                     message.success("登录成功");
-                    const to = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).to;
-                    location.href = to;
+                    this.props.history.push("/");
                 }
             })
             .catch(() => message.error("登录失败"));

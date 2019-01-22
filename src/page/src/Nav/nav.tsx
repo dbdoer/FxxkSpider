@@ -1,28 +1,42 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Menu, Icon } from "antd";
+import { Menu, Icon, message } from "antd";
 import { autobind } from "core-decorators";
 import { UserContext } from "../Auth";
+import { RouteChildrenProps, withRouter } from "react-router";
 
 const SubMenu = Menu.SubMenu;
 
 @autobind
-class Nav extends React.Component<any, { current: string }> {
+class Nav extends React.Component<RouteChildrenProps, { current: string }> {
     public static contextType = UserContext;
 
     public state = {
         current: this.props.location.pathname.substr(1),
     };
 
-    public handleSelect({item, key}) {
-        const context = this.context;
-        console.log(key);
-        if (!context.userInfo.loginStatus) {
-            location.href = `/login?to=/${key}`;
-        }
+    public componentDidMount() {
+        this.checkToLogin(false);
+    }
+
+    public handleClick({item, key}) {
+        this.checkToLogin(true);
         this.setState({
             current: key,
         });
+    }
+
+    public checkToLogin(jump: boolean) {
+        const context = this.context;
+        if (!context.userInfo.loginStatus) {
+            if (jump) {
+                this.props.history.push(`/login`);
+            }
+            this.setState({
+                current: "login",
+            });
+            return;
+        }
     }
 
     public render() {
@@ -34,7 +48,7 @@ class Nav extends React.Component<any, { current: string }> {
                     selectedKeys={[this.state.current]}
                     mode="horizontal"
                     theme="dark"
-                    onSelect={this.handleSelect}
+                    onClick={this.handleClick}
                 >
                     <Menu.Item key="task_list">
                         <Link to="/"><Icon type="radar-chart" />当前任务单</Link>
@@ -72,4 +86,4 @@ class Nav extends React.Component<any, { current: string }> {
     }
 }
 
-export default Nav;
+export default withRouter(Nav);

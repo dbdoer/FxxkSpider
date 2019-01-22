@@ -1,6 +1,7 @@
-import { JsonController, Post, BodyParam, Get, Param, Delete } from "routing-controllers";
+import { JsonController, Post, BodyParam, Get, Param, Delete, Authorized } from "routing-controllers";
 import { doTask, getTask, taskResultExport, getTaskList, deleteTask } from "../../core/apis";
 
+@Authorized()
 @JsonController()
 class TaskController {
     @Post("/task")
