@@ -3,6 +3,7 @@ import Axios from "axios";
 import { autobind } from "core-decorators";
 import { Card, Button, Spin, message } from "antd";
 import { ITask } from "../../../core/model";
+import { roleHOC, ROLE } from "../Auth";
 @autobind
 class TaskList extends React.Component<{}, { dataSource: ITask[], progressString: string; }> {
     public poll: NodeJS.Timer;
@@ -127,4 +128,4 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
     }
 }
 
-export default TaskList;
+export default roleHOC(TaskList, ROLE.ADMIN, ROLE.USER);

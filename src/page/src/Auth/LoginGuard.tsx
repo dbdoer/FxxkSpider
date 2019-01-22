@@ -47,23 +47,18 @@ class LoginGuard extends React.Component<RouteChildrenProps, ILoginGuardState> {
     }
 
     public setLoginStatus(status: boolean) {
-        this.setState((preState) => {
-            preState.userInfo.loginStatus = status;
-            return preState;
-        });
+        this.state.userInfo.loginStatus = status;
+        this.setState(this.state);
     }
 
     public setUsername(username: string) {
-        this.setState((preState) => {
-            preState.userInfo.username = username;
-            return preState;
-        });
+        this.state.userInfo.username = username;
+        this.setState(this.state);
     }
 
     public setUserrole(role: number[]) {
-        this.setState((preState) => {
-            preState.userInfo.role = [...role];
-        });
+        this.state.userInfo.role = role;
+        this.setState(this.state);
     }
 
     public render() {

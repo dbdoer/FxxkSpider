@@ -3,6 +3,7 @@ import { Button, Input, List, Card, Divider } from "antd";
 import { autobind } from "core-decorators";
 import Axios from "axios";
 import { ISubscriber } from "../../../core/model";
+import { roleHOC, ROLE } from "../Auth";
 
 const getGameId = (gameName: string) => {
     switch (gameName) {
@@ -131,4 +132,4 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
     }
 }
 
-export default GoodsSubscribe;
+export default roleHOC(GoodsSubscribe, ROLE.ADMIN, ROLE.USER);

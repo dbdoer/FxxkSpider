@@ -2,7 +2,7 @@ import LoginContainer from "./Login";
 import LoginGuard from "./LoginGuard";
 import { UserContext, userInfo } from "./userContext";
 import LogoutContainer from "./Logout";
-import { ROLE, haveAccess } from "./roleHelper";
+import { ROLE, haveAccess, roleHOC } from "./roleHelper";
 
 export {
     LoginContainer,
@@ -12,4 +12,5 @@ export {
     LogoutContainer,
     ROLE,
     haveAccess,
+    roleHOC,
 };

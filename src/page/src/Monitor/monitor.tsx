@@ -2,7 +2,9 @@ import * as React from "react";
 import { autobind } from "core-decorators";
 import { Progress, Row, Col, Divider, Card, Button, message } from "antd";
 import Axios from "axios";
-import { UserContext, ROLE, haveAccess } from "../Auth";
+import { UserContext, ROLE, haveAccess, roleHOC } from "../Auth";
+import ResetSteamData from "./components/actuator/resetSteamData";
+import Signup from "./components/actuator/signup";
 
 interface IMonitorDataSource {
     SteamDotA2Proportion: number;
@@ -127,12 +129,12 @@ class MonitorContainer extends React.Component<any, { monitorDataSource: IMonito
                     <br />
                     <Row type="flex" justify="space-around">
                         <Col span={8}>
-                            <Card title="重置所有饰品steam数据" actions={[<Button onClick={this.handleUnsetSteamDataBtnClick}>执行</Button>]}>
-                                <p>该操作会重置所有饰品的steam数据</p>
-                                <p>包括steam最高收购价，最小出售价以及24小时成交量</p>
-                                <p>一般用于第二天定时抓取任务之前，清空已有数据以获得最新数据</p>
-                            </Card>
+                            <ResetSteamData onResetSuccess={this.fetchMonitorData}/>
                         </Col>
+                        {haveAccess(userInfo.role, ROLE.ADMIN) &&
+                        <Col span={8}>
+                            <Signup />
+                        </Col>}
                     </Row>
                     <br /><br />
                 </section>}
@@ -141,4 +143,4 @@ class MonitorContainer extends React.Component<any, { monitorDataSource: IMonito
     }
 }
 
-export default MonitorContainer;
+export default roleHOC(MonitorContainer, ROLE.ADMIN, ROLE.OPERATOR);
