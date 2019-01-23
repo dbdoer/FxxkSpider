@@ -4,6 +4,7 @@ import { autobind } from "core-decorators";
 import { Card, Button, Spin, message } from "antd";
 import { ITask } from "../../../core/model";
 import { roleHOC, ROLE } from "../Auth";
+import { IUser } from "../../../core/model/user";
 @autobind
 class TaskList extends React.Component<{}, { dataSource: ITask[], progressString: string; }> {
     public poll: NodeJS.Timer;
@@ -78,7 +79,7 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
                     location.reload();
                 }
             })
-            .catch(() => {});
+            .catch(() => { message.error("导出失败"); });
     }
 
     public renderResultUrl(task: ITask) {
@@ -113,6 +114,7 @@ class TaskList extends React.Component<{}, { dataSource: ITask[], progressString
                     <section key={t._id}>
                         <Spin spinning={t.status !== 1} delay={300}>
                             <Card title={t.desc} hoverable={true} extra={<Button onClick={this.handleTaskDelete.bind(this, t._id)}>删除</Button>}>
+                                <p>创建者：{(t.user as IUser).username}</p>
                                 <p>创建时间：{new Date(t.createdAt).toLocaleTimeString()}</p>
                                 <p>状态：{this.renderStatus(t.status)}{i === 0 ? progressString : null}</p>
                                 {t.status === 1 ? <p>耗时：{t.timeConsuming}</p> : null}
