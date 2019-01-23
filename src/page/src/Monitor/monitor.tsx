@@ -143,4 +143,4 @@ class MonitorContainer extends React.Component<any, { monitorDataSource: IMonito
     }
 }
 
-export default roleHOC(MonitorContainer, ROLE.ADMIN, ROLE.OPERATOR);
+export default roleHOC(MonitorContainer, ROLE.ADMIN, ROLE.OPERATOR, ROLE.USER);
