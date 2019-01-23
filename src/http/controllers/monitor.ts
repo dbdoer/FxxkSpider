@@ -1,9 +1,10 @@
-import { JsonController, Get, Post } from "routing-controllers";
+import { JsonController, Get, Post, Authorized } from "routing-controllers";
 import { Goods } from "../../core/model";
 import * as math from "mathjs";
 import { jobConfig } from "../../../config";
 import { unsetSteamPriceForAllGoods } from "../../core/helpers";
 
+@Authorized()
 @JsonController()
 class MonitorController {
     @Get("/monitor")

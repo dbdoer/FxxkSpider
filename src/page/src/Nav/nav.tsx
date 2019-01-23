@@ -1,11 +1,16 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Menu, Icon } from "antd";
+import { Menu, Icon, message } from "antd";
 import { autobind } from "core-decorators";
-import * as H from "history";
+import { UserContext } from "../Auth";
+import { RouteChildrenProps, withRouter } from "react-router";
+
+const SubMenu = Menu.SubMenu;
 
 @autobind
-class Nav extends React.Component<any, { current: string }> {
+class Nav extends React.Component<RouteChildrenProps, { current: string }> {
+    public static contextType = UserContext;
+
     constructor(args) {
         super(args);
         switch (this.props.location.pathname) {
@@ -14,7 +19,7 @@ class Nav extends React.Component<any, { current: string }> {
                     current: "create_goods_selling_list",
                 };
                 break;
-            case "/create_goods_buying_list":
+                case "/create_goods_buying_list":
                 this.state = {
                     current: "create_goods_buying_list",
                 };
@@ -38,20 +43,43 @@ class Nav extends React.Component<any, { current: string }> {
         }
     }
 
-    public handleClick(e) {
-        this.setState({
-            current: e.key,
-        });
+    public componentDidMount() {
+        this.checkToLogin();
+    }
+
+    public handleClick({item, key}) {
+        if (this.context.userInfo.loginStatus) {
+            this.setState({
+                current: key,
+            });
+        } else {
+            this.props.history.push(`/login`);
+            this.setState({
+                current: "login",
+            });
+        }
+    }
+
+    public checkToLogin() {
+        const context = this.context;
+        context.checkLoginStatus()
+            .catch(() => {
+                this.setState({
+                    current: "login",
+                });
+            });
     }
 
     public render() {
+        const { context } = this;
+        const { userInfo } = context;
         return (
             <div>
                 <Menu
-                    onClick={this.handleClick}
                     selectedKeys={[this.state.current]}
                     mode="horizontal"
                     theme="dark"
+                    onClick={this.handleClick}
                 >
                     <Menu.Item key="task_list">
                         <Link to="/"><Icon type="radar-chart" />当前任务单</Link>
@@ -68,16 +96,27 @@ class Nav extends React.Component<any, { current: string }> {
                     <Menu.Item key="monitor">
                         <Link to="/monitor"><Icon type="desktop" />控制台</Link>
                     </Menu.Item>
+                    {userInfo.loginStatus ?
+                    <SubMenu title={<span><Icon type="user" />{userInfo.username}</span>} className="logout">
+                        <Menu.Item key="logout">
+                            <Link to="/logout">注销</Link>
+                        </Menu.Item>
+                    </SubMenu> :
+                    <Menu.Item key="login" className="login">
+                        <Link to="/login"><Icon type="user" />登录</Link>
+                    </Menu.Item>}
                 </Menu>
                 {/* <nav style={{ textAlign: "center", width: "100vw", margin: "0 0 50px 0" }}>
                     <Link to="/" style={{ margin: "0 30px " }}>当前任务单</Link>
                     <Link to="/create" style={{ margin: "0 30px " }}>创建新任务单</Link>
                     <Link to="/subscribe" style={{ margin: "0 30px " }}>饰品监听</Link>
                 </nav> */}
-            {this.props.children}
+                {this.props.children}
             </div>
         );
     }
 }
 
-export default Nav;
+const NavWithRouter = withRouter(Nav);
+
+export default NavWithRouter;

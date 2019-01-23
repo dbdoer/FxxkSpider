@@ -3,6 +3,7 @@ import { Button, Input, List, Card, Divider } from "antd";
 import { autobind } from "core-decorators";
 import Axios from "axios";
 import { ISubscriber } from "../../../core/model";
+import { roleHOC, ROLE } from "../Auth";
 
 const getGameId = (gameName: string) => {
     switch (gameName) {
@@ -36,7 +37,8 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
                 this.setState({
                     dataSource: res.data,
                 });
-            });
+            })
+            .catch(() => {});
     }
 
     public handleValueChange(ev) {
@@ -57,14 +59,16 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
                 if (res.data.error === 0) {
                     location.reload();
                 }
-            });
+            })
+            .catch(() => {});
     }
 
     public handleDeleteSubscriber(id) {
         Axios.delete(`/api/subscribe/${id}`)
             .then((res) => {
                 location.reload();
-            });
+            })
+            .catch(() => {});
     }
 
     public render() {
@@ -99,8 +103,8 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
                     <Button type="primary" onClick={this.handleSubmit}>添加    ！</Button>
                 </form>
                 <br />
-                <Divider />
-                <h3>监听饰品预估总价值：（按最高收购价计算）{totalSum.toFixed(2)}</h3>
+                <hr />
+                <h3>监听饰品预估总价值：（按Steam最高收购价计算）{totalSum.toFixed(2)}</h3>
                 <br /><br />
                 {subscribers && <List
                     grid={{ gutter: 16, column: 4 }}
@@ -128,4 +132,4 @@ class GoodsSubscribe extends React.Component<any, { gameName: string, marketHash
     }
 }
 
-export default GoodsSubscribe;
+export default roleHOC(GoodsSubscribe, ROLE.ADMIN, ROLE.USER);

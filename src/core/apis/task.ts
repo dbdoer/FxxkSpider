@@ -8,8 +8,10 @@ import { getGoodsSellingList,
 import { Task, Status, Goods } from "../model";
 import xlsx = require("better-xlsx");
 import * as fs from "fs";
+import { NotFoundError } from "routing-controllers";
+import { IUser, ROLE } from "../model/user";
 
-export const doTask = async (gameName= "csgo", startPage: number = 1, endPage: number, type: string) => {
+export const doTask = async (userId, gameName= "csgo", startPage: number = 1, endPage: number, type: string) => {
     let desc;
     if (type === "selling") {
         desc = `于${moment().format("YYYY-MM-DD, h:mm:ss a")}创建的爬取${gameName}的Buff出售价格，从第${startPage}页到第${endPage === -1 ? "最后一" : endPage}页的任务单`;
@@ -17,6 +19,7 @@ export const doTask = async (gameName= "csgo", startPage: number = 1, endPage: n
         desc = `于${moment().format("YYYY-MM-DD, h:mm:ss a")}创建的爬取${gameName}的Buff收购价格，从第${startPage}页到第${endPage === -1 ? "最后一" : endPage}页的任务单`;
     }
     const task = await Task.create({
+        user: userId,
         desc,
         gameName,
         type,
@@ -73,31 +76,40 @@ export const doTask = async (gameName= "csgo", startPage: number = 1, endPage: n
     };
 };
 
-export const getTask = async (taskId: string) => {
-    return await Task.findOne({ _id: taskId }, "-rawResult");
+export const getTask = async (user: IUser, taskId: string) => {
+    const conditions = user.role.includes(ROLE.ADMIN) ? { _id: taskId } : { _id: taskId, user: user._id };
+    return await Task.findOne(conditions, "-rawResult").populate("user", "username");
 };
 
-export const getTaskList = async () => {
+export const getTaskList = async (user: IUser) => {
+    const conditions = user.role.includes(ROLE.ADMIN) ? {} : { user: user._id };
     try {
-        return await Task.find({}, "-rawResult")
-        .sort("-createdAt");
+        return await Task.find(conditions, "-rawResult")
+        .sort("-createdAt")
+        .populate("user", "username");
     } catch (err) {
         await Task.deleteMany({});
-        return await Task.find({}, "-rawResult")
-        .sort("-createdAt");
+        return await Task.find(conditions, "-rawResult")
+            .sort("-createdAt")
+            .populate("user", "username");
     }
 };
 
-export const deleteTask = async (taskId: string) => {
-    await Task.deleteOne({ _id: taskId});
+export const deleteTask = async (user: IUser, taskId: string) => {
+    const conditions = user.role.includes(ROLE.ADMIN) ? { _id: taskId } : { _id: taskId, user: user._id };
+    await Task.deleteOne(conditions);
     return {
         error: 0,
         msg: "成功",
     };
 };
 
-export const taskResultExport = async (taskId: string) => {
-    const task = await Task.findOne({ _id: taskId });
+export const taskResultExport = async (user: IUser, taskId: string) => {
+    const conditions = user.role.includes(ROLE.ADMIN) ? { _id: taskId } : { _id: taskId, user: user._id };
+    const task = await Task.findOne(conditions);
+    if (!task) {
+        throw new NotFoundError();
+    }
     const file = new xlsx.File();
     const sheet = file.addSheet("DefaultSheet");
 

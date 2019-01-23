@@ -2,6 +2,7 @@ import { Subscriber, Status, ISubscriber, Goods} from "../model";
 import { scheduleJob } from "node-schedule";
 import { getSteamPriceOverview, getSteamPrice, getItemNameId } from "../services";
 import { sleep } from "../helpers";
+import { IUser, ROLE } from "../model/user";
 
 const subscribing = async (subscriber) => {
     const n = await Subscriber.countDocuments({ _id: subscriber._id });
@@ -55,8 +56,9 @@ export const restoreSubscribing = async () => {
     return;
 };
 
-export const initSubscriber = async (gameName: string, marketHashName: string, intervals: number, verboseName: string) => {
+export const initSubscriber = async (user: IUser, gameName: string, marketHashName: string, intervals: number, verboseName: string) => {
     const subscriber = await Subscriber.create({
+        user: user._id,
         marketHashName,
         gameName,
         intervals,
@@ -72,11 +74,18 @@ export const initSubscriber = async (gameName: string, marketHashName: string, i
     };
 };
 
-export const getSubscribersList = async () => {
-    return await Subscriber.find()
-        .sort("-createdAt");
+export const getSubscribersList = async (user: IUser) => {
+    const conditions = user.role.includes(ROLE.ADMIN) ? {} : { user: user._id };
+    return await Subscriber.find(conditions)
+        .sort("-createdAt")
+        .populate("user", "username");
 };
 
-export const deleteSubscricerById = async (id: string) => {
-    return await Subscriber.remove({ _id: id });
+export const deleteSubscricerById = async (user: IUser, id: string) => {
+    const conditions = user.role.includes(ROLE.ADMIN) ? { _id: id } : { user: user._id, _id: id };
+    await Subscriber.remove(conditions);
+    return {
+        error: 0,
+        msg: "成功",
+    };
 };

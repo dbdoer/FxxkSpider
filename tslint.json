@@ -11,7 +11,8 @@
         "max-line-length": false,
         "only-arrow-functions": false,
         "triple-equals": false,
-        "variable-name": false
+        "variable-name": false,
+        "no-empty": false
     },
     "rulesDirectory": []
 }

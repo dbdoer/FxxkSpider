@@ -1,4 +1,5 @@
 import mongoose from "./conn";
+import { IUser } from "./user";
 
 const { Schema } = mongoose;
 
@@ -16,9 +17,15 @@ interface ISubscriber extends mongoose.Document {
     volume: string;
     steamMaxBuyPrice: string;
     steamMinSellPrice: string;
+    user: string | IUser;
 }
 
 const subscriberSchema = new Schema({
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
     marketHashName: {
         type: String,
         required: true,
