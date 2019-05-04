@@ -2,7 +2,7 @@ import { Goods, Task, ITask } from "../src/core/model";
 
 export const generateGoodsData = async () => {
     const newestDota2SellingTask = await Task.findOne({ gameName: "dota2", type: "selling" }).sort("-createdAt");
-    const newestCsgoSellingTask = await Task.findOne({ gameName: "csgo", type: "buying" }).sort("-createdAt");
+    const newestCsgoSellingTask = await Task.findOne({ gameName: "csgo", type: "selling" }).sort("-createdAt");
 
     for (const task of [newestDota2SellingTask, newestCsgoSellingTask]) {
         if (task) {
