@@ -191,18 +191,27 @@ export const taskResultExport = async (user: IUser, taskId: string) => {
             const cell3 = row.addCell();
             cell3.value = "Buff出售最低价（单位：元）";
             const cell4 = row.addCell();
-            cell4.value = "收购最高价 - 出售最低价";
+            cell4.value = "Buff收购最高价 - Buff出售最低价";
             const cell5 = row.addCell();
-            cell5.value = "Buff求购数量";
+            cell5.value = "steam最小出售价（单位：元）";
             const cell6 = row.addCell();
-            cell6.value = "Buff商品链接";
+            cell6.value = "steam最小出售价 - Buff收购最高价";
             const cell7 = row.addCell();
-            cell7.value = "steam商品链接";
+            cell7.value = "Buff求购数量";
             const cell8 = row.addCell();
-            cell8.value = "商品唯一标识名称";
+            cell8.value = "Buff商品链接";
+            const cell9 = row.addCell();
+            cell9.value = "steam商品链接";
+            const cell10 = row.addCell();
+            cell10.value = "商品唯一标识名称";
 
             const rawResult = JSON.parse(task.rawResult);
             for (const r of rawResult) {
+                let steamMinSellPrice = "";
+                const goods = await Goods.findOne({ marketHashName: r.market_hash_name, steamMaxBuyPrice: {$exists: true}, steamMinSellPrice: {$exists: true} });
+                if (goods) {
+                    steamMinSellPrice = goods.steamMinSellPrice.substr(2);
+                }
                 const dataRow = sheet.addRow();
                 const dataCell1 = dataRow.addCell();
                 const dataCell2 = dataRow.addCell();
@@ -212,14 +221,18 @@ export const taskResultExport = async (user: IUser, taskId: string) => {
                 const dataCell6 = dataRow.addCell();
                 const dataCell7 = dataRow.addCell();
                 const dataCell8 = dataRow.addCell();
+                const dataCell9 = dataRow.addCell();
+                const dataCell10 = dataRow.addCell();
                 dataCell1.value = r.name;
                 dataCell2.value = r.buy_max_price;
                 dataCell3.value = r.sell_min_price;
                 dataCell4.value = math.eval(`${r.buy_max_price} - ${r.sell_min_price}`);
-                dataCell5.value = r.buy_num;
-                dataCell6.value = r.buff_goods_url;
-                dataCell7.value = r.steam_market_url;
-                dataCell8.value = r.market_hash_name;
+                dataCell5.value = steamMinSellPrice;
+                dataCell6.value = steamMinSellPrice !== "" ? math.eval(`${steamMinSellPrice} - ${r.buy_max_price}`) : "";
+                dataCell7.value = r.buy_num;
+                dataCell8.value = r.buff_goods_url;
+                dataCell9.value = r.steam_market_url;
+                dataCell10.value = r.market_hash_name;
             }
             break;
         }
